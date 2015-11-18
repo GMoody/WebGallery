@@ -52,8 +52,8 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand">
-                        <a href="#">Start Bootstrap</a>
-                    </li>    
+                        <a href="#">Web Gallery</a>
+                    </li>
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Shortcuts</a></li>
                     <li><a href="#">Overview</a></li>
