@@ -63,7 +63,7 @@
                     <li><a href="#">Contact</a></li>
                 </ul>
             </div>
-            <%--griwa--%>
+            <%--griwa i  vadja--%>
         <!-- /#sidebar-wrapper -->
 
             <!-- Page Content -->
