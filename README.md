@@ -1,0 +1,4 @@
+# WebGallery
+WebGallery project
+
+-- Initialized
