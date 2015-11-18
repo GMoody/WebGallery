@@ -64,6 +64,7 @@
                 </ul>
             </div>
             <%--griwa i  vadja--%>
+            <%--stas i griwa--%>
         <!-- /#sidebar-wrapper -->
 
             <!-- Page Content -->
