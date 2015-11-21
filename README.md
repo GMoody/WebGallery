@@ -7,3 +7,5 @@ Changes:
 21/11/2015: Added main classes
 
 21/11/2015: Moved libs to Maven + getConnection()
+
+21/11/2015: Queries update + Connections + User
