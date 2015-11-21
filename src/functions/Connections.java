@@ -1,8 +1,6 @@
 package functions;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Connections {
 
@@ -17,7 +15,19 @@ public class Connections {
             return conn;
         } catch (Exception e) {
             System.out.println("Connection with database failed!");
+            e.printStackTrace();
             return null;
         }
+    }
+
+    public static ResultSet getUsers() throws SQLException {
+        String sql = "SELECT * FROM webgallery.t_user";
+        return new Connections().getConnection().createStatement().executeQuery(sql);
+    }
+
+    public static boolean addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException {
+        String sql = "INSERT INTO webgallery.t_user (id_position, user_name, first_name, last_name, email, password) " +
+                     "VALUES (1, '" + user_name + "', '" + user_fname +"', '" + user_lname + "', '" + user_email + "', '" + user_pwd + "')";
+        return new Connections().getConnection().createStatement().executeUpdate(sql) > 0;
     }
 }

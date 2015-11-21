@@ -105,6 +105,7 @@ INSERT INTO webgallery.t_category (category) VALUES ('Minimalism');
 INSERT INTO webgallery.t_category (category) VALUES ('Anime');
 INSERT INTO webgallery.t_category (category) VALUES ('Motorcycles');
 INSERT INTO webgallery.t_category (category) VALUES ('Textures');
+INSERT INTO webgallery.t_category (category) VALUES ('Other');
 
 ------------------------------------------------------------------------------------------------------
 -- Table t_position INSERTS.
@@ -112,5 +113,11 @@ INSERT INTO webgallery.t_category (category) VALUES ('Textures');
 INSERT INTO webgallery.t_position (position) VALUES ('User');
 INSERT INTO webgallery.t_position (position) VALUES ('Moderator');
 INSERT INTO webgallery.t_position (position) VALUES ('Administrator');
+
+------------------------------------------------------------------------------------------------------
+-- Table t_user INSERTS.
+
+INSERT INTO webgallery.t_user (id_position, user_name, first_name, last_name, email, password) VALUES (3, 'Griwanja', 'Grigory', 'Tureev', 'g.tureev@gmail.com', 'needToChange');
+INSERT INTO webgallery.t_user (id_position, user_name, first_name, last_name, email, password) VALUES (3, 'r3dz', 'Deniss', 'Kulakov', 'deniss.kulakov@hotmail.com', 'needToChange');
 
 ------------------------------------------------------------------------------------------------------

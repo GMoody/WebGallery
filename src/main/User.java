@@ -1,5 +1,9 @@
 package main;
 
+import functions.Connections;
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +114,34 @@ public class User {
     }
     //endregion
 
+    //region Methods
+
+    //region getUserInfo
+    public User getUserInfo(int user_id){
+        for(User user : users)
+            if(user.id_user == user_id)
+                return user;
+        return null;
+    }
+
+    public User getUserInfo(String email){
+        for(User user : users)
+            if(user.email == email)
+                return user;
+        return null;
+    }
+    //endregion
+
+    public byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException {
+        if(user_email != null && user_email.isEmpty())
+            if(getUserInfo(user_email) == null)
+                if(Connections.addUser(user_name, user_fname, user_lname, user_email, BCrypt.hashpw(user_pwd, BCrypt.gensalt())))
+                    return 1;   // Success!
+                else return 0;  // Adding to DB failed
+            else return -1;     // User's already registered
+        else return -2;         // Empty or null data
+    }
+
     private boolean checkString(String string) {
         return (string != null && !string.isEmpty());
     }
@@ -117,4 +149,5 @@ public class User {
     private boolean checkInt(int number) {
         return number > 0;
     }
+    //endregion
 }
