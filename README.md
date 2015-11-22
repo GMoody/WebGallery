@@ -9,3 +9,5 @@ Changes:
 21/11/2015: Moved libs to Maven + getConnection()
 
 21/11/2015: Queries update + Connections + User
+
+22/11/2015: Access modifiers update + methods
