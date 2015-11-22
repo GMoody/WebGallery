@@ -6,13 +6,14 @@ import java.util.List;
 
 public class Comment {
 
-    int id_comment;
-    int id_picture;
-    int id_user;
-    String comment;
-    Date add_date;
+    private int id_comment;
+    private int id_picture;
+    private int id_user;
+    private String comment;
+    private Date add_date;
 
-    static List<Comment> comments = new ArrayList<>();
+    // General list with comments
+    public static List<Comment> comments = new ArrayList<>();
 
     public Comment(int id_comment, int id_picture, int id_user, String comment, Date add_date) {
         try {
@@ -86,7 +87,16 @@ public class Comment {
     }
     //endregion
 
+    //region Methods
+    public static Comment getCommentInfo(int id_comment){
+        for(Comment comment : comments)
+            if(comment.id_comment == id_comment)
+                return comment;
+        return null;
+    }
+
     private boolean checkInt(int number) {
         return number > 0;
     }
+    //endregion
 }

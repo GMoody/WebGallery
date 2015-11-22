@@ -5,13 +5,14 @@ import java.util.List;
 
 public class Picture_Statistics {
 
-    int id_picture_statistics;
-    int id_picture;
-    int total_voted;
-    int total_downloads;
-    double picture_rating;
+    private int id_picture_statistics;
+    private int id_picture;
+    private int total_voted;
+    private int total_downloads;
+    private double picture_rating;
 
-    static List<Picture_Statistics> picture_statistics = new ArrayList<>();
+    // General list with pictures statistics
+    public static List<Picture_Statistics> picture_statistics = new ArrayList<>();
 
     public Picture_Statistics(int id_picture_statistics, int id_picture, int total_voted, int total_downloads, double picture_rating) {
         try {
@@ -85,6 +86,14 @@ public class Picture_Statistics {
     }
     //endregion
 
+    //region Methods
+    public static Picture_Statistics getPicture_statistics (int id_picture_statistics){
+        for(Picture_Statistics statistics : picture_statistics)
+            if(statistics.id_picture_statistics == id_picture_statistics)
+                return statistics;
+        return null;
+    }
+
     private boolean checkNumber(int number) {
         return number > 0;
     }
@@ -92,4 +101,5 @@ public class Picture_Statistics {
     private boolean checkNumber(double number) {
         return number > 0;
     }
+    //endregion
 }

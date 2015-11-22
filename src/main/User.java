@@ -9,15 +9,17 @@ import java.util.List;
 
 public class User {
 
-    int id_user;
-    int id_position;
-    String user_name;
-    String first_name;
-    String last_name;
-    String email;
-    String password;
+    private int id_user;
+    private int id_position;
+    private String user_name;
+    private String first_name;
+    private String last_name;
+    private String email;
+    private String password;
+    private List<Picture> pictures;    // Each user has his own list with pictures
 
-    static List<User> users = new ArrayList<>();
+    // General list with users
+    public static List<User> users = new ArrayList<>();
 
     public User(int id_user, int id_position, String user_name, String first_name, String last_name, String email, String password) {
         try {
@@ -29,6 +31,7 @@ public class User {
             setEmail(email);
             setPassword(password);
             users.add(this);
+            this.pictures = new ArrayList<>();
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -109,6 +112,10 @@ public class User {
         return password;
     }
 
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
     public static List<User> getUsers() {
         return users;
     }
@@ -117,14 +124,15 @@ public class User {
     //region Methods
 
     //region getUserInfo
-    public User getUserInfo(int user_id){
+    // Also used to check if user is registered
+    public static User getUserInfo(int id_user){
         for(User user : users)
-            if(user.id_user == user_id)
+            if(user.id_user == id_user)
                 return user;
         return null;
     }
 
-    public User getUserInfo(String email){
+    public static User getUserInfo(String email){
         for(User user : users)
             if(user.email == email)
                 return user;
@@ -132,7 +140,7 @@ public class User {
     }
     //endregion
 
-    public byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException {
+    public static byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException {
         if(user_email != null && user_email.isEmpty())
             if(getUserInfo(user_email) == null)
                 if(Connections.addUser(user_name, user_fname, user_lname, user_email, BCrypt.hashpw(user_pwd, BCrypt.gensalt())))

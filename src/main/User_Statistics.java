@@ -5,12 +5,13 @@ import java.util.List;
 
 public class User_Statistics {
 
-    int id_user_statistics;
-    int id_user;
-    int total_voted;
-    double user_rating;
+    private int id_user_statistics;
+    private int id_user;
+    private int total_voted;
+    private double user_rating;
 
-    static List<User_Statistics> user_statistics = new ArrayList<>();
+    // General list with users statistics
+    public static List<User_Statistics> user_statistics = new ArrayList<>();
 
     public User_Statistics(int id_user_statistics, int id_user, int total_voted, double user_rating) {
         try {
@@ -73,6 +74,14 @@ public class User_Statistics {
     }
     //endregion
 
+    //region Methods
+    public static User_Statistics getUser_statistics (int id_user_statistics){
+        for(User_Statistics statistics : user_statistics)
+            if(statistics.id_user_statistics == id_user_statistics)
+                return statistics;
+        return null;
+    }
+
     private boolean checkNumber(int number) {
         return number > 0;
     }
@@ -80,4 +89,5 @@ public class User_Statistics {
     private boolean checkNumber(double number) {
         return number > 0;
     }
+    //endregion
 }

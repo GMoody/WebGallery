@@ -6,11 +6,12 @@ import java.util.List;
 
 public class Picture {
 
-    int id_picture;
-    int id_category;
-    int upl_user_id;
-    Date upl_date;
-    String description;
+    private int id_picture;
+    private int id_category;
+    private int upl_user_id;
+    private Date upl_date;
+    private String description;
+    private List<Comment> comments;
 
     static List<Picture> pictures = new ArrayList<>();
 
@@ -22,6 +23,7 @@ public class Picture {
             setUpl_date(upl_date);
             setDescription(description);
             pictures.add(this);
+            this.comments = new ArrayList<>();
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -84,9 +86,23 @@ public class Picture {
     public static List<Picture> getPictures() {
         return pictures;
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     //endregion
+
+    //region Methods
+    public static Picture getPictureInfo(int id_picture){
+        for(Picture picture : pictures)
+            if(picture.id_picture == id_picture)
+                return picture;
+        return null;
+    }
 
     private boolean checkInt(int number) {
         return number > 0;
     }
+    //endregion
 }
