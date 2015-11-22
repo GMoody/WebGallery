@@ -13,6 +13,7 @@ public class Picture {
     private String description;
     private List<Comment> comments;
 
+    // General list with pictures
     static List<Picture> pictures = new ArrayList<>();
 
     public Picture(int id_picture, int id_category, int upl_user_id, Date upl_date, String description) {

@@ -1,173 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-    
-    <head>
-        
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Web Gallery</title>
-        
-        <!-- JS -->
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery.js"></script>
+<head>
 
-        <!-- CSS -->
-        <link href="css/simple-sidebar.css" rel="stylesheet">
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        
-    </head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Gallery">
+    <meta name="author" content="RDIR51: G. Tureev, D. Kulakov">
 
-    <body>
-        <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Web Gallery</a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Contact</a></li>
+    <title>Web Gallery</title>
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/4-col-portfolio.css" rel="stylesheet">
+    <link href="css/webgallery.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Web Gallery</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <% if (session.getAttribute("email") == null) {  %>
+                <li><a href="registration.jsp">Registration</a></li>
+                <li><a href="#somewhere">Services</a></li>
+                <li><a href="#somewhere">Contact</a></li>
+                <% }else{ %>
+                <li><a href="#somewhere">Services</a></li>
+                <li><a href="#somewhere">Contact</a></li>
+                <% } %>
+            </ul>
+
+            <!-- Profile -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <%
+                        if (session.getAttribute("email") != null) {
+                    %>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("fname")%>  <%= session.getAttribute("lname")%><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
+                        <%
+                            if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
+                        <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li><%
+                        }
+                    %>
+                        <li class="divider"></li>
+                        <li><a href="#" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
                     </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container -->
-
-        </nav>
-        
-        <div id="wrapper">
-            
-        <!-- Sidebar -->
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
-                        <a href="#">Web Gallery</a>
-                    </li>
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Shortcuts</a></li>
-                    <li><a href="#">Overview</a></li>
-                    <li><a href="#">Events</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-        <!-- /#sidebar-wrapper -->
-
-            <!-- Page Content -->
-            <div id="page-content-wrapper">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                </li>
+                <% } else {%>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
+                    <ul class="dropdown-menu" style="height: 180px; width: 300px">
+                        <div class="loginmodal-container">
+                            <form method="post" name="login_form">
+                                <input type="text" name="user_email" placeholder="Email">
+                                <input type="password" name="pwd" placeholder="Password">
+                                <input type="submit" name="log_in_btn" class="login loginmodal-submit" value="Log in">
+                            </form>
+                            <%
+                                if (request.getParameter("log_in_btn") != null) {
+                                    //request.getRequestDispatcher("/functions/login.jsp").include(request, response);
+                                %><script>window.location = window.location.href;</script><%
+                            }
+                            %>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Projects Row -->
-                <div class="row">
-                    <div class="col-md-6 portfolio-item">
-                        <a href="#"><img class="img-responsive" src="http://placehold.it/700x400" alt=""></a>
-                        <h3><a href="#">Project One</a></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                    </div>
-                    
-                    <div class="col-md-6 portfolio-item">
-                        <a href="#"><img class="img-responsive" src="http://placehold.it/700x400" alt=""></a>
-                        <h3><a href="#">Project Two</a></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                    </div>
-                </div>
-                <!-- /.row -->
-            
-                <!-- Projects Row -->
-                <div class="row">
-                    <div class="col-md-6 portfolio-item">
-                        <a href="#"><img class="img-responsive" src="http://placehold.it/700x400" alt=""></a>
-                        <h3><a href="#">Project Three</a></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                    </div>
-                    
-                    <div class="col-md-6 portfolio-item">
-                        <a href="#"><img class="img-responsive" src="http://placehold.it/700x400" alt=""></a>
-                        <h3><a href="#">Project Four</a></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                    </div>
-                </div>
-                <!-- /.row -->
-                
-                <!-- Projects Row -->
-                <div class="row">
-                    <div class="col-md-6 portfolio-item">
-                        <a href="#"><img class="img-responsive" src="http://placehold.it/700x400" alt=""></a>
-                        <h3><a href="#">Project Five</a></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                    </div>
-                    
-                    <div class="col-md-6 portfolio-item">
-                        <a href="#"><img class="img-responsive" src="http://placehold.it/700x400" alt=""></a>
-                        <h3><a href="#">Project Six</a></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                    </div>
-                </div>
-                <!-- /.row -->
-                
-                <hr>
-                
-                <!-- Pagination -->
-                <div class="row text-center">
-                    <div class="col-lg-12">
-                        <ul class="pagination">
-                            <li><a href="#">&laquo;</a> </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">&raquo;</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /.row -->
-                
-                <hr>
-                
-                <!-- Footer -->
-                <footer>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <p>Copyright &copy; Your Website 2014</p>
-                        </div>
-                    </div>
-                    <!-- /.row -->
-                </footer>
-                
-            </div>
-            <!-- /#page-content-wrapper -->
+                    </ul>
+                </li>
+                <% }%>
+            </ul>
+            <!-- Profile end-->
 
         </div>
-    <!-- /#wrapper -->
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
 
-        <!-- Menu Toggle Script -->
-        <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-        
-        </script>
-        
-    </body>
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Tool menu
+                <small>Secondary Text</small>
+            </h1>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Projects Row -->
+    <div class="row">
+        <div class="col-md-3 portfolio-item">
+            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Projects Row -->
+    <div class="row">
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Projects Row -->
+    <div class="row">
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Pagination -->
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <ul class="pagination">
+                <li>
+                    <a href="#">&laquo;</a>
+                </li>
+                <li class="active">
+                    <a href="#">1</a>
+                </li>
+                <li>
+                    <a href="#">2</a>
+                </li>
+                <li>
+                    <a href="#">3</a>
+                </li>
+                <li>
+                    <a href="#">4</a>
+                </li>
+                <li>
+                    <a href="#">5</a>
+                </li>
+                <li>
+                    <a href="#">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Web Gallery 2014</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+
+</div>
+<!-- /.container -->
+
+</body>
+
 </html>
