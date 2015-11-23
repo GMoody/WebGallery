@@ -3,6 +3,7 @@
     <properties maven-id="org.postgresql:postgresql:9.4-1205-jdbc42" />
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/postgresql/postgresql/9.4-1205-jdbc42/postgresql-9.4-1205-jdbc42.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/postgresql/postgresql/9.4-1205-jdbc42/postgresql-9.4-1205-jdbc42.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

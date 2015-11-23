@@ -141,7 +141,7 @@ public class User {
     //endregion
 
     public static byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException {
-        if(user_email != null && user_email.isEmpty())
+        if(user_email != null && !user_email.isEmpty())
             if(getUserInfo(user_email) == null)
                 if(Connections.addUser(user_name, user_fname, user_lname, user_email, BCrypt.hashpw(user_pwd, BCrypt.gensalt())))
                     return 1;   // Success!

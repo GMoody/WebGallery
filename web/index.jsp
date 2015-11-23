@@ -42,7 +42,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <% if (session.getAttribute("email") == null) {  %>
-                <li><a href="#">Registration</a></li>
+                <li><a href="register.jsp">Registration</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">Contact</a></li>
                 <% }else{ %>
