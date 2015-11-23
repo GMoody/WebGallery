@@ -13,3 +13,5 @@ Changes:
 22/11/2015: Access modifiers update + methods
 
 23/11/2015: CSS Update
+
+23/11/2015: Login modal fix
