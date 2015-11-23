@@ -3,30 +3,22 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Meta -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Web Gallery">
-    <meta name="author" content="RDIR51: G. Tureev, D. Kulakov">
-
-    <title>Web Gallery</title>
+    <meta name="author" content="G. Tureev, D. Kulakov">
 
     <!-- CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/4-col-portfolio.css" rel="stylesheet">
-    <link href="css/webgallery.css" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/webgallery.css"/>
 
-    <!-- Bootstrap Core JavaScript -->
+    <!-- JS -->
+    <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!-- Title -->
+    <title>Web Gallery</title>
 
 </head>
 
@@ -50,12 +42,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <% if (session.getAttribute("email") == null) {  %>
-                <li><a href="registration.jsp">Registration</a></li>
-                <li><a href="#somewhere">Services</a></li>
-                <li><a href="#somewhere">Contact</a></li>
+                <li><a href="#">Registration</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
                 <% }else{ %>
-                <li><a href="#somewhere">Services</a></li>
-                <li><a href="#somewhere">Contact</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
                 <% } %>
             </ul>
 
@@ -89,10 +81,10 @@
                             </form>
                             <%
                                 if (request.getParameter("log_in_btn") != null) {
-                                    //request.getRequestDispatcher("/functions/login.jsp").include(request, response);
+                                   // request.getRequestDispatcher("/functions/login.jsp").include(request, response);
                                 %><script>window.location = window.location.href;</script><%
                             }
-                            %>
+                        %>
                         </div>
                     </ul>
                 </li>
