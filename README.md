@@ -11,3 +11,5 @@ Changes:
 21/11/2015: Queries update + Connections + User
 
 22/11/2015: Access modifiers update + methods
+
+23/11/2015: CSS Update
