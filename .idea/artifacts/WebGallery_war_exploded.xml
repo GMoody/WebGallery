@@ -7,6 +7,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="WebGallery" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="org.mindrot:jbcrypt:0.3m" />
+          <element id="library" level="project" name="org.postgresql:postgresql:9.4-1205-jdbc42" />
+          <element id="library" level="application" name="jquery" />
+        </element>
       </element>
     </root>
   </artifact>

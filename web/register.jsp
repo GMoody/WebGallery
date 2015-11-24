@@ -1,40 +1,24 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: r3dz
-  Date: 23.11.2015
-  Time: 16:28
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Meta -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Web Gallery">
-    <meta name="author" content="RDIR51: G. Tureev, D. Kulakov">
-
-    <title>Web Gallery</title>
+    <meta name="author" content="G. Tureev, D. Kulakov">
 
     <!-- CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/4-col-portfolio.css" rel="stylesheet">
-    <link href="css/webgallery.css" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/webgallery.css"/>
 
-    <!-- Bootstrap Core JavaScript -->
+    <!-- JS -->
+    <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Title -->
+    <title>Web Gallery</title>
 
 </head>
 
@@ -43,7 +27,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
+        <!-- Mobile display menu-->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1">
@@ -52,39 +36,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Web Gallery</a>
+            <a class="navbar-brand" href="#">Registration</a>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Mobile display menu END-->
+
+        <!-- Navbar + login modal -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <% if (session.getAttribute("email") == null) {  %>
-                <li><a href="#somewhere">Services</a></li>
-                <li><a href="#somewhere">Contact</a></li>
-                <% }else{ %>
-                <li><a href="#somewhere">Services</a></li>
-                <li><a href="#somewhere">Contact</a></li>
-                <% } %>
+                <li><a href="index.jsp">Main</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
             </ul>
 
             <!-- Profile -->
             <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <%
-                        if (session.getAttribute("email") != null) {
-                    %>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("fname")%>  <%= session.getAttribute("lname")%><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <%
-                            if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
-                        <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li><%
-                        }
-                    %>
-                        <li class="divider"></li>
-                        <li><a href="#" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
-                    </ul>
-                </li>
-                <% } else {%>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
                     <ul class="dropdown-menu" style="height: 180px; width: 300px">
@@ -96,112 +61,123 @@
                             </form>
                             <%
                                 if (request.getParameter("log_in_btn") != null) {
-                                    //request.getRequestDispatcher("/functions/login.jsp").include(request, response);
-                            %><script>window.location = window.location.href;</script><%
-                            }
-                        %>
+                                     request.getRequestDispatcher("/functions/login.jsp").include(request, response);
+                                    %><script>window.location = "index.jsp";</script>
+                                <%}%>
                         </div>
                     </ul>
                 </li>
-                <% }%>
             </ul>
             <!-- Profile end-->
 
         </div>
-        <!-- /.navbar-collapse -->
+        <!-- Navbar + login modal END-->
     </div>
     <!-- /.container -->
 </nav>
+<!-- Navigation END-->
+
+
 
 <!-- Page Content -->
 <div class="container">
 
-    <!-- Registeration form -->
-
+    <!-- Registration form -->
     <form class="form-horizontal" action='' method="POST">
 
             <div id="legend">
                 <legend class="">Have an Account ?</legend>
             </div>
+
+            <!-- Username -->
             <div class="control-group">
-                <!-- Username -->
-                <label class="control-label"  for="username">Username</label>
+                <label class="control-label" for="username">Username</label>
                 <div class="controls">
                     <input type="text"  min="5" max="20" id="username" name="username" placeholder="" class="input-xlarge">
-                    <p class="help-block">Username can contain any letters or numbers, without spaces 5-20 items</p>
+                    <p class="help-block">Username can contain letters or numbers without spaces (5-20 characters)</p>
                 </div>
             </div>
+            <!-- Username END-->
 
+            <!-- Firstname -->
             <div style="float:left;" class="control-group">
-                <!-- Firstname -->
                 <label class="control-label"  for="firstname">Fristname</label>
                 <div class="controls">
                     <input type="text"  min="3" max="50" id="firstname" name="firstname" placeholder="" class="input-xlarge">
-                    <p class="help-block">Firstname contains only letters</p>
+                    <p class="help-block">First name can contain only letters</p>
                 </div>
             </div>
+            <!-- Firstname END-->
 
+            <!-- Lastname -->
             <div style="margin-left:250px;" class="control-group">
-                <!-- Lastname -->
                 <label class="control-label"  for="lastname">Lastname</label>
                 <div class="controls">
                     <input type="text"  min="3" max="50" id="lastname" name="lastname" placeholder="" class="input-xlarge">
-                    <p class="help-block">Lastname contains only letters</p>
+                    <p class="help-block">Last name can contain only letters</p>
                 </div>
             </div>
+            <!-- Lastname END -->
 
+            <!-- Email -->
             <div class="control-group">
-                <!-- E-mail -->
                 <label class="control-label" for="email">E-mail</label>
                 <div class="controls">
-                    <input type="text"  min="5" max="50" id="email" name="email" placeholder="" class="input-xlarge">
+                    <input type="text"  min="7" max="50" id="email" name="email" placeholder="" class="input-xlarge">
                     <p class="help-block">Please provide your E-mail</p>
                 </div>
             </div>
+            <!-- Email END -->
 
+            <!-- Password-->
             <div style="float:left;" class="control-group">
-                <!-- Password-->
                 <label class="control-label" for="password">Password</label>
                 <div class="controls">
-                    <input style="width: 155px;"  min="6" max="20" type="password" id="password" name="password" placeholder="" class="input-xlarge">
-                    <p class="help-block">Should be at least 6 characters</p>
+                    <input style="width: 155px;" min="6" max="20" type="password" id="password" name="password" placeholder="" class="input-xlarge">
+                    <p class="help-block">Password should be at least 6 characters</p>
                 </div>
             </div>
+            <!-- Password END-->
 
+            <!-- Password confirm -->
             <div style="margin-left:250px;" class="control-group">
-                <!-- Password -->
                 <label class="control-label"  for="password_confirm">Password (Confirm)</label>
                 <div class="controls">
                     <input style="width: 155px;" min="6" max="20"  type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
-                    <p class="help-block">Please confirm password</p>
+                    <p class="help-block">Please confirm your password</p>
                 </div>
             </div>
-            <div class="checkbox">
-            <label>
-                <input  value= "YES" name="ishuman" type="checkbox" id="terms" data-error="Before you wreck yourself" required>
-                Are you human?
-            </label>
-            <div class="help-block with-errors"></div>
-            </div>
+            <!-- Password confirm END-->
 
+            <!-- Human check -->
+            <div class="checkbox">
+                <label>
+                    <input  value= "YES" name="ishuman" type="checkbox" id="terms" data-error="Before you wreck yourself" required>
+                    Are you human?
+                </label>
+                <div class="help-block with-errors"></div>
+            </div>
+            <!-- Human check END-->
+
+            <!-- Register button -->
             <div class="control-group">
-                <!-- Button -->
                 <div style="margin-top: 40px;" class="controls">
                     <button type="submit" class="btn btn-success" name="submit_btn">
                     <span class="glyphicon glyphicon-ok"></span>  Register</button>
-
                 </div>
             </div>
+            <!-- Register button END -->
 
     </form>
+    <!-- Registration form END-->
 
+    <!-- Registration function call-->
     <%
         if (request.getParameter("submit_btn") != null) {
-            request.getRequestDispatcher("registration.jsp").include(request, response);
+            request.getRequestDispatcher("functions/registration.jsp").include(request, response);
         }
     %>
-
-
+    <!-- Registration function call END-->
 
 
     <hr>
@@ -210,11 +186,12 @@
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p>Copyright &copy; Web Gallery 2014</p>
+                <p>Copyright &copy; Web Gallery 2015</p>
             </div>
         </div>
         <!-- /.row -->
     </footer>
+    <!-- Footer END-->
 
 </div>
 <!-- /.container -->

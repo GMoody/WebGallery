@@ -16,7 +16,7 @@
     <!-- JS -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Title -->
     <title>Web Gallery</title>
 
@@ -27,7 +27,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
+        <!-- Mobile display menu-->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1">
@@ -38,65 +38,69 @@
             </button>
             <a class="navbar-brand" href="#">Web Gallery</a>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Mobile display menu END-->
+
+        <!-- Navbar + login modal -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <% if (session.getAttribute("email") == null) {  %>
-                <li><a href="register.jsp">Registration</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-                <% }else{ %>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                <% if (session.getAttribute("user_name") == null){%>
+                    <li><a href="register.jsp">Registration</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <% }else{ %>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
                 <% } %>
             </ul>
 
             <!-- Profile -->
             <ul class="nav navbar-right top-nav">
+                <!-- Logged-in -->
                 <li class="dropdown">
-                    <%
-                        if (session.getAttribute("email") != null) {
-                    %>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("fname")%>  <%= session.getAttribute("lname")%><b class="caret"></b></a>
+                    <% if (session.getAttribute("user_name") != null) {%>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <%
-                            if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
-                        <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li><%
-                        }
-                    %>
+                        <%--<% if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>--%>
+                            <%--<li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>--%>
+                        <%--<%}%>--%>
                         <li class="divider"></li>
-                        <li><a href="#" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
+                        <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
                     </ul>
                 </li>
-                <% } else {%>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
-                    <ul class="dropdown-menu" style="height: 180px; width: 300px">
-                        <div class="loginmodal-container">
-                            <form method="post" name="login_form">
-                                <input type="text" name="user_email" placeholder="Email">
-                                <input type="password" name="pwd" placeholder="Password">
-                                <input type="submit" name="log_in_btn" class="login loginmodal-submit" value="Log in">
-                            </form>
-                            <%
-                                if (request.getParameter("log_in_btn") != null) {
-                                   // request.getRequestDispatcher("/functions/login.jsp").include(request, response);
-                                %><script>window.location = window.location.href;</script><%
-                            }
-                        %>
-                        </div>
-                    </ul>
-                </li>
-                <% }%>
+                <!-- Logged-in end-->
+
+                <!-- NOT Logged-in -->
+                    <% } else {%>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
+                            <ul class="dropdown-menu" style="height: 180px; width: 300px">
+                                <div class="loginmodal-container">
+                                    <form method="post" name="login_form">
+                                        <input type="text" name="user_email" placeholder="Email">
+                                        <input type="password" name="pwd" placeholder="Password">
+                                        <input type="submit" name="log_in_btn" class="login loginmodal-submit" value="Log in">
+                                    </form>
+                                    <%
+                                        if (request.getParameter("log_in_btn") != null) {
+                                            request.getRequestDispatcher("functions/login.jsp").include(request, response);
+                                        %><script>window.location = window.location.href;</script>
+                                        <%}%>
+                                </div>
+                            </ul>
+                        </li>
+                    <% }%>
+                <!-- NOT Logged-in end-->
+
             </ul>
             <!-- Profile end-->
 
         </div>
-        <!-- /.navbar-collapse -->
+        <!-- Navbar + login modal END-->
     </div>
     <!-- /.container -->
 </nav>
+<!-- Navigation END-->
 
 <!-- Page Content -->
 <div class="container">

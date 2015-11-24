@@ -3,6 +3,7 @@ package main;
 import functions.Connections;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,6 @@ public class User {
             this.pictures = new ArrayList<>();
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
@@ -134,20 +134,51 @@ public class User {
 
     public static User getUserInfo(String email){
         for(User user : users)
-            if(user.email == email)
+            if(user.email.equals(email))
                 return user;
         return null;
     }
     //endregion
 
-    public static byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException {
+    public static byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException, ClassNotFoundException  {
+        // First we check if email is null or empty
         if(user_email != null && !user_email.isEmpty())
-            if(getUserInfo(user_email) == null)
-                if(Connections.addUser(user_name, user_fname, user_lname, user_email, BCrypt.hashpw(user_pwd, BCrypt.gensalt())))
-                    return 1;   // Success!
-                else return 0;  // Adding to DB failed
-            else return -1;     // User's already registered
-        else return -2;         // Empty or null data
+            // Second we check if we have email in user-list
+            if(getUserInfo(user_email) == null){
+                ResultSet rs = Connections.getUserInfo(user_email);
+                // Third we check if we have email in database
+                if(!rs.next())
+                    // Fourth we try to add user to database
+                    if(Connections.addUser(user_name, user_fname, user_lname, user_email, BCrypt.hashpw(user_pwd, BCrypt.gensalt())))
+                        // Finally we add user to user-list
+                        if(createUser(user_email))
+                            return 1;            // Successfully added to the database and user list!
+                        else return 0;           // Adding to list may fail?
+                    else return 0;               // Adding to DB failed
+                else {
+                    // Seems we have user in DB but not in user-list
+                    createUser(user_email);
+                    return 2;                    // Successfully added to user list!
+                }
+            }
+            else return -1;                      // User's already registered
+        else return -2;                          // Empty or null data
+    }
+
+    private static boolean createUser(String user_email) throws SQLException, ClassNotFoundException  {
+        ResultSet user_info = Connections.getUserInfo(user_email);
+        if(user_info.next()){
+            User temp = new User(
+                    user_info.getInt(1),     // id_user
+                    1,                       // id_position
+                    user_info.getString(3),  // user_name
+                    user_info.getString(4),  // user_fname
+                    user_info.getString(5),  // user_lname
+                    user_info.getString(6),  //user_email
+                    user_info.getString(7)); //user_email
+            return true;
+        }
+        else return false;
     }
 
     private boolean checkString(String string) {
