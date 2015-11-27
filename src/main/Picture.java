@@ -15,7 +15,7 @@ public class Picture {
     private List<Comment> comments;
 
     // General list with pictures
-    static List<Picture> pictures = new ArrayList<>();
+    public static List<Picture> pictures = new ArrayList<>();
 
     public Picture(int id_picture, int id_category, int upl_user_id, Date upl_date, String description, String picture_url) {
         try {
@@ -28,6 +28,7 @@ public class Picture {
             this.comments = new ArrayList<>();
             pictures.add(this);
         } catch (Exception e) {
+            System.out.println("Picture Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -113,6 +114,8 @@ public class Picture {
                 return picture;
         return null;
     }
+
+
 
     private boolean checkInt(int number) {
         return number > 0;

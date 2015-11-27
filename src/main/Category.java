@@ -1,5 +1,8 @@
 package main;
 
+import functions.Connections;
+
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +20,8 @@ public class Category {
             setCategory(category);
             categories.add(this);
         } catch (Exception e) {
+            System.out.println("Category Error: " + e.getMessage());
             e.printStackTrace();
-            return;
         }
     }
 
@@ -38,24 +41,36 @@ public class Category {
 
     //region Setters
     public void setId_category(int id_category) throws Exception {
-        if(id_category > 0)
+        if (id_category > 0)
             this.id_category = id_category;
         else throw new Exception("Invalid category ID");
     }
 
     public void setCategory(String category) throws Exception {
-        if(category != null && !category.isEmpty())
+        if (category != null && !category.isEmpty())
             this.category = category;
         else throw new Exception("Invalid category!");
     }
     //endregion
 
     //region Methods
-    public static Category getCategoryInfo(int id_category){
-        for(Category category : categories)
-            if(category.id_category == id_category)
+    public static Category getCategoryInfo(int id_category) {
+        for (Category category : categories)
+            if (category.id_category == id_category)
                 return category;
         return null;
+    }
+
+    public static void checkCategoryInList(int id_category) {
+        // Метод проверяющий наличие категории, иначе добавляет в лист.
+        try {
+            ResultSet rs = Connections.getCategoryInfo(id_category);
+            Category temp = new Category(id_category, rs.getString(2));
+            System.out.println("Imported category: " + id_category);
+        } catch (Exception e) {
+            System.out.println("Category Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     //endregion
 }

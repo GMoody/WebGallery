@@ -40,7 +40,16 @@ public class Connections {
     public static ResultSet getAllPictures() throws SQLException, ClassNotFoundException {
         Connection conn = new Connections().getConnection();
         Statement st = conn.createStatement();
-        String sql = "SELECT * FROM webgallery.t_picture";
+        String sql = "SELECT * FROM webgallery.t_picture"; // Here we need sorted by date pictures
+        ResultSet rs = st.executeQuery(sql);
+        conn.close();
+        return (rs.next()) ? rs : null;
+    }
+
+    public static ResultSet getCategoryInfo(int id_category) throws SQLException, ClassNotFoundException {
+        Connection conn = new Connections().getConnection();
+        Statement st = conn.createStatement();
+        String sql = "SELECT * FROM webgallery.t_category WHERE id_category = " + id_category;
         ResultSet rs = st.executeQuery(sql);
         conn.close();
         return (rs.next()) ? rs : null;
