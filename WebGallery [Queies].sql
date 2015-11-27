@@ -39,7 +39,7 @@ CREATE TABLE webgallery.t_picture(
 	upl_user_id INTEGER NOT NULL references webgallery.t_user(id_user),
 	upl_date DATE NOT NULL,                                                        -- Will be function that automatically puts upl_date in the field.
 	description VARCHAR(150) NULL,
-	picture bytea NOT NULL
+	picture_url text NOT NULL
 );
 
 ------------------------------------------------------------------------------------------------------

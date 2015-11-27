@@ -11,23 +11,24 @@ public class Picture {
     private int upl_user_id;
     private Date upl_date;
     private String description;
+    private String picture_url;
     private List<Comment> comments;
 
     // General list with pictures
     static List<Picture> pictures = new ArrayList<>();
 
-    public Picture(int id_picture, int id_category, int upl_user_id, Date upl_date, String description) {
+    public Picture(int id_picture, int id_category, int upl_user_id, Date upl_date, String description, String picture_url) {
         try {
             setId_picture(id_picture);
             setId_category(id_category);
             setUpl_user_id(upl_user_id);
             setUpl_date(upl_date);
             setDescription(description);
-            pictures.add(this);
+            setPicture_url(picture_url);
             this.comments = new ArrayList<>();
+            pictures.add(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
@@ -61,6 +62,13 @@ public class Picture {
             this.description = description;
         else throw new Exception("Invalid picture description!");
     }
+
+    private void setPicture_url(String picture_url) throws Exception {
+        if (picture_url != null && !picture_url.isEmpty())
+            this.picture_url = picture_url;
+        else throw new Exception("Invalid picture URL!");
+    }
+
     //endregion
 
     //region Getters
@@ -92,12 +100,16 @@ public class Picture {
         return comments;
     }
 
+    public String getPicture_url() {
+        return picture_url;
+    }
+
     //endregion
 
     //region Methods
-    public static Picture getPictureInfo(int id_picture){
-        for(Picture picture : pictures)
-            if(picture.id_picture == id_picture)
+    public static Picture getPictureInfo(int id_picture) {
+        for (Picture picture : pictures)
+            if (picture.id_picture == id_picture)
                 return picture;
         return null;
     }
@@ -105,5 +117,6 @@ public class Picture {
     private boolean checkInt(int number) {
         return number > 0;
     }
+
     //endregion
 }

@@ -17,3 +17,5 @@ Changes:
 23/11/2015: Login modal fix
 
 24/11/2015: Connections fix, log in/log out
+
+27/11/2015: Stable, fixed

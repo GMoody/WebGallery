@@ -12,9 +12,9 @@ public class Connections {
         String database = "db_Kulakov";
         Class.forName("org.postgresql.Driver");
 
-        try{
+        try {
             return DriverManager.getConnection("jdbc:postgresql://" + servername + "/" + database, username, password);
-        } catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Connection with database failed!");
             return null;
         }
@@ -23,7 +23,7 @@ public class Connections {
     public static ResultSet getUserInfo(String email) throws SQLException, ClassNotFoundException {
         Connection conn = new Connections().getConnection();
         Statement st = conn.createStatement();
-        String sql = "SELECT * FROM webgallery.t_user WHERE email = '" + email +"'";
+        String sql = "SELECT * FROM webgallery.t_user WHERE email = '" + email + "'";
         ResultSet rs = st.executeQuery(sql);
         conn.close();
         return rs;
@@ -33,7 +33,16 @@ public class Connections {
         Connection conn = new Connections().getConnection();
         Statement st = conn.createStatement();
         String sql = "INSERT INTO webgallery.t_user (id_position, user_name, first_name, last_name, email, password) " +
-                     "VALUES (1, '" + user_name + "', '" + user_fname +"', '" + user_lname + "', '" + user_email + "', '" + user_pwd + "')";
+                "VALUES (1, '" + user_name + "', '" + user_fname + "', '" + user_lname + "', '" + user_email + "', '" + user_pwd + "')";
         return st.executeUpdate(sql) > 0;
+    }
+
+    public static ResultSet getAllPictures() throws SQLException, ClassNotFoundException {
+        Connection conn = new Connections().getConnection();
+        Statement st = conn.createStatement();
+        String sql = "SELECT * FROM webgallery.t_picture";
+        ResultSet rs = st.executeQuery(sql);
+        conn.close();
+        return (rs.next()) ? rs : null;
     }
 }

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,9 +62,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <%--<% if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>--%>
-                            <%--<li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>--%>
-                        <%--<%}%>--%>
+                        <% if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
+                            <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                        <%}%>
                         <li class="divider"></li>
                         <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
                     </ul>
@@ -118,16 +119,24 @@
     <!-- Projects Row -->
     <div class="row">
         <div class="col-md-3 portfolio-item">
-            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
         </div>
         <div class="col-md-3 portfolio-item">
-            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
         </div>
         <div class="col-md-3 portfolio-item">
-            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
         </div>
         <div class="col-md-3 portfolio-item">
-            <a href="#"><img class="img-responsive" src="http://placehold.it/750x450" alt=""></a>
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
         </div>
     </div>
     <!-- /.row -->
@@ -220,7 +229,7 @@
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p>Copyright &copy; Web Gallery 2014</p>
+                <p>Copyright &copy; Web Gallery 2015</p>
             </div>
         </div>
         <!-- /.row -->
