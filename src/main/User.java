@@ -139,6 +139,7 @@ public class User {
                 return user;
         return null;
     }
+
     //endregion
 
     public static byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException, ClassNotFoundException  {
