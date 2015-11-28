@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PictureHandler {
+public class MainHandler {
 
     public static List<Picture> getMainPictures(){
         // Метод, который берёт картинки из БД, но добавляет в общий лист с картинками только те, которых ещё так нет.
