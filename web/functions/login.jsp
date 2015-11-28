@@ -8,6 +8,7 @@
             if (BCrypt.checkpw(request.getParameter("pwd"), user_data.getString(7))) {
                 session.setAttribute("user_name", user_data.getString(3));
                 session.setAttribute("position", user_data.getInt(2));
+                session.setAttribute("email", user_data.getString(6));
                 user_data.close();
             }
             else {

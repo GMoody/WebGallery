@@ -83,7 +83,7 @@
 <div class="container">
 
     <!-- Registration form -->
-    <form class="form-horizontal" action='' method="POST">
+    <form class="form-horizontal" action="functions/registration.jsp" method="POST">
 
             <div id="legend">
                 <legend class="">Have an Account ?</legend>
@@ -173,9 +173,9 @@
 
     <!-- Registration function call-->
     <%
-        if (request.getParameter("submit_btn") != null) {
-            request.getRequestDispatcher("functions/registration.jsp").include(request, response);
-        }
+      //  if (request.getParameter("submit_btn") != null) {
+       //     request.getRequestDispatcher("functions/registration.jsp").include(request, response);
+       // }
     %>
     <!-- Registration function call END-->
 

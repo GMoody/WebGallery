@@ -44,14 +44,14 @@
         <!-- Navbar + login modal -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <% if (session.getAttribute("user_name") == null){%>
+                <% try{ if (session.getAttribute("user_name") == null){%>
                     <li><a href="register.jsp">Registration</a></li>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Contact</a></li>
                     <% }else{ %>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Contact</a></li>
-                <% } %>
+                <% } }catch (Exception ex){}%>
             </ul>
 
             <!-- Profile -->
@@ -61,10 +61,10 @@
                     <% if (session.getAttribute("user_name") != null) {%>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <% if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
+                        <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
+                        <% try{ if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
                             <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
-                        <%}%>
+                        <%} }catch (Exception e){}%>
                         <li class="divider"></li>
                         <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
                     </ul>

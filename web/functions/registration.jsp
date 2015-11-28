@@ -25,8 +25,8 @@
                 break;
 
                 case 1:
+                    session.setAttribute("user_name",login);
                     %><script>alert("Registration successful!");</script><%
-                        session.setAttribute("user_name",login);
                     %><script>window.location = "../index.jsp"</script><%
                 break;
 
@@ -42,13 +42,17 @@
                     %><script>alert("Empty or null data entered!");</script><%
                 break;
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
+        } catch (ClassNotFoundException e){ e.printStackTrace(); }
+                    catch (Exception e){e.printStackTrace();}
     }
     else
     {
         %><script>alert("Incorrect password, please try again!");
                   window.location = window.location.href;</script><%
     }
+
+
+
 %>

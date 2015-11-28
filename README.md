@@ -19,3 +19,6 @@ Changes:
 24/11/2015: Connections fix, log in/log out
 
 27/11/2015: Stable, fixed
+
+
+28/11/2015: Add user profile, fix registration error, fix login error
