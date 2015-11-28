@@ -175,6 +175,7 @@
     <%
         if (request.getParameter("submit_btn") != null) {
             request.getRequestDispatcher("functions/registration.jsp").include(request, response);
+            %><script>window.location = "index.jsp";</script><%
         }
     %>
     <!-- Registration function call END-->

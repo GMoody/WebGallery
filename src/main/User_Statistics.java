@@ -1,5 +1,7 @@
 package main;
 
+import functions.Checker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,31 +24,30 @@ public class User_Statistics {
             user_statistics.add(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
     //region Setters
     public void setId_user_statistics(int id_user_statistics) throws Exception {
-        if (checkNumber(id_user_statistics))
+        if (Checker.checkNumber(id_user_statistics))
             this.id_user_statistics = id_user_statistics;
         else throw new Exception("Invalid user statistics ID!");
     }
 
     public void setId_user(int id_user) throws Exception {
-        if (checkNumber(id_user))
+        if (Checker.checkNumber(id_user))
             this.id_user = id_user;
         else throw new Exception("Invalid user ID!");
     }
 
     public void setTotal_voted(int total_voted) throws Exception {
-        if (checkNumber(total_voted))
+        if (Checker.checkNumber(total_voted))
             this.total_voted = total_voted;
         else throw new Exception("Invalid user total voted!");
     }
 
     public void setUser_rating(double user_rating) throws Exception {
-        if (checkNumber(user_rating))
+        if (Checker.checkNumber(user_rating))
             this.user_rating = user_rating;
         else throw new Exception("Invalid user rating!");
     }
@@ -82,12 +83,5 @@ public class User_Statistics {
         return null;
     }
 
-    private boolean checkNumber(int number) {
-        return number > 0;
-    }
-
-    private boolean checkNumber(double number) {
-        return number > 0;
-    }
     //endregion
 }

@@ -1,5 +1,7 @@
 package main;
 
+import functions.Checker;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,47 +36,39 @@ public class Picture {
     }
 
     //region Setters
-    public void setId_picture(int id_picture) throws Exception {
-        if (checkInt(id_picture))
+    public void setId_picture(int id_picture) {
+        if(Checker.checkNumber(id_picture))
             this.id_picture = id_picture;
-        else throw new Exception("Invalid picture ID!");
     }
 
-    public void setId_category(int id_category) throws Exception {
-        if (checkInt(id_category))
+    public void setId_category(int id_category) {
+        if(Checker.checkNumber(id_category))
             this.id_category = id_category;
-        else throw new Exception("Invalid picture category!");
     }
 
-    public void setUpl_user_id(int upl_user_id) throws Exception {
-        if (checkInt(upl_user_id))
+    public void setUpl_user_id(int upl_user_id) {
+        if(Checker.checkNumber(upl_user_id))
             this.upl_user_id = upl_user_id;
-        else throw new Exception("Invalid user ID!");
     }
 
-    public void setUpl_date(Date upl_date) throws Exception {
-        if (upl_date != null)
-            this.upl_date = upl_date;
-        else throw new Exception("Invalid picture upload date!");
+    public void setUpl_date(Date upl_date) {
+        this.upl_date = upl_date;
     }
 
-    private void setDescription(String description) throws Exception {
-        if (description != null && !description.isEmpty())
+    public void setDescription(String description) {
+        if(Checker.checkString(description))
             this.description = description;
-        else throw new Exception("Invalid picture description!");
     }
 
-    private void setPicture_url(String picture_url) throws Exception {
-        if (picture_url != null && !picture_url.isEmpty())
+    public void setPicture_url(String picture_url) {
+        if(Checker.checkString(picture_url))
             this.picture_url = picture_url;
-        else throw new Exception("Invalid picture URL!");
     }
-
     //endregion
 
     //region Getters
     public int getId_picture() {
-        return id_picture;
+        return this.id_picture;
     }
 
     public int getId_category() {
@@ -113,12 +107,6 @@ public class Picture {
             if (picture.id_picture == id_picture)
                 return picture;
         return null;
-    }
-
-
-
-    private boolean checkInt(int number) {
-        return number > 0;
     }
 
     //endregion

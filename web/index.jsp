@@ -1,7 +1,6 @@
 <%@ page import="main.Picture" %>
 <%@ page import="java.util.List" %>
 <%@ page import="functions.PictureHandler" %>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,12 +47,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <% if (session.getAttribute("user_name") == null){%>
-                    <li><a href="register.jsp">Registration</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <% }else{ %>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
+                <li><a href="register.jsp">Registration</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+                <% }else{ %>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
                 <% } %>
             </ul>
 
@@ -65,8 +64,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <% if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
-                            <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                        <% if(Integer.parseInt(session.getAttribute("position").toString()) == 3){ %>
+                        <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
                         <li class="divider"></li>
                         <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
@@ -75,25 +74,25 @@
                 <!-- Logged-in end-->
 
                 <!-- NOT Logged-in -->
-                    <% } else {%>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
-                            <ul class="dropdown-menu" style="height: 180px; width: 300px">
-                                <div class="loginmodal-container">
-                                    <form method="post" name="login_form">
-                                        <input type="text" name="user_email" placeholder="Email">
-                                        <input type="password" name="pwd" placeholder="Password">
-                                        <input type="submit" name="log_in_btn" class="login loginmodal-submit" value="Log in">
-                                    </form>
-                                    <%
-                                        if (request.getParameter("log_in_btn") != null) {
-                                            request.getRequestDispatcher("functions/login.jsp").include(request, response);
-                                        %><script>window.location = window.location.href;</script>
-                                        <%}%>
-                                </div>
-                            </ul>
-                        </li>
-                    <% }%>
+                <% } else {%>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
+                    <ul class="dropdown-menu" style="height: 180px; width: 300px">
+                        <div class="loginmodal-container">
+                            <form method="post" name="login_form">
+                                <input type="text" name="user_email" placeholder="Email">
+                                <input type="password" name="pwd" placeholder="Password">
+                                <input type="submit" name="log_in_btn" class="login loginmodal-submit" value="Log in">
+                            </form>
+                            <%
+                                if (request.getParameter("log_in_btn") != null) {
+                                    request.getRequestDispatcher("functions/login.jsp").include(request, response);
+                                    %><script>window.location = window.location.href;</script>
+                            <%}%>
+                        </div>
+                    </ul>
+                </li>
+                <% }%>
                 <!-- NOT Logged-in end-->
 
             </ul>
@@ -118,49 +117,32 @@
         </div>
     </div>
     <!-- /.row -->
-
     <%
-        // y = 12, т.к. на странице может быть до 12 изображений ( 3 ряда * 4 изображения в ряду)
-        List<Picture> pictures = null;
-        int current_page = 1, i = 0, y = 12;
-
-        if(request.getParameter("page") != null){
-            current_page = Integer.parseInt(request.getParameter("page"));
-            i += 12;
-            y = i;
-        }
-
-        try{
-            // Берём лист из метода getMainPictures(), т.к. этот метод выкачивает только новые изображения, при необходимости.
-            pictures = PictureHandler.getMainPictures();
-
-            for (int x = i; i < y; x++){
-                // if- ы нужны для правильного отображения страница: либо указываем новый ряд с картинкой, либо картинку и закрывающий тэг ряда, либо просто картинку.
-                if(x%4==0){
+        List<Picture> pictures = PictureHandler.getMainPictures();
+        if (pictures.size() != 0){
+            for (int i = 0; i < 12; i++){
+                if(i%4==0){
                     %><div class="row">
-                         <div class="col-md-3 portfolio-item">
-                            <a href="picture.jsp?picture= <% pictures.get(x).getId_picture(); %>"><img class="img-responsive" width="750" height="450" src="<% pictures.get(x).getPicture_url(); %>" alt="<% pictures.get(x).getDescription(); %>"></a>
-                         </div><%
+                    <div class="col-md-3 portfolio-item">
+                        <a href="picture.jsp?picture= <%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
+                    </div><%
                 }
                 else {
-                    if(x+1%4==0){
+                    if(i+1%4==0){
                         %><div class="col-md-3 portfolio-item">
-                             <a href="picture.jsp?picture= <% pictures.get(x).getId_picture(); %>"><img class="img-responsive" width="750" height="450" src="<% pictures.get(x).getPicture_url(); %>" alt="<% pictures.get(x).getDescription(); %>"></a>
-                          </div></div><%
+                            <a href="picture.jsp?picture= <%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
+                        </div></div><%
                     }
                     else {
                         %><div class="col-md-3 portfolio-item">
-                            <a href="picture.jsp?picture= <% pictures.get(x).getId_picture(); %>"><img class="img-responsive" width="750" height="450" src="<% pictures.get(x).getPicture_url(); %>" alt="<% pictures.get(x).getDescription(); %>"></a>
+                            <a href="picture.jsp?picture= <%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
                         </div><%
                     }
                 }
-
             }
-
-
-        }catch (Exception ex){
-            System.out.println("Index.jsp Error: " + ex.getMessage());
-            ex.printStackTrace();
+        }
+        else{
+            System.out.println("List is empty");
         }
 
     %>
@@ -168,64 +150,33 @@
     <hr>
 
     <!-- Pagination -->
-    <%
-        // Узнаём кол-во страниц, основыаясь на размере листа с картинками.
-        int pages = pictures.size() % 12;
-
-        switch (pages){
-
-            case 0:
-                // No pagination at all
-                break;
-            case 1:
-                // No prev. / next arrows
-                %>
-                    <div class="row text-center">
-                        <div class="col-lg-12">
-                            <ul class="pagination">
-                                <li class="active">
-                                    <a href="#">1</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                <%
-                break;
-            default:
-                // Got everything
-
-                %>
-                    <div class="row text-center">
-                        <div class="col-lg-12">
-                            <ul class="pagination">
-                                <li>
-                                    <a href="index.jsp?page=<%=current_page-1%>">&laquo;</a>
-                                </li>
-
-                                <%  // В цикле выводится необходимое кол-во страниц.
-                                    for(int z = 0; z < pages+1; z++){
-                                        if(i == current_page){ %>
-                                            <li class="active">
-                                                <a href="index.jsp?page=<%=current_page%>"><%=current_page%></a>
-                                            </li><%
-                                        }
-                                        else{ %>
-                                            <a href="index.jsp?page=<%=z+1%>"><%=z+1%></a><%
-                                        }
-                                    }
-                                %>
-
-                                <li>
-                                    <a href="index.jsp?page=<%=current_page+1%>">&raquo;</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                <%
-                break;
-        }
-
-    %>
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <ul class="pagination">
+                <li>
+                    <a href="#">&laquo;</a>
+                </li>
+                <li class="active">
+                    <a href="#">1</a>
+                </li>
+                <li>
+                    <a href="#">2</a>
+                </li>
+                <li>
+                    <a href="#">3</a>
+                </li>
+                <li>
+                    <a href="#">4</a>
+                </li>
+                <li>
+                    <a href="#">5</a>
+                </li>
+                <li>
+                    <a href="#">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <!-- /.row -->
 
     <hr>

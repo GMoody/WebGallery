@@ -11,9 +11,9 @@ public class FTPHandler {
     public static FTPClient ftpConnect() {
 
         FTPClient ftp = new FTPClient();
-        String server = "www.ftpserver.com";
-        String user = "username";
-        String pass = "password";
+        String server = "http://net2ftp.ru/node0/g.tureev@gmail.com/pictures/";
+        String user = "g.tureev@gmail.com";
+        String pass = "4a4612db";
 
         try {
             ftp.connect(server);

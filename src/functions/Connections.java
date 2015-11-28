@@ -21,37 +21,47 @@ public class Connections {
     }
 
     public static ResultSet getUserInfo(String email) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_user WHERE email = '" + email + "'";
+        return queryExecuter(sql);
+    }
+
+    public static ResultSet getUserInfo(int id_user) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_user WHERE id_user = '" + id_user + "'";
+        return queryExecuter(sql);
+    }
+
+    public static boolean addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO webgallery.t_user (id_position, user_name, first_name, last_name, email, password) " +
+                "VALUES (1, '" + user_name + "', '" + user_fname + "', '" + user_lname + "', '" + user_email + "', '" + user_pwd + "')";
+        return queryUpdater(sql);
+    }
+
+    public static ResultSet getAllPictures() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_picture"; // Here we need sorted by date pictures
+        return queryExecuter(sql);
+    }
+
+    public static ResultSet getCategoryInfo(int id_category) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_category WHERE id_category = " + id_category;
+        return queryExecuter(sql);
+    }
+
+    public static ResultSet getPositionInfo(int id_position) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_position WHERE id_position = " + id_position;
+        return queryExecuter(sql);
+    }
+
+    private static ResultSet queryExecuter(String sql) throws SQLException, ClassNotFoundException {
         Connection conn = new Connections().getConnection();
         Statement st = conn.createStatement();
-        String sql = "SELECT * FROM webgallery.t_user WHERE email = '" + email + "'";
         ResultSet rs = st.executeQuery(sql);
         conn.close();
         return rs;
     }
 
-    public static boolean addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException, ClassNotFoundException {
+    private static boolean queryUpdater(String sql) throws SQLException, ClassNotFoundException {
         Connection conn = new Connections().getConnection();
         Statement st = conn.createStatement();
-        String sql = "INSERT INTO webgallery.t_user (id_position, user_name, first_name, last_name, email, password) " +
-                "VALUES (1, '" + user_name + "', '" + user_fname + "', '" + user_lname + "', '" + user_email + "', '" + user_pwd + "')";
         return st.executeUpdate(sql) > 0;
-    }
-
-    public static ResultSet getAllPictures() throws SQLException, ClassNotFoundException {
-        Connection conn = new Connections().getConnection();
-        Statement st = conn.createStatement();
-        String sql = "SELECT * FROM webgallery.t_picture"; // Here we need sorted by date pictures
-        ResultSet rs = st.executeQuery(sql);
-        conn.close();
-        return (rs.next()) ? rs : null;
-    }
-
-    public static ResultSet getCategoryInfo(int id_category) throws SQLException, ClassNotFoundException {
-        Connection conn = new Connections().getConnection();
-        Statement st = conn.createStatement();
-        String sql = "SELECT * FROM webgallery.t_category WHERE id_category = " + id_category;
-        ResultSet rs = st.executeQuery(sql);
-        conn.close();
-        return (rs.next()) ? rs : null;
     }
 }

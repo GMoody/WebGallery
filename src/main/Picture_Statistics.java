@@ -1,5 +1,7 @@
 package main;
 
+import functions.Checker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,37 +26,36 @@ public class Picture_Statistics {
             picture_statistics.add(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
     //region Setters
     public void setId_picture_statistics(int id_picture_statistics) throws Exception {
-        if (checkNumber(id_picture_statistics))
+        if (Checker.checkNumber(id_picture_statistics))
             this.id_picture_statistics = id_picture_statistics;
         else throw new Exception("Invalid picture statistics ID!");
     }
 
     public void setId_picture(int id_picture) throws Exception {
-        if (checkNumber(id_picture))
+        if (Checker.checkNumber(id_picture))
             this.id_picture = id_picture;
         else throw new Exception("Invalid picture ID!");
     }
 
     public void setTotal_voted(int total_voted) throws Exception {
-        if (checkNumber(total_voted))
+        if (Checker.checkNumber(total_voted))
             this.total_voted = total_voted;
         else throw new Exception("Invalid picture total voted!");
     }
 
     public void setTotal_downloads(int total_downloads) throws Exception {
-        if (checkNumber(total_downloads))
+        if (Checker.checkNumber(total_downloads))
             this.total_downloads = total_downloads;
         else throw new Exception("Invalid picture total downloads!");
     }
 
     public void setPicture_rating(double picture_rating) throws Exception {
-        if (checkNumber(picture_rating))
+        if (Checker.checkNumber(picture_rating))
             this.picture_rating = picture_rating;
         else throw new Exception("Invalid picture rating!");
     }
@@ -94,12 +95,5 @@ public class Picture_Statistics {
         return null;
     }
 
-    private boolean checkNumber(int number) {
-        return number > 0;
-    }
-
-    private boolean checkNumber(double number) {
-        return number > 0;
-    }
     //endregion
 }

@@ -1,5 +1,6 @@
 package main;
 
+import functions.Checker;
 import functions.Connections;
 
 import java.sql.ResultSet;
@@ -41,13 +42,13 @@ public class Category {
 
     //region Setters
     public void setId_category(int id_category) throws Exception {
-        if (id_category > 0)
+        if (Checker.checkNumber(id_category))
             this.id_category = id_category;
         else throw new Exception("Invalid category ID");
     }
 
     public void setCategory(String category) throws Exception {
-        if (category != null && !category.isEmpty())
+        if (Checker.checkString(category))
             this.category = category;
         else throw new Exception("Invalid category!");
     }
@@ -65,8 +66,12 @@ public class Category {
         // Метод проверяющий наличие категории, иначе добавляет в лист.
         try {
             ResultSet rs = Connections.getCategoryInfo(id_category);
-            Category temp = new Category(id_category, rs.getString(2));
-            System.out.println("Imported category: " + id_category);
+            if(rs.next()){
+                if(getCategoryInfo(rs.getInt(1)) == null) {
+                    Category temp = new Category(id_category, rs.getString(2));
+                    rs.close();
+                }
+            }
         } catch (Exception e) {
             System.out.println("Category Error: " + e.getMessage());
             e.printStackTrace();

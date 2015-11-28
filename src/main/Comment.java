@@ -1,5 +1,7 @@
 package main;
 
+import functions.Checker;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,31 +27,30 @@ public class Comment {
             comments.add(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
     //region Setters
     public void setId_comment(int id_comment) throws Exception {
-        if (checkInt(id_comment))
+        if (Checker.checkNumber(id_comment))
             this.id_comment = id_comment;
         else throw new Exception("Invalid comment ID!");
     }
 
     public void setId_picture(int id_picture) throws Exception {
-        if (checkInt(id_picture))
+        if (Checker.checkNumber(id_picture))
             this.id_picture = id_picture;
         else throw new Exception("Invalid picture ID!");
     }
 
     public void setId_user(int id_user) throws Exception {
-        if (checkInt(id_user))
+        if (Checker.checkNumber(id_user))
             this.id_user = id_user;
         else throw new Exception("Invalid user ID!");
     }
 
     public void setComment(String comment) throws Exception {
-        if (comment != null && !comment.isEmpty())
+        if (Checker.checkString(comment))
             this.comment = comment;
         else throw new Exception("Invalid picture comment!");
     }
@@ -95,8 +96,5 @@ public class Comment {
         return null;
     }
 
-    private boolean checkInt(int number) {
-        return number > 0;
-    }
     //endregion
 }

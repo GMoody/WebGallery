@@ -1,5 +1,6 @@
 package main;
 
+import functions.Checker;
 import functions.Connections;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -41,43 +42,43 @@ public class User {
 
     //region Setters
     public void setId_user(int id_user) throws Exception {
-        if (checkInt(id_user))
+        if (Checker.checkNumber(id_user))
             this.id_user = id_user;
         else throw new Exception("Invalid user ID!");
     }
 
     public void setId_position(int id_position) throws Exception {
-        if (checkInt(id_position))
+        if (Checker.checkNumber(id_position))
             this.id_position = id_position;
         else throw new Exception("Invalid position ID!");
     }
 
     public void setUser_name(String user_name) throws Exception {
-        if (checkString(user_name))
+        if (Checker.checkString(user_name))
             this.user_name = user_name;
         else throw new Exception("Invalid user login name!");
     }
 
     public void setFirst_name(String first_name) throws Exception {
-        if (checkString(first_name))
+        if (Checker.checkString(first_name))
             this.first_name = first_name;
         else throw new Exception("Invalid user first name!");
     }
 
     public void setLast_name(String last_name) throws Exception {
-        if (checkString(last_name))
+        if (Checker.checkString(last_name))
             this.last_name = last_name;
         else throw new Exception("Invalid user last name!");
     }
 
     public void setEmail(String email) throws Exception {
-        if (checkString(email))
+        if (Checker.checkString(email))
             this.email = email;
         else throw new Exception("Invalid user email!");
     }
 
     public void setPassword(String password) throws Exception {
-        if (checkString(password))
+        if (Checker.checkString(password))
             this.password = password;
         else throw new Exception("Invalid user password!");
     }
@@ -181,12 +182,21 @@ public class User {
         else return false;
     }
 
-    private boolean checkString(String string) {
-        return (string != null && !string.isEmpty());
+    public static void checkUserInList(int id_user) {
+        // Метод проверяющий наличие пользователя, иначе добавляет в лист.
+        try {
+            ResultSet rs = Connections.getUserInfo(id_user);
+            if(rs.next()){
+                if(getUserInfo(rs.getInt(1)) == null) {
+                    User temp = new User(id_user, rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7));
+                    Position.checkPositionInList(rs.getInt(2)); // также проверяет наличие позиции в списке, иначе добавляет
+                    rs.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private boolean checkInt(int number) {
-        return number > 0;
-    }
     //endregion
 }

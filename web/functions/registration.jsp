@@ -27,7 +27,7 @@
                 case 1:
                     %><script>alert("Registration successful!");</script><%
                         session.setAttribute("user_name",login);
-                    %><script>window.location = "../index.jsp"</script><%
+                        session.setAttribute("position", 1);
                 break;
 
                 case 2:
@@ -42,7 +42,9 @@
                     %><script>alert("Empty or null data entered!");</script><%
                 break;
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
     }

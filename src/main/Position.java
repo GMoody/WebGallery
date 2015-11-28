@@ -1,5 +1,9 @@
 package main;
 
+import functions.Checker;
+import functions.Connections;
+
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,19 +22,18 @@ public class Position {
             positions.add(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
     //region Setters
     public void setId_position(int id_position) throws Exception {
-        if(id_position > 0)
+        if(Checker.checkNumber(id_position))
             this.id_position = id_position;
         else throw new Exception("Invalid position ID");
     }
 
     public void setPosition(String position) throws Exception {
-        if(position != null && !position.isEmpty())
+        if(Checker.checkString(position))
             this.position = position;
         else throw new Exception("Invalid position!");
     }
@@ -56,6 +59,22 @@ public class Position {
             if(position.id_position == id_position)
                 return position;
         return null;
+    }
+
+    public static void checkPositionInList(int id_position) {
+        // Метод проверяющий наличие позиции, иначе добавляет в лист.
+        try {
+            ResultSet rs = Connections.getPositionInfo(id_position);
+            if(rs.next()){
+                if(getPositionInfo(rs.getInt(1)) == null) {
+                    Position temp = new Position(rs.getInt(1), rs.getString(2));
+                    rs.close();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Category Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     //endregion
 }
