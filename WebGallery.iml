@@ -23,6 +23,6 @@
     <orderEntry type="library" exported="" name="org.postgresql:postgresql:9.4-1205-jdbc42" level="project" />
     <orderEntry type="library" exported="" name="org.mindrot:jbcrypt:0.3m" level="project" />
     <orderEntry type="library" exported="" name="jquery" level="application" />
-    <orderEntry type="library" name="org.kie.modules:org-apache-commons-net:6.3.0.Final" level="project" />
+    <orderEntry type="library" exported="" name="org.kie.modules:org-apache-commons-net:6.3.0.Final" level="project" />
   </component>
 </module>

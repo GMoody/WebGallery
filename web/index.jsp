@@ -32,8 +32,7 @@
     <div class="container">
         <!-- Mobile display menu-->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -63,9 +62,9 @@
                     <% if (session.getAttribute("user_name") != null) {%>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
+                        <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
                         <% if(Integer.parseInt(session.getAttribute("position").toString()) == 3){ %>
-                        <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
                         <li class="divider"></li>
                         <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
@@ -124,18 +123,18 @@
                 if(i%4==0){
                     %><div class="row">
                     <div class="col-md-3 portfolio-item">
-                        <a href="picture.jsp?picture= <%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
+                        <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
                     </div><%
                 }
                 else {
                     if(i+1%4==0){
                         %><div class="col-md-3 portfolio-item">
-                            <a href="picture.jsp?picture= <%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
+                            <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
                         </div></div><%
                     }
                     else {
                         %><div class="col-md-3 portfolio-item">
-                            <a href="picture.jsp?picture= <%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
+                            <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
                         </div><%
                     }
                 }
