@@ -1,9 +1,6 @@
 package main;
 
 import functions.Checker;
-import functions.Connections;
-
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +18,6 @@ public class Category {
             setCategory(category);
             categories.add(this);
         } catch (Exception e) {
-            System.out.println("Category Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -62,20 +58,5 @@ public class Category {
         return null;
     }
 
-    public static void checkCategoryInList(int id_category) {
-        // Метод проверяющий наличие категории, иначе добавляет в лист.
-        try {
-            ResultSet rs = Connections.getCategoryInfo(id_category);
-            if(rs.next()){
-                if(getCategoryInfo(rs.getInt(1)) == null) {
-                    Category temp = new Category(id_category, rs.getString(2));
-                    rs.close();
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Category Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
     //endregion
 }

@@ -1,6 +1,6 @@
 <%@ page import="main.Picture" %>
 <%@ page import="java.util.List" %>
-<%@ page import="functions.PictureHandler" %>
+<%@ page import="functions.MainHandler" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -118,7 +118,7 @@
     </div>
     <!-- /.row -->
     <%
-        List<Picture> pictures = PictureHandler.getMainPictures();
+        List<Picture> pictures = MainHandler.getMainPictures();
         if (pictures.size() != 0){
             for (int i = 0; i < 12; i++){
                 if(i%4==0){

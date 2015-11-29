@@ -41,13 +41,18 @@ public class Connections {
         return queryExecuter(sql);
     }
 
-    public static ResultSet getCategoryInfo(int id_category) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT * FROM webgallery.t_category WHERE id_category = " + id_category;
+    public static ResultSet getCategories() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_category";
         return queryExecuter(sql);
     }
 
-    public static ResultSet getPositionInfo(int id_position) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT * FROM webgallery.t_position WHERE id_position = " + id_position;
+    public static ResultSet getPositions() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_position";
+        return queryExecuter(sql);
+    }
+
+    public static ResultSet getUsers() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_user";
         return queryExecuter(sql);
     }
 

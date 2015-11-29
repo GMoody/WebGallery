@@ -1,9 +1,7 @@
 package main;
 
 import functions.Checker;
-import functions.Connections;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,20 +59,5 @@ public class Position {
         return null;
     }
 
-    public static void checkPositionInList(int id_position) {
-        // Метод проверяющий наличие позиции, иначе добавляет в лист.
-        try {
-            ResultSet rs = Connections.getPositionInfo(id_position);
-            if(rs.next()){
-                if(getPositionInfo(rs.getInt(1)) == null) {
-                    Position temp = new Position(rs.getInt(1), rs.getString(2));
-                    rs.close();
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Category Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
     //endregion
 }

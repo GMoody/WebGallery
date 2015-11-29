@@ -183,19 +183,13 @@ public class User {
         else return false;
     }
 
-    public static void checkUserInList(int id_user) {
-        // Метод проверяющий наличие пользователя, иначе добавляет в лист.
+    public static boolean addPictureToUser(int id_user, Picture picture){
         try {
-            ResultSet rs = Connections.getUserInfo(id_user);
-            if(rs.next()){
-                if(getUserInfo(rs.getInt(1)) == null) {
-                    User temp = new User(id_user, rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7));
-                    Position.checkPositionInList(rs.getInt(2)); // также проверяет наличие позиции в списке, иначе добавляет
-                    rs.close();
-                }
-            }
-        } catch (Exception e) {
+            User.getUserInfo(id_user).pictures.add(picture);
+            return true;
+        } catch (NullPointerException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
