@@ -49,6 +49,7 @@
                 <li><a href="index.jsp">Main</a></li>
                 <li><a href="#">Contact</a></li>
                 <% }else{ %>
+                <li><a href="index.jsp">Main</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">Contact</a></li>
                 <% } %>
@@ -85,7 +86,7 @@
                             <%
                                 if (request.getParameter("log_in_btn") != null) {
                                     request.getRequestDispatcher("functions/login.jsp").include(request, response);
-                            %><script>window.location = window.location.href;</script>
+                                    %><script>window.location = window.location.href;</script>
                             <%}%>
                         </div>
                     </ul>

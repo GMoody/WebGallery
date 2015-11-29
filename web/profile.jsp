@@ -39,7 +39,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Web Gallery</a>
+            <a class="navbar-brand" href="#">Profile</a>
         </div>
         <!-- Mobile display menu END-->
 
