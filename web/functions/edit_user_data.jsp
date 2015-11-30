@@ -28,7 +28,7 @@
             try {
                 String hashedpass = BCrypt.hashpw(pass1, BCrypt.gensalt()); // хешируем новый пароль
 
-                boolean test = User.ChaneUserData(login,hashedpass,fname,lname,email);
+                boolean test = User.changeUserData(login,hashedpass,fname,lname,email);
                 if(test){
                             %><script>
                                 window.history.back(-1); // бросит нас назад на 1 страницу
@@ -51,7 +51,7 @@
         {
             %><script>
             window.history.back(-1); // бросит нас назад на 1 страницу
-            alert("Error in new password confirm,new password does not match or empty!");
+            alert("Such email already taken!");
             </script><%
         }
     }
@@ -61,7 +61,7 @@
 
         try {
 
-            boolean test = User.ChaneUserData(login,oldpass,fname,lname,email);
+            boolean test = User.changeUserData(login,oldpass,fname,lname,email);
             if(test){
                         %><script>
                             window.history.back(-1); // бросит нас назад на 1 страницу
@@ -72,7 +72,7 @@
             else{
                         %><script>
                             window.history.back(-1); // бросит нас назад на 1 страницу
-                            alert("Error in changing user data, contact system administrator!");
+                            alert("Such email already taken!");
                         </script><%
             }
 

@@ -75,8 +75,26 @@ public class Connections {
 
     public static boolean updateUser(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException {
 
-        String query = "UPDATE webgallery.t_user SET first_name = '"+fname+"', last_name= '"+lname+"', email= '"+email+"', password = '"+password+"' WHERE t_user.user_name = '"+username+"'";
-        return queryUpdater(query);
+        boolean checkemail = checkEmail(email,username);
+        if(checkemail) {
+            String query = "UPDATE webgallery.t_user SET first_name = '" + fname + "', last_name= '" + lname + "', email= '" + email + "', password = '" + password + "' WHERE t_user.user_name = '" + username + "'";
+            return queryUpdater(query);
+        }
+        else { return false;}
+
+    }
+
+    public static boolean checkEmail(String email, String username) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM webgallery.t_user WHERE t_user.email = '"+email+"' AND t_user.user_name != '"+username+"'";
+        ResultSet st = queryExecuter(query);
+        if(st.next())
+        {
+            return false; //Если есть хоть 1 запись эмайл уже занет ДРУГИМ пользователем
+        }
+        else
+        {
+            return true; // Записей 0, эмайл свободен или занет именно ДАННЫМ пользователем
+        }
 
     }
 

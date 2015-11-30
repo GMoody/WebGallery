@@ -85,6 +85,7 @@
 
 
     <br>
+
     <form class="form-horizontal" action='functions/edit_user_data.jsp' method="POST">
     <div class="container-fluid well span6">
         <div class="row-fluid">

@@ -200,7 +200,7 @@ public class User {
         }
     }
 
-    public static boolean ChaneUserData(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException
+    public static boolean changeUserData(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException
     {
         boolean update_db = Connections.updateUser(username,password,fname,lname,email);
         if(update_db == true)
