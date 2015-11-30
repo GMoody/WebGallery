@@ -1,6 +1,7 @@
 <%@ page import="main.Picture" %>
 <%@ page import="java.util.List" %>
 <%@ page import="functions.MainHandler" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,15 +31,19 @@
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
+
         <!-- Mobile display menu-->
         <div class="navbar-header">
+            <!-- Options button-->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Web Gallery</a>
+            <!-- Options button END-->
+
+            <a class="navbar-brand" href="index.jsp">Web Gallery</a>
         </div>
         <!-- Mobile display menu END-->
 
@@ -46,36 +51,37 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <% if (session.getAttribute("user_name") == null){%>
-                <li><a href="register.jsp">Registration</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                    <li><a href="register.jsp">Registration</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
                 <% }else{ %>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
                 <% } %>
             </ul>
 
             <!-- Profile -->
             <ul class="nav navbar-right top-nav">
+
                 <!-- Logged-in -->
-                <li class="dropdown">
+                <li class="dropdown disp_none">
                     <% if (session.getAttribute("user_name") != null) {%>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Gallery</a></li>
-                        <% if(Integer.parseInt(session.getAttribute("position").toString()) == 3){ %>
-                            <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
-                        <%}%>
-                        <li class="divider"></li>
-                        <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
-                    </ul>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                            <% if(Integer.parseInt(session.getAttribute("position").toString()) == 3){ %>
+                                <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                            <%}%>
+                            <li class="divider"></li>
+                            <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
+                        </ul>
                 </li>
                 <!-- Logged-in end-->
 
                 <!-- NOT Logged-in -->
                 <% } else {%>
-                <li class="dropdown">
+                <li class="dropdown disp_none">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
                     <ul class="dropdown-menu" style="height: 180px; width: 300px">
                         <div class="loginmodal-container">
@@ -100,6 +106,7 @@
 
         </div>
         <!-- Navbar + login modal END-->
+
     </div>
     <!-- /.container -->
 </nav>
@@ -117,37 +124,19 @@
         </div>
     </div>
     <!-- /.row -->
-    <%
+
+    <!-- Pictures -->
+    <div class="row"><%
         List<Picture> pictures = MainHandler.getMainPictures();
         if (pictures.size() != 0){
-            for (int i = 0; i < 12; i++){
-                if(i%4==0){
-                    %><div class="row">
-                    <div class="col-md-3 portfolio-item">
-                        <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
-                    </div><%
-                }
-                else {
-                    if(i+1%4==0){
-                        %><div class="col-md-3 portfolio-item">
-                            <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
-                        </div></div><%
-                    }
-                    else {
-                        %><div class="col-md-3 portfolio-item">
-                            <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" width="750" height="450" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
-                        </div><%
-                    }
-                }
-            }
-        }
-        else{
-            System.out.println("List is empty");
-        }
-
-    %>
-
-    <hr>
+            for (int i = 0; i < 12; i++){ %>
+                <div class="col-md-3 portfolio-item">
+                    <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
+                </div>
+            <%}
+        }%>
+    </div>
+    <!-- Pictures -->
 
     <!-- Pagination -->
     <div class="row text-center">
@@ -185,7 +174,7 @@
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p>Copyright &copy; Web Gallery 2015</p>
+                <p align="center">Copyright &copy; Web Gallery 2015</p>
             </div>
         </div>
         <!-- /.row -->

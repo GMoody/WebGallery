@@ -60,6 +60,7 @@ public class Connections {
         String sql = "SELECT * FROM webgallery.t_user_statistics";
         return queryExecuter(sql);
     }
+
     public static ResultSet getPicturesStatistics() throws SQLException, ClassNotFoundException {
         String sql = "SELECT * FROM webgallery.t_picture_statistics";
         return queryExecuter(sql);

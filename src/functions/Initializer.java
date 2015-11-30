@@ -1,7 +1,6 @@
 package functions;
 
 import main.*;
-
 import java.sql.ResultSet;
 
 public class Initializer {
