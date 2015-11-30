@@ -1,5 +1,7 @@
 package functions;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.*;
 
 public class Connections {
@@ -33,6 +35,7 @@ public class Connections {
     public static boolean addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO webgallery.t_user (id_position, user_name, first_name, last_name, email, password) " +
                 "VALUES (1, '" + user_name + "', '" + user_fname + "', '" + user_lname + "', '" + user_email + "', '" + user_pwd + "')";
+
         return queryUpdater(sql);
     }
 
@@ -69,4 +72,13 @@ public class Connections {
         Statement st = conn.createStatement();
         return st.executeUpdate(sql) > 0;
     }
+
+    public static boolean updateUser(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException {
+
+        String query = "UPDATE webgallery.t_user SET first_name = '"+fname+"', last_name= '"+lname+"', email= '"+email+"', password = '"+password+"' WHERE t_user.user_name = '"+username+"'";
+        return queryUpdater(query);
+
+    }
+
+
 }

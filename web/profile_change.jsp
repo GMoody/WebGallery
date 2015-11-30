@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="main.User" %>
 <%@ page import="main.Position" %>
+<%@ page import="org.mindrot.jbcrypt.BCrypt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,23 +79,13 @@
 
 
 
-
 <!-- Page Content -->
 <div class="container">
 
-    <!-- Page Heading -->
-    <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
-        <%--&lt;%&ndash;<div class="col-lg-12">&ndash;%&gt;--%>
-            <%--&lt;%&ndash;<h1 class="page-header">Account details&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<small></small>&ndash;%&gt;--%>
-            <%--&lt;%&ndash;</h1>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--<!-- /.row -->--%>
 
 
     <br>
-
+    <form class="form-horizontal" action='functions/edit_user_data.jsp' method="POST">
     <div class="container-fluid well span6">
         <div class="row-fluid">
             <div class="span2" style="float:left;">
@@ -104,26 +95,32 @@
 
             <div class="span8" style="float:left; margin-left: 40px;">
                 <h5>Position: <% out.println(Position.getPositionInfo(User.getUserInfo(session.getAttribute("email").toString()).getId_position()).getPosition()); %></h5>
-                <h5>Password: *********</h5>
-                <h5>First name: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()); %></h5>
-                <h5>Last name: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getLast_name()); %></h5>
-                <h5>Email: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getEmail()); %></h5>
+                <h5>New password: <input title="Password should contains from 6 to 20 symbols" style="margin-left: 23px;"  pattern=".{6,20}" name="pass1" type="text" class="input-xlarge" value=""></h5>
+                <h5>Confirm password: <input title="Password should contains from 6 to 20 symbols" pattern=".{6,20}" name="pass2" type="text" class="input-xlarge" value=""></h5>
+                <h5>First name: <input title="Fristname should contain from 3 to 50 characters" style="margin-left: 46px;" required  pattern="[A-Za-z]{3,50}" name="fname" type="text" class="input-xlarge" value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()); %>"> </h5>
+                <h5>Last name: <input title="Lastname should contain from 3 to 50 characters" style="margin-left: 47px;" required  pattern="[A-Za-z]{3,50}" name="lname" type="text" class="input-xlarge" value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getLast_name()); %>"> </h5>
+                <h5>Email: <input title="Email must be in the following order: characters@characters.domain" style="margin-left: 79px;" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" name="email" type="text" class="input-xlarge" value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getEmail()); %>"></h5>
+                <div class="checkbox">
+                    <label>
+                        <input  value= "YES" name="keepoldpass" type="checkbox" id="terms" data-error="Before you wreck yourself">
+                        Keep old password?
+                    </label>
+                    <div class="help-block with-errors"></div>
+                </div>
+                <hr style="border-color: black;">
+                <h6 style="color:red;">If you would like to keep old password, select the box above and left password fields empty!</h6>
+
             </div>
 
-            <form class="form-horizontal" action='profile_change.jsp' method="POST">
             <div class="span2" style="float:right;">
-                <td class="tg-baqh" colspan="2"><input type="submit" class="btn btn-primary" value="Edit profile"></td>
+                <td class="tg-baqh" colspan="2"><input type="submit" class="btn btn-primary" value="Save"></td>
             </div>
-            </form>
-
-            <form class="form-horizontal" action='' method="POST">
-            <div class="span3" style="float:right; margin-right: -101px;margin-top: 45px;">
-                <td class="tg-baqh" colspan="2"><input type="submit" class="btn btn-primary" value="View gallery"></td>
-            </div>
-            </form>
 
         </div>
     </div>
+        </form>
+
+
 
 
 
