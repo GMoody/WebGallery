@@ -56,6 +56,15 @@ public class Connections {
         return queryExecuter(sql);
     }
 
+    public static ResultSet getUsersStatistics() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_user_statistics";
+        return queryExecuter(sql);
+    }
+    public static ResultSet getPicturesStatistics() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM webgallery.t_picture_statistics";
+        return queryExecuter(sql);
+    }
+
     private static ResultSet queryExecuter(String sql) throws SQLException, ClassNotFoundException {
         Connection conn = new Connections().getConnection();
         Statement st = conn.createStatement();
