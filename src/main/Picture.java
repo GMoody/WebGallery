@@ -87,10 +87,6 @@ public class Picture {
         return description;
     }
 
-    public static List<Picture> getPictures() {
-        return pictures;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }

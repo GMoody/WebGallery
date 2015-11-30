@@ -117,9 +117,6 @@ public class User {
         return pictures;
     }
 
-    public static List<User> getUsers() {
-        return users;
-    }
     //endregion
 
     //region Methods
@@ -190,6 +187,18 @@ public class User {
         } catch (NullPointerException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void checkInUserPictures(int id_user, Picture picture){
+        // Метод проверяет наличие картинки у пользователя, иначе добавляет ему в его лист с картинками.
+        try {
+            for (Picture x : getUserInfo(id_user).pictures){
+                if(x.getId_picture() != picture.getId_picture())
+                    addPictureToUser(id_user, picture);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
