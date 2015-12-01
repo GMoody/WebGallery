@@ -128,10 +128,26 @@
     <!-- Pictures -->
     <div class="row"><%
         List<Picture> pictures = MainHandler.getMainPictures();
+
+        int i = 0, y = 12, current_page = 1; // Переменные для работы с выводом картинок.
+
+        if(request.getParameter("page") != null){
+            current_page = Integer.parseInt(request.getParameter("page")); // Страница на которой находимся.
+            int full_pages = pictures.size() / 12;                         // Число страниц, которые заполняются полностью по 12 картинок.
+
+            if(current_page > full_pages){ // Если мы находимся на страничке, которая заполняется не полностью, не 12 картинками.
+                i = pictures.size() - (current_page * full_pages);
+                y = i + (current_page * full_pages);
+            }else{
+                y = y * current_page;
+                i = y-12;
+            }
+        }
+
         if (pictures.size() != 0){
-            for (int i = 0; i < 12; i++){ %>
+            for (int z = i; z < y; z++){ %>
                 <div class="col-md-3 portfolio-item">
-                    <a href="picture.jsp?picture=<%=pictures.get(i).getId_picture()%>"><img class="img-responsive" src="<%=pictures.get(i).getPicture_url()%>" alt="<%=pictures.get(i).getDescription() %>"></a>
+                    <a href="picture.jsp?picture=<%=pictures.get(z).getId_picture()%>"><img class="img-responsive" src="<%=pictures.get(z).getPicture_url()%>" alt="<%=pictures.get(z).getDescription() %>"></a>
                 </div>
             <%}
         }%>
@@ -142,31 +158,49 @@
     <div class="row text-center">
         <div class="col-lg-12">
             <ul class="pagination">
-                <li>
-                    <a href="#">&laquo;</a>
-                </li>
-                <li class="active">
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">&raquo;</a>
-                </li>
+
+                <%
+                    // Стрелочка влево выводится всегда, кроме как на 1-ой странице.
+                    if(current_page!=1){
+                        %><li><a href="index.jsp?page=<%=current_page-1%>">&laquo;</a></li><%
+                    }
+
+                    // Имеем ли все страницы полностью заполненные по 12 картинок
+                    if(pictures.size() % 12 != 0){
+                        for (int w = 1; w < (pictures.size() / 12) + 2; w++){
+                            if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
+                                %><li class="active"><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                            }
+                            else{
+                            %><li><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                            }
+                        }
+
+                        if((pictures.size()/12) + 1 > current_page){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
+                            %><li><a href="index.jsp?page=<%=current_page+1%>">&raquo;</a></li><%
+                        }
+
+                    }else{ // Имеем все страницы по 12 картинок!
+                        for (int w = 1; w < (pictures.size() / 12) + 1; w++){
+                            if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
+                                %><li class="active"><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                            }else{
+                            %><li><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                            }
+                        }
+
+                        if(current_page!= pictures.size() / 12){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
+                            %><li><a href="index.jsp?page=<%=current_page+1%>">&raquo;</a></li><%
+                        }
+                    }
+                %>
+
             </ul>
         </div>
     </div>
     <!-- /.row -->
+
+
 
     <hr>
 
