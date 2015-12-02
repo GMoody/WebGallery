@@ -137,6 +137,13 @@ public class User {
         return null;
     }
 
+    public static User getUserInfoByName(String username){
+        for(User user : users)
+            if(user.user_name.equals(username))
+                return user;
+        return null;
+    }
+
     //endregion
 
     public static byte addUser(String user_name, String user_fname, String user_lname, String user_email, String user_pwd) throws SQLException, ClassNotFoundException  {
@@ -189,6 +196,30 @@ public class User {
             return false;
         }
     }
+
+    public static boolean changeUserData(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException
+    {
+        boolean update_db = Connections.updateUser(username,password,fname,lname,email);
+        if(update_db == true)
+        {
+                try {
+                    User.getUserInfoByName(username).setLast_name(lname);
+                    User.getUserInfoByName(username).setFirst_name(fname);
+                    User.getUserInfoByName(username).setPassword(password);
+                    User.getUserInfoByName(username).setEmail(email);
+                }catch (Exception e)
+                {e.printStackTrace();}
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+
+
+    }
+
 
     public void checkInUserPictures(int id_user, Picture picture){
         // Метод проверяет наличие картинки у пользователя, иначе добавляет ему в его лист с картинками.

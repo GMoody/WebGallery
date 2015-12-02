@@ -2,6 +2,6 @@
 
 Changes:
 
-30/11/2015: Statistics init
+30/11/2015: Added user data changing, edited user java, added user data changing methods in connections java.
 
-1/12/2015: Pictures on pages with page-buttons!
+2/12/2015: Edit modal

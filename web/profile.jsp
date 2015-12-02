@@ -84,17 +84,18 @@
 <div class="container">
 
     <!-- Page Heading -->
-    <%--<div class="row">--%>
-        <%--<div class="col-lg-12">--%>
-            <%--<h1 class="page-header">Account details--%>
-                <%--<small></small>--%>
-            <%--</h1>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-    <!-- /.row -->
+    <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<div class="col-lg-12">&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<h1 class="page-header">Account details&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<small></small>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</h1>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+    <%--<!-- /.row -->--%>
 
 
     <br>
+
     <div class="container-fluid well span6">
         <div class="row-fluid">
             <div class="span2" style="float:left;">
@@ -103,22 +104,124 @@
             </div>
 
             <div class="span8" style="float:left; margin-left: 40px;">
-                <h5>Position: <% out.println(Position.getPositionInfo(User.getUserInfo(session.getAttribute("email").toString()).getId_position()).getPosition()); %></h5>
                 <h5>First name: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()); %></h5>
                 <h5>Last name: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getLast_name()); %></h5>
                 <h5>Email: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getEmail()); %></h5>
             </div>
 
+
             <div class="span2" style="float:right;">
-                <td class="tg-baqh" colspan="2"><input type="submit" class="btn btn-primary" value="Edit profile"></td>
+                <td class="tg-baqh" colspan="2">
+                    <a href='#edit_modal' class='btn btn-primary' data-toggle='modal'>Edit profile</a>
+                </td>
             </div>
 
+
+            <!-- EditModal -->
+            <div id="edit_modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" align="center">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Personal information</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <form class="form-horizontal zero-top" action='' role="form" method="post" name="edit_form" autocomplete="off">
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">First name:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" name="fname"
+                                               title="Fristname should contain from 3 to 50 characters"
+                                               pattern="[A-Za-z]{3,50}"
+                                               value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()); %>"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Last name:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" name="lname"
+                                               title="Lastname should contain from 3 to 50 characters"
+                                               pattern="[A-Za-z]{3,50}"
+                                               value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getLast_name()); %>"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Email:</label>
+                                    <div class="col-sm-6">
+                                        <input type="email" class="form-control" name="email"
+                                               title="Email must be in the following order: characters@characters.domain"
+                                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                                               value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getEmail()); %>"
+                                               required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">New password:</label>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control" name="pass1"
+                                               title="Password should contains from 6 to 20 symbols"
+                                               pattern=".{6,20}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Confirm password:</label>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control" name="pass2"
+                                               title="Password should contains from 6 to 20 symbols"
+                                               pattern=".{6,20}">
+                                    </div>
+                                </div>
+
+                                <div class="checkbox" align="center">
+                                    <label>
+                                        <input  value= "YES" name="keepoldpass" type="checkbox" id="terms" data-error="Before you wreck yourself">
+                                        Keep old password?
+                                    </label>
+                                </div>
+
+                                <h6 style="color:red; font-style:italic; text-align: center;">If you would like to keep old password, select the box above and left password fields empty!</h6>
+
+                                <hr style="border-color: black;">
+                                <div class="form-group">
+                                    <div class="col-sm-offset-5">
+                                        <button type="submit" class="btn btn-success" name="edit_btn">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <%
+                                if (request.getParameter("edit_btn") != null) {
+                                    request.getRequestDispatcher("/functions/edit_user_data.jsp").include(request, response);
+                                    %><script>window.location = window.location.href;</script><%
+                            }
+                            %>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <form class="form-horizontal" action='' method="POST">
             <div class="span3" style="float:right; margin-right: -101px;margin-top: 45px;">
                 <td class="tg-baqh" colspan="2"><input type="submit" class="btn btn-primary" value="View gallery"></td>
             </div>
+            </form>
 
         </div>
     </div>
+
+
 
 
 

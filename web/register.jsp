@@ -93,7 +93,7 @@
             <div class="control-group">
                 <label class="control-label" for="username">Username</label>
                 <div class="controls">
-                    <input type="text"  min="5" max="20" id="username" name="username" placeholder="" class="input-xlarge">
+                    <input type="text" pattern="[A-Za-z0-9]{5,20}" id="username" name="username" placeholder="" class="input-xlarge">
                     <p class="help-block">Username can contain letters or numbers without spaces (5-20 characters)</p>
                 </div>
             </div>
@@ -103,7 +103,7 @@
             <div style="float:left;" class="control-group">
                 <label class="control-label"  for="firstname">Fristname</label>
                 <div class="controls">
-                    <input type="text"  min="3" max="50" id="firstname" name="firstname" placeholder="" class="input-xlarge">
+                    <input type="text"  pattern="[A-Za-z]{3,50}"  id="firstname" name="firstname" placeholder="" class="input-xlarge">
                     <p class="help-block">First name can contain only letters</p>
                 </div>
             </div>
@@ -113,7 +113,7 @@
             <div style="margin-left:250px;" class="control-group">
                 <label class="control-label"  for="lastname">Lastname</label>
                 <div class="controls">
-                    <input type="text"  min="3" max="50" id="lastname" name="lastname" placeholder="" class="input-xlarge">
+                    <input type="text"  pattern="[A-Za-z]{3,50}" id="lastname" name="lastname" placeholder="" class="input-xlarge">
                     <p class="help-block">Last name can contain only letters</p>
                 </div>
             </div>
@@ -123,7 +123,7 @@
             <div class="control-group">
                 <label class="control-label" for="email">E-mail</label>
                 <div class="controls">
-                    <input type="text"  min="7" max="50" id="email" name="email" placeholder="" class="input-xlarge">
+                    <input type="text"  title="Email must be in the following order: characters@characters.domain" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="email" name="email" placeholder="" class="input-xlarge">
                     <p class="help-block">Please provide your E-mail</p>
                 </div>
             </div>
@@ -133,7 +133,7 @@
             <div style="float:left;" class="control-group">
                 <label class="control-label" for="password">Password</label>
                 <div class="controls">
-                    <input style="width: 155px;" min="6" max="20" type="password" id="password" name="password" placeholder="" class="input-xlarge">
+                    <input style="width: 155px;" type="password" title="Password should contains from 6 to 20 symbols" pattern=".{6,20}" id="password" name="password" placeholder="" class="input-xlarge">
                     <p class="help-block">Password should be at least 6 characters</p>
                 </div>
             </div>
@@ -143,7 +143,7 @@
             <div style="margin-left:250px;" class="control-group">
                 <label class="control-label"  for="password_confirm">Password (Confirm)</label>
                 <div class="controls">
-                    <input style="width: 155px;" min="6" max="20"  type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
+                    <input style="width: 155px;" title="Password should contains from 6 to 20 symbols"  pattern=".{6,20}"  type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
                     <p class="help-block">Please confirm your password</p>
                 </div>
             </div>
