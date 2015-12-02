@@ -187,10 +187,7 @@
                                 </div>
 
                                 <div class="checkbox" align="center">
-                                    <label>
-                                        <input  value="YES" name="keepoldpass" type="checkbox" id="terms" data-error="Before you wreck yourself">
-                                        Keep old password?
-                                    </label>
+                                        <input  value="YES" name="keepoldpass" type="checkbox">Keep old password?
                                 </div>
 
                                 <h6 style="color:red; font-style:italic; text-align: center;">If you would like to keep old password, select the box above and left password fields empty!</h6>
