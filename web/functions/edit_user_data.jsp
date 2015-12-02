@@ -78,10 +78,4 @@
 
         }catch (Exception e){out.println(e); out.println("eception");}
     }
-
-
-
-
-
-
 %>
