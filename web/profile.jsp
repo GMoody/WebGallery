@@ -31,15 +31,19 @@
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
+
         <!-- Mobile display menu-->
         <div class="navbar-header">
+            <!-- Options button-->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Profile</a>
+            <!-- Options button END-->
+
+            <a class="navbar-brand" href="profile.jsp">Profile</a>
         </div>
         <!-- Mobile display menu END-->
 
@@ -57,10 +61,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Gallery</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                         <% if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
-                        <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
                         <li class="divider"></li>
                         <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
@@ -104,9 +107,9 @@
             </div>
 
             <div class="span8" style="float:left; margin-left: 40px;">
-                <h5>First name: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()); %></h5>
-                <h5>Last name: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getLast_name()); %></h5>
-                <h5>Email: <% out.print(User.getUserInfo(session.getAttribute("email").toString()).getEmail()); %></h5>
+                <h5>First name: <%=User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()%></h5>
+                <h5>Last name: <%=User.getUserInfo(session.getAttribute("email").toString()).getLast_name()%></h5>
+                <h5>Email: <%=User.getUserInfo(session.getAttribute("email").toString()).getEmail()%></h5>
             </div>
 
 
@@ -137,7 +140,7 @@
                                         <input type="text" class="form-control" name="fname"
                                                title="Fristname should contain from 3 to 50 characters"
                                                pattern="[A-Za-z]{3,50}"
-                                               value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()); %>"
+                                               value="<%=User.getUserInfo(session.getAttribute("email").toString()).getFirst_name()%>"
                                                required>
                                     </div>
                                 </div>
@@ -148,7 +151,7 @@
                                         <input type="text" class="form-control" name="lname"
                                                title="Lastname should contain from 3 to 50 characters"
                                                pattern="[A-Za-z]{3,50}"
-                                               value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getLast_name()); %>"
+                                               value="<%=User.getUserInfo(session.getAttribute("email").toString()).getLast_name()%>"
                                                required>
                                     </div>
                                 </div>
@@ -159,7 +162,7 @@
                                         <input type="email" class="form-control" name="email"
                                                title="Email must be in the following order: characters@characters.domain"
                                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                                               value="<% out.print(User.getUserInfo(session.getAttribute("email").toString()).getEmail()); %>"
+                                               value="<%=User.getUserInfo(session.getAttribute("email").toString()).getEmail()%>"
                                                required>
                                     </div>
                                 </div>
@@ -185,7 +188,7 @@
 
                                 <div class="checkbox" align="center">
                                     <label>
-                                        <input  value= "YES" name="keepoldpass" type="checkbox" id="terms" data-error="Before you wreck yourself">
+                                        <input  value="YES" name="keepoldpass" type="checkbox" id="terms" data-error="Before you wreck yourself">
                                         Keep old password?
                                     </label>
                                 </div>
@@ -203,8 +206,7 @@
                             <%
                                 if (request.getParameter("edit_btn") != null) {
                                     request.getRequestDispatcher("/functions/edit_user_data.jsp").include(request, response);
-                                    %><script>window.location = window.location.href;</script><%
-                            }
+                                }
                             %>
                         </div>
                     </div>
@@ -221,18 +223,13 @@
         </div>
     </div>
 
-
-
-
-
     <hr>
-
 
     <!-- Footer -->
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p>Copyright &copy; Web Gallery 2015</p>
+                <p align="center">Copyright &copy; Web Gallery 2015</p>
             </div>
         </div>
         <!-- /.row -->

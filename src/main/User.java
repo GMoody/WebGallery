@@ -137,7 +137,7 @@ public class User {
         return null;
     }
 
-    public static User getUserInfoByName(String username){
+    public static User getUserInfoByUserName(String username){
         for(User user : users)
             if(user.user_name.equals(username))
                 return user;
@@ -181,7 +181,7 @@ public class User {
                     user_info.getString(4),  // user_fname
                     user_info.getString(5),  // user_lname
                     user_info.getString(6),  //user_email
-                    user_info.getString(7)); //user_email
+                    user_info.getString(7)); //user_pwd
             return true;
         }
         else return false;
@@ -199,25 +199,19 @@ public class User {
 
     public static boolean changeUserData(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException
     {
-        boolean update_db = Connections.updateUser(username,password,fname,lname,email);
-        if(update_db == true)
+        if(Connections.updateUser(username,password,fname,lname,email))
         {
-                try {
-                    User.getUserInfoByName(username).setLast_name(lname);
-                    User.getUserInfoByName(username).setFirst_name(fname);
-                    User.getUserInfoByName(username).setPassword(password);
-                    User.getUserInfoByName(username).setEmail(email);
-                }catch (Exception e)
-                {e.printStackTrace();}
+            try {
+                User.getUserInfoByUserName(username).setLast_name(lname);
+                User.getUserInfoByUserName(username).setFirst_name(fname);
+                User.getUserInfoByUserName(username).setPassword(password);
+                User.getUserInfoByUserName(username).setEmail(email);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return true;
-
         }
-        else
-        {
-            return false;
-        }
-
-
+        else return false;
     }
 
 

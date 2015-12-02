@@ -1,8 +1,5 @@
-<%@page import="java.util.*" %>
-<%@page import="java.lang.System.*" %>
 <%@page import="main.User" %>
 <%@page import="java.sql.*" %>
-<%@ page import="functions.Connections" %>
 
 <%
     String login = request.getParameter("username");
