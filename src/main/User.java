@@ -18,12 +18,13 @@ public class User {
     private String last_name;
     private String email;
     private String password;
+    private String avatar;
     private List<Picture> pictures;    // Each user has his own list with pictures
 
     // General list with users
     public static List<User> users = new ArrayList<>();
 
-    public User(int id_user, int id_position, String user_name, String first_name, String last_name, String email, String password) {
+    public User(int id_user, int id_position, String user_name, String first_name, String last_name, String email, String password, String avatar) {
         try {
             setId_user(id_user);
             setId_position(id_position);
@@ -32,6 +33,7 @@ public class User {
             setLast_name(last_name);
             setEmail(email);
             setPassword(password);
+            setAvatar(avatar);
             users.add(this);
             this.pictures = new ArrayList<>();
         } catch (Exception e) {
@@ -82,6 +84,12 @@ public class User {
             this.password = password;
         else throw new Exception("Invalid user password!");
     }
+
+    public void setAvatar(String avatar) throws Exception {
+        if (Checker.checkString(avatar))
+            this.avatar = avatar;
+        else this.avatar = "http://www.marketingextremist.com/wp-content/uploads/2014/05/How-to-Change-a-Username-in-WordPress.jpg";
+    }
     //endregion
 
     //region Getters
@@ -111,6 +119,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     public List<Picture> getPictures() {
@@ -181,7 +193,8 @@ public class User {
                     user_info.getString(4),  // user_fname
                     user_info.getString(5),  // user_lname
                     user_info.getString(6),  //user_email
-                    user_info.getString(7)); //user_pwd
+                    user_info.getString(7),  //user_pwd
+                    user_info.getString(8)); //user_avatar
             return true;
         }
         else return false;
@@ -189,7 +202,7 @@ public class User {
 
     public static boolean addPictureToUser(int id_user, Picture picture){
         try {
-            User.getUserInfo(id_user).pictures.add(picture);
+            getUserInfo(id_user).pictures.add(picture);
             return true;
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -197,23 +210,19 @@ public class User {
         }
     }
 
-    public static boolean changeUserData(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException
-    {
-        if(Connections.updateUser(username,password,fname,lname,email))
-        {
+    public static boolean changeUserData(String username, String password, String fname, String lname, String email) throws SQLException, ClassNotFoundException {
+        if(Connections.updateUser(username,password,fname,lname,email)){
             try {
-                User.getUserInfoByUserName(username).setLast_name(lname);
-                User.getUserInfoByUserName(username).setFirst_name(fname);
-                User.getUserInfoByUserName(username).setPassword(password);
-                User.getUserInfoByUserName(username).setEmail(email);
+                getUserInfoByUserName(username).setLast_name(lname);
+                getUserInfoByUserName(username).setFirst_name(fname);
+                getUserInfoByUserName(username).setPassword(password);
+                getUserInfoByUserName(username).setEmail(email);
             }catch (Exception e){
                 e.printStackTrace();
             }
             return true;
-        }
-        else return false;
+        } else return false;
     }
-
 
     public void checkInUserPictures(int id_user, Picture picture){
         // Метод проверяет наличие картинки у пользователя, иначе добавляет ему в его лист с картинками.
@@ -225,6 +234,17 @@ public class User {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean updateUserAvatar(String user_name, String avatar){
+        try {
+            getUserInfoByUserName(user_name).setAvatar(avatar);
+            Connections.updateUserAvatar(user_name,avatar);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     //endregion

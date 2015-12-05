@@ -26,8 +26,8 @@ CREATE TABLE webgallery.t_user(
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
-	password text NOT NULL,
-	avatar bytea NULL
+	password TEXT NOT NULL,
+	avatar TEXT NULL
 );
 
 ------------------------------------------------------------------------------------------------------
@@ -111,7 +111,6 @@ INSERT INTO webgallery.t_category (category) VALUES ('Other');
 -- Table t_position INSERTS.
 
 INSERT INTO webgallery.t_position (position) VALUES ('User');
-INSERT INTO webgallery.t_position (position) VALUES ('Moderator');
 INSERT INTO webgallery.t_position (position) VALUES ('Administrator');
 
 ------------------------------------------------------------------------------------------------------

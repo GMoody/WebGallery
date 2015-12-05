@@ -89,6 +89,11 @@ public class Connections {
         else return false;
     }
 
+    public static boolean updateUserAvatar(String username, String avatar) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE webgallery.t_user SET avatar = '" + avatar + "' WHERE t_user.user_name = '" + username + "'";
+        return queryUpdater(query);
+    }
+
     public static boolean checkEmail(String email, String username) throws SQLException, ClassNotFoundException {
         String query = "SELECT * FROM webgallery.t_user WHERE t_user.email = '"+email+"' AND t_user.user_name != '"+username+"'";
         ResultSet st = queryExecuter(query);

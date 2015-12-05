@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="main.User" %>
-<%@ page import="main.Position" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +61,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                        <% if(Integer.valueOf(session.getAttribute("position").toString())  == 3){ %>
+                        <% if(Integer.valueOf(session.getAttribute("position").toString())  == 2){ %>
                             <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
                         <li class="divider"></li>
@@ -102,7 +101,7 @@
     <div class="container-fluid well span6">
         <div class="row-fluid">
             <div class="span2" style="float:left;">
-                <img style="width:150px; height: 150px;" src="http://www.marketingextremist.com/wp-content/uploads/2014/05/How-to-Change-a-Username-in-WordPress.jpg" class="img-circle">
+                <img style="width:150px; height: 150px;" src="<%=User.getUserInfo(session.getAttribute("email").toString()).getAvatar()%>" class="img-circle">
                 <h4 style="margin-left: 35px;"><%=session.getAttribute("user_name")%></h4> <%--Отступ работает у всех по-разному--%>
             </div>
 
@@ -132,7 +131,7 @@
                         </div>
 
                         <div class="modal-body">
-                            <form class="form-horizontal zero-top" action='' role="form" method="post" name="edit_form" autocomplete="off">
+                            <form class="form-horizontal zero-top" action='functions/edit_user_data.jsp' enctype="multipart/form-data" role="form" method="post" name="edit_form" autocomplete="off">
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">First name:</label>
@@ -167,13 +166,24 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Old password:</label>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control" name="pass0"
+                                               title="Password should contains from 6 to 20 symbols"
+                                               pattern=".{6,20}"
+                                               placeholder="Enter to make changes"
+                                               required>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">New password:</label>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control" name="pass1"
                                                title="Password should contains from 6 to 20 symbols"
-                                               pattern=".{6,20}">
+                                               pattern=".{6,20}"
+                                               placeholder="Enter, if you need to change it">
                                     </div>
                                 </div>
 
@@ -182,29 +192,41 @@
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control" name="pass2"
                                                title="Password should contains from 6 to 20 symbols"
-                                               pattern=".{6,20}">
+                                               pattern=".{6,20}"
+                                               placeholder="Confirm your new password">
                                     </div>
                                 </div>
 
-                                <div class="checkbox" align="center">
-                                        <input  value="YES" name="keepoldpass" type="checkbox">Keep old password?
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Avatar:</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" class="form-control"
+                                               name="avatar"
+                                               id="avatar"
+                                               accept="image/jpeg,image/png"
+                                               title="You may upload only picture with size < 10mb.">
+                                    </div>
                                 </div>
-
-                                <h6 style="color:red; font-style:italic; text-align: center;">If you would like to keep old password, select the box above and left password fields empty!</h6>
 
                                 <hr style="border-color: black;">
                                 <div class="form-group">
                                     <div class="col-sm-offset-5">
-                                        <button type="submit" class="btn btn-success" name="edit_btn">Save</button>
+                                        <button type="submit" class="btn btn-success" name="edit_btn" id="edit_btn">Save</button>
                                     </div>
                                 </div>
                             </form>
 
-                            <%
-                                if (request.getParameter("edit_btn") != null) {
-                                    request.getRequestDispatcher("/functions/edit_user_data.jsp").include(request, response);
-                                }
-                            %>
+                            <script>
+                                // Скрипт проверяет размер загружаемой аватарки.
+                                $('#edit_btn').click( function(e) {
+                                    var fsize = $('#avatar')[0].files[0].size;
+                                    if(fsize>10485760){
+                                        alert("Avatar size is more than 10 mb!");
+                                        e.preventDefault(); // Предотвращает отправление формы, если размер аватарки больше 10мб
+                                    }
+                                });
+                            </script>
+
                         </div>
                     </div>
 

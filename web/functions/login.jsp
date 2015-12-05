@@ -3,8 +3,9 @@
 <%@ page import="java.sql.ResultSet" %>
 
 <%
-    ResultSet user_data = Connections.getUserInfo(request.getParameter("user_email"));
-    if (user_data.next()){
+    try {
+        ResultSet user_data = Connections.getUserInfo(request.getParameter("user_email"));
+        if (user_data.next()){
             if (BCrypt.checkpw(request.getParameter("pwd"), user_data.getString(7))) {
                 session.setAttribute("user_name", user_data.getString(3));
                 session.setAttribute("position", user_data.getInt(2));
@@ -14,8 +15,10 @@
             else {
                 %><script>alert("Password doesn't match!");</script><%
             }
-    }
-    else {
-        %><script>alert("There's no such user!");</script><%
+        }else {
+            %><script>alert("There's no such user!");</script><%
+        }
+    }catch (Exception e) {
+        %><script>alert("Login error, contact system administrator!");</script><%
     }
 %>

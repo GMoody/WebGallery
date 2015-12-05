@@ -70,7 +70,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
                             <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                            <% if(Integer.parseInt(session.getAttribute("position").toString()) == 3){ %>
+                            <% if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
                                 <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                             <%}%>
                             <li class="divider"></li>
