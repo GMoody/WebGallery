@@ -3,10 +3,11 @@ package main;
 import functions.Checker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class Picture {
+public class Picture implements Comparable<Picture>{
 
     private int id_picture;
     private int id_category;
@@ -104,6 +105,42 @@ public class Picture {
                 return picture;
         return null;
     }
+
+    public static List<Picture> sortASC(){
+        List<Picture> temp = pictures;
+        Collections.sort(temp);
+        return temp;
+    }
+
+    public static List<Picture> sortReverse(){
+        List<Picture> temp = pictures;
+        Collections.sort(temp, Collections.reverseOrder());
+        return temp;
+    }
+
+    public static List<Picture> sortRatingASC(){
+        List<Picture> temp = new ArrayList<>();
+
+        for(Picture_Statistics picture_statistics : Picture_Statistics.sortRatingASC()){
+            temp.add(getPictureInfo(picture_statistics.getId_picture()));
+        }
+
+        return temp;
+    }
+
+    public static List<Picture> sortRatingDESC(){
+        List<Picture> temp = sortRatingASC();
+        Collections.sort(temp, Collections.reverseOrder());
+        return temp;
+    }
+
+
+    @Override
+    public int compareTo(Picture o) {
+        return getUpl_date().compareTo(o.upl_date);
+    }
+
+
 
     //endregion
 }

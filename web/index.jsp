@@ -118,16 +118,56 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Tool menu
-                <small>Secondary Text</small>
-            </h1>
+            <div class="well well-sm">
+                <div class="btn-group">
+                    <%
+                        List<Picture> pictures = null;
+
+                        if(request.getParameter("sort") != null){
+
+                            if(request.getParameter("sort").equals("date_asc"))
+                                pictures = Picture.sortASC();
+
+                            if(request.getParameter("sort").equals("date_desc"))
+                                pictures = Picture.sortReverse();
+
+                            if(request.getParameter("sort").equals("rate_asc"))
+                                pictures = Picture.sortRatingASC();
+
+                            if(request.getParameter("sort").equals("rate_desc"))
+                                pictures = Picture.sortRatingDESC();
+
+                        }else {
+                            pictures = MainHandler.getMainPictures();
+                        }
+
+                    %>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Date <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="index.jsp?sort=date_asc"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="index.jsp?sort=date_desc"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Rating <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="index.jsp?sort=rate_asc"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="index.jsp?sort=rate_desc"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
     <!-- /.row -->
 
+
     <!-- Pictures -->
     <div class="row"><%
-        List<Picture> pictures = MainHandler.getMainPictures();
 
         int i = 0, y = 12, current_page = 1; // Переменные для работы с выводом картинок.
 

@@ -101,7 +101,7 @@
     <div class="container-fluid well span6">
         <div class="row-fluid">
             <div class="span2" style="float:left;">
-                <img style="width:150px; height: 150px;" src="<%=User.getUserInfo(session.getAttribute("email").toString()).getAvatar()%>" class="img-circle">
+                <img style="width:150px; height: 150px;" src="<%=User.getUserInfo(session.getAttribute("email").toString()).getAvatar()%>" class="img-thumbnail">
                 <h4 style="margin-left: 35px;"><%=session.getAttribute("user_name")%></h4> <%--Отступ работает у всех по-разному--%>
             </div>
 

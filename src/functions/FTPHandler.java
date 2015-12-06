@@ -31,9 +31,9 @@ public class FTPHandler {
 
     public static boolean sendFile(File file, boolean folder) {
         FTPClient ftp = ftpConnect();
+        InputStream fis = null;
 
         if (ftp != null) {
-            InputStream inputStream = null;
 
             try {
 
@@ -43,8 +43,8 @@ public class FTPHandler {
                     ftp.changeWorkingDirectory("/public_http/pictures/");
                 }
 
-                inputStream = new FileInputStream(file);
-                ftp.storeFile(file.getName(), inputStream);
+                fis = new FileInputStream(file);
+                ftp.storeFile(file.getName(), fis);
                 return true;
 
             } catch (IOException e) {
@@ -52,9 +52,9 @@ public class FTPHandler {
                 e.printStackTrace();
                 return false;
             } finally {
-                if (inputStream != null)
+                if (fis != null)
                     try {
-                        inputStream.close();
+                        fis.close();
                         ftp.logout();
                         ftp.disconnect();
                     } catch (IOException e) {
@@ -67,12 +67,13 @@ public class FTPHandler {
 
     public static boolean checkFile(File file, boolean folder){
         FTPClient ftp = ftpConnect();
+        InputStream fis = null;
 
         if (ftp != null) {
-            InputStream inputStream = null;
-            String filepath;
 
             try {
+
+                String filepath;
 
                 if(folder){ // folder avatars
                     filepath = "/public_http/avatars/" + file.getName();
@@ -80,18 +81,18 @@ public class FTPHandler {
                     filepath = "/public_http/pictures/" + file.getName();
                 }
 
-                inputStream = ftp.retrieveFileStream(filepath);
+                fis = ftp.retrieveFileStream(filepath);
                 int returnCode = ftp.getReplyCode();
-
-                return !(inputStream == null || returnCode == 550);
+                return !(fis == null || returnCode == 550);
 
             } catch (IOException e) {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
+                return false;
             } finally {
-                if (inputStream != null)
+                if (fis != null)
                     try {
-                        inputStream.close();
+                        fis.close();
                         ftp.logout();
                         ftp.disconnect();
                     } catch (IOException e) {
@@ -102,13 +103,14 @@ public class FTPHandler {
         return true;
     }
 
+
     public static boolean removeFile(File file, boolean folder){
         FTPClient ftp = ftpConnect();
 
         if (ftp != null) {
-            String filepath;
 
             try {
+                String filepath;
 
                 if(folder){ // folder avatars
                     filepath = "/public_http/avatars/" + file.getName();

@@ -3,9 +3,10 @@ package main;
 import functions.Checker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Picture_Statistics {
+public class Picture_Statistics implements Comparable<Picture_Statistics>{
 
     private int id_picture_statistics;
     private int id_picture;
@@ -93,6 +94,17 @@ public class Picture_Statistics {
             if(statistics.id_picture_statistics == id_picture_statistics)
                 return statistics;
         return null;
+    }
+
+    @Override
+    public int compareTo(Picture_Statistics o) {
+        return Double.compare(getPicture_rating(), o.getPicture_rating());
+    }
+
+    public static List<Picture_Statistics> sortRatingASC(){
+        List<Picture_Statistics> temp = picture_statistics;
+        Collections.sort(temp);
+        return temp;
     }
 
     //endregion

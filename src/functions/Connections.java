@@ -51,7 +51,8 @@ public class Connections {
     }
 
     public static ResultSet getAllPictures() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT * FROM webgallery.t_picture"; // Here we need sorted by date pictures
+        // Свортировка: сначала идут более свежие картинки.
+        String sql = "SELECT * FROM webgallery.t_picture ORDER BY upl_date DESC";
         return queryExecuter(sql);
     }
 
