@@ -11,14 +11,18 @@
                 session.setAttribute("position", user_data.getInt(2));
                 session.setAttribute("email", user_data.getString(6));
                 user_data.close();
+                %><script>window.location = "../index.jsp";</script><%
             }
             else {
                 %><script>alert("Password doesn't match!");</script><%
+                %><script>window.location = "../index.jsp";</script><%
             }
         }else {
             %><script>alert("There's no such user!");</script><%
+            %><script>window.location = "../index.jsp";</script><%
         }
     }catch (Exception e) {
         %><script>alert("Login error, contact system administrator!");</script><%
+        %><script>window.location = "../index.jsp";</script><%
     }
 %>

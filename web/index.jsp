@@ -49,6 +49,7 @@
 
         <!-- Navbar + login modal -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!-- Navbar -->
             <ul class="nav navbar-nav">
                 <% if (session.getAttribute("user_name") == null){%>
                     <li><a href="register.jsp">Registration</a></li>
@@ -59,6 +60,7 @@
                     <li><a href="#">Contact</a></li>
                 <% } %>
             </ul>
+            <!-- Navbar END -->
 
             <!-- Profile -->
             <ul class="nav navbar-right top-nav">
@@ -70,7 +72,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
                             <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                            <% if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
+                            <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
                                 <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                             <%}%>
                             <li class="divider"></li>
@@ -85,16 +87,11 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
                     <ul class="dropdown-menu" style="height: 180px; width: 300px">
                         <div class="loginmodal-container">
-                            <form method="post" name="login_form">
+                            <form method="post" action="functions/login.jsp" name="login_form">
                                 <input type="text" name="user_email" placeholder="Email">
                                 <input type="password" name="pwd" placeholder="Password">
                                 <input type="submit" name="log_in_btn" class="login loginmodal-submit" value="Log in">
                             </form>
-                            <%
-                                if (request.getParameter("log_in_btn") != null) {
-                                    request.getRequestDispatcher("functions/login.jsp").include(request, response);
-                                    %><script>window.location = window.location.href;</script>
-                            <%}%>
                         </div>
                     </ul>
                 </li>
@@ -106,7 +103,6 @@
 
         </div>
         <!-- Navbar + login modal END-->
-
     </div>
     <!-- /.container -->
 </nav>
@@ -253,6 +249,7 @@
         </div>
         <!-- /.row -->
     </footer>
+    <!-- Footer END-->
 
 </div>
 <!-- /.container -->

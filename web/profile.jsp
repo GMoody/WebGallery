@@ -21,7 +21,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Title -->
-    <title>Web Gallery</title>
+    <title>Web Gallery - Profile info</title>
 
 </head>
 
@@ -48,14 +48,17 @@
 
         <!-- Navbar + login modal -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!-- Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="index.jsp">Main</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
+            <!-- Navbar END -->
 
             <!-- Profile -->
             <ul class="nav navbar-right top-nav">
+
                 <!-- Logged-in -->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
@@ -242,6 +245,7 @@
         </div>
     </div>
 
+
     <hr>
 
     <!-- Footer -->
@@ -253,6 +257,7 @@
         </div>
         <!-- /.row -->
     </footer>
+    <!-- Footer END-->
 
 </div>
 <!-- /.container -->
