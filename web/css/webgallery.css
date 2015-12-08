@@ -190,3 +190,18 @@ footer {
 @media (min-width: 768px){
 }
 /* Adaptive options END*/
+
+.row + .row .well{
+    padding: 0;
+}
+    .row + .row .toolbox{
+        height: 25px;
+        text-align: center;
+        margin-top: 5px;
+    }
+        .row + .row .toolbox p{
+            padding-right: 5px;
+            padding-top: 2px;
+            margin-right: 5px;
+            display: inline-block;
+        }

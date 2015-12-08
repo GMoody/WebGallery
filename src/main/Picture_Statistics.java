@@ -4,6 +4,7 @@ import functions.Checker;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Picture_Statistics implements Comparable<Picture_Statistics>{
@@ -89,23 +90,31 @@ public class Picture_Statistics implements Comparable<Picture_Statistics>{
     //endregion
 
     //region Methods
-    public static Picture_Statistics getPicture_statistics (int id_picture_statistics){
+    public static Picture_Statistics getPicture_statistics (int id_picture){
         for(Picture_Statistics statistics : picture_statistics)
-            if(statistics.id_picture_statistics == id_picture_statistics)
+            if(statistics.id_picture == id_picture)
                 return statistics;
         return null;
     }
 
-    @Override
-    public int compareTo(Picture_Statistics o) {
-        return Double.compare(getPicture_rating(), o.getPicture_rating());
-    }
-
-    public static List<Picture_Statistics> sortRatingASC(){
+    public static List<Picture_Statistics> sortDownloadsASC(){
         List<Picture_Statistics> temp = picture_statistics;
         Collections.sort(temp);
         return temp;
     }
+
+    public static List<Picture_Statistics> sortRatingASC(){
+        List<Picture_Statistics> temp = picture_statistics;
+        Collections.sort(temp, Picture_Statistics.RatingComparator);
+        return temp;
+    }
+
+    @Override
+    public int compareTo(Picture_Statistics o) {
+        return Integer.compare(this.getTotal_downloads(), o.getTotal_downloads());
+    }
+
+    public static Comparator<Picture_Statistics> RatingComparator = (o1, o2) -> Double.compare(o1.getPicture_rating(), o2.getPicture_rating());
 
     //endregion
 }

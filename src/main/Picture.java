@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Picture implements Comparable<Picture>{
 
@@ -106,40 +107,44 @@ public class Picture implements Comparable<Picture>{
         return null;
     }
 
-    public static List<Picture> sortASC(){
-        List<Picture> temp = pictures;
-        Collections.sort(temp);
-        return temp;
-    }
 
-    public static List<Picture> sortReverse(){
-        List<Picture> temp = pictures;
-        Collections.sort(temp, Collections.reverseOrder());
-        return temp;
-    }
-
-    public static List<Picture> sortRatingASC(){
-        List<Picture> temp = new ArrayList<>();
-
-        for(Picture_Statistics picture_statistics : Picture_Statistics.sortRatingASC()){
-            temp.add(getPictureInfo(picture_statistics.getId_picture()));
+    public static List<Picture> sortASC(int sort){
+        switch (sort){
+            case 0: // Date sorting
+                List<Picture> temp = pictures;
+                Collections.sort(temp);
+                return temp;
+            case 1: // Downloads sorting
+                return Picture_Statistics.sortDownloadsASC().stream().map(statistics -> getPictureInfo(statistics.getId_picture())).collect(Collectors.toList());
+            case 2: // Rating sorting
+                return Picture_Statistics.sortRatingASC().stream().map(statistics -> getPictureInfo(statistics.getId_picture())).collect(Collectors.toList());
         }
-
-        return temp;
+        return null;
     }
 
-    public static List<Picture> sortRatingDESC(){
-        List<Picture> temp = sortRatingASC();
-        Collections.sort(temp, Collections.reverseOrder());
+    public static List<Picture> sortDESC(int sort){
+        List<Picture> temp = null;
+        switch (sort){
+            case 0: // Date sorting
+                temp = sortASC(0);
+                Collections.reverse(temp);
+                break;
+            case 1: // Downloads sorting
+                temp = sortASC(1);
+                Collections.reverse(temp);
+                break;
+            case 2: // Rating sorting
+                temp = sortASC(2);
+                Collections.reverse(temp);
+                break;
+        }
         return temp;
     }
-
 
     @Override
     public int compareTo(Picture o) {
-        return getUpl_date().compareTo(o.upl_date);
+        return this.getUpl_date().compareTo(o.upl_date);
     }
-
 
 
     //endregion

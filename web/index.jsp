@@ -1,6 +1,8 @@
 <%@ page import="main.Picture" %>
 <%@ page import="java.util.List" %>
 <%@ page import="functions.MainHandler" %>
+<%@ page import="main.Picture_Statistics" %>
+<%@ page import="functions.URLHandler" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -118,20 +120,30 @@
                 <div class="btn-group">
                     <%
                         List<Picture> pictures = null;
+                        String url;
+                        if(request.getQueryString() == null)
+                         url = request.getRequestURL().toString();
+                        else url = request.getRequestURL().toString() + "?" + request.getQueryString();
 
                         if(request.getParameter("sort") != null){
 
                             if(request.getParameter("sort").equals("date_asc"))
-                                pictures = Picture.sortASC();
+                                pictures = Picture.sortASC(0);
 
                             if(request.getParameter("sort").equals("date_desc"))
-                                pictures = Picture.sortReverse();
+                                pictures = Picture.sortDESC(0);
 
-                            if(request.getParameter("sort").equals("rate_asc"))
-                                pictures = Picture.sortRatingASC();
+                            if(request.getParameter("sort").equals("downloads_asc"))
+                                pictures = Picture.sortASC(1);
 
-                            if(request.getParameter("sort").equals("rate_desc"))
-                                pictures = Picture.sortRatingDESC();
+                            if(request.getParameter("sort").equals("downloads_desc"))
+                                pictures = Picture.sortDESC(1);
+
+                            if(request.getParameter("sort").equals("rating_asc"))
+                                pictures = Picture.sortASC(2);
+
+                            if(request.getParameter("sort").equals("rating_desc"))
+                                pictures = Picture.sortDESC(2);
 
                         }else {
                             pictures = MainHandler.getMainPictures();
@@ -141,16 +153,24 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Date <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="index.jsp?sort=date_asc"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
-                            <li><a href="index.jsp?sort=date_desc"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                            <li><a href="<%=URLHandler.makeASC(url, "date")%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="<%=URLHandler.makeDESC(url, "date")%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Downloads <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="<%=URLHandler.makeASC(url, "downloads")%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="<%=URLHandler.makeDESC(url, "downloads")%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Rating <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="index.jsp?sort=rate_asc"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
-                            <li><a href="index.jsp?sort=rate_desc"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                            <li><a href="<%=URLHandler.makeASC(url, "rating")%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="<%=URLHandler.makeDESC(url, "rating")%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
 
@@ -184,6 +204,11 @@
             for (int z = i; z < y; z++){ %>
                 <div class="col-md-3 portfolio-item">
                     <a href="picture.jsp?picture=<%=pictures.get(z).getId_picture()%>"><img class="img-responsive" src="<%=pictures.get(z).getPicture_url()%>" alt="<%=pictures.get(z).getDescription() %>"></a>
+                        <div class="toolbox well">
+                            <p><span class="glyphicon glyphicon-download-alt"></span> <%=Picture_Statistics.getPicture_statistics(pictures.get(z).getId_picture()).getTotal_downloads()%></p>
+                            <p><span class="glyphicon glyphicon-time"></span> <%=pictures.get(z).getUpl_date()%></p>
+                            <p><span class="glyphicon glyphicon-star"></span> <%=Picture_Statistics.getPicture_statistics(pictures.get(z).getId_picture()).getPicture_rating()%></p>
+                        </div>
                 </div>
             <%}
         }%>
@@ -198,35 +223,35 @@
                 <%
                     // Стрелочка влево выводится всегда, кроме как на 1-ой странице.
                     if(current_page!=1){
-                        %><li><a href="index.jsp?page=<%=current_page-1%>">&laquo;</a></li><%
+                        %><li><a href="<%=URLHandler.makePage(url,current_page-1)%>">&laquo;</a></li><%
                     }
 
                     // Имеем ли все страницы полностью заполненные по 12 картинок
                     if(pictures.size() % 12 != 0){
                         for (int w = 1; w < (pictures.size() / 12) + 2; w++){
                             if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
-                                %><li class="active"><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                                %><li class="active"><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }
                             else{
-                            %><li><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                            %><li><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }
                         }
 
                         if((pictures.size()/12) + 1 > current_page){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
-                            %><li><a href="index.jsp?page=<%=current_page+1%>">&raquo;</a></li><%
+                            %><li><a href="<%=URLHandler.makePage(url,current_page+1)%>">&raquo;</a></li><%
                         }
 
                     }else{ // Имеем все страницы по 12 картинок!
                         for (int w = 1; w < (pictures.size() / 12) + 1; w++){
                             if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
-                                %><li class="active"><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                                %><li class="active"><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }else{
-                            %><li><a href="index.jsp?page=<%=w%>"><%=w%></a></li><%
+                            %><li><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }
                         }
 
                         if(current_page!= pictures.size() / 12){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
-                            %><li><a href="index.jsp?page=<%=current_page+1%>">&raquo;</a></li><%
+                            %><li><a href="<%=URLHandler.makePage(url,current_page+1)%>">&raquo;</a></li><%
                         }
                     }
                 %>
