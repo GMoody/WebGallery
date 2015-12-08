@@ -63,7 +63,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                        <li><a href="gallery.jsp"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                         <% if(Integer.valueOf(session.getAttribute("position").toString())  == 2){ %>
                             <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
@@ -114,13 +114,12 @@
                 <h5>Email: <%=User.getUserInfo(session.getAttribute("email").toString()).getEmail()%></h5>
             </div>
 
-
+            <!-- Buttons -->
             <div class="span2" style="float:right;">
                 <td class="tg-baqh" colspan="2">
                     <a href='#edit_modal' class='btn btn-primary' data-toggle='modal'>Edit profile</a>
                 </td>
             </div>
-
 
             <!-- EditModal -->
             <div id="edit_modal" class="modal fade" role="dialog">
@@ -235,12 +234,14 @@
 
                 </div>
             </div>
+            <!-- EditModal END -->
 
-            <form class="form-horizontal" action='' method="POST">
             <div class="span3" style="float:right; margin-right: -101px;margin-top: 45px;">
-                <td class="tg-baqh" colspan="2"><input type="submit" class="btn btn-primary" value="View gallery"></td>
+                <td class="tg-baqh" colspan="2">
+                    <a href='gallery.jsp' class='btn btn-primary'>View gallery</a>
+                </td>
             </div>
-            </form>
+            <!-- Buttons END-->
 
         </div>
     </div>
