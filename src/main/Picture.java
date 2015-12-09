@@ -1,7 +1,11 @@
 package main;
 
 import functions.Checker;
+import functions.Connections;
 
+import javax.xml.transform.Result;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -90,6 +94,7 @@ public class Picture implements Comparable<Picture>{
     }
 
     public List<Comment> getComments() {
+
         return comments;
     }
 
@@ -144,6 +149,35 @@ public class Picture implements Comparable<Picture>{
     @Override
     public int compareTo(Picture o) {
         return this.getUpl_date().compareTo(o.upl_date);
+    }
+
+    public static void addCommentToPicture(int id_picture){
+        try {
+            ResultSet rs = Connections.GetPictureComments(id_picture);
+            while(rs.next())
+            {
+                if (Picture.getPictureInfo(id_picture).getComments().size() > 0)
+                {
+                    boolean check = true;
+                    for (int i = 0; i < Picture.getPictureInfo(id_picture).getComments().size(); i++)
+                    {
+
+                        if (Picture.getPictureInfo(id_picture).getComments().get(i).getId_comment() == rs.getInt(1))
+                        {
+                            check = false;
+                        }
+                    }
+                    if(check==true){ getPictureInfo(id_picture).getComments().add(new Comment(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(5), rs.getDate(4)));}
+                }
+                else if(Picture.getPictureInfo(id_picture).getComments().size() == 0){getPictureInfo(id_picture).getComments().add(new Comment(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(5), rs.getDate(4)));}
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

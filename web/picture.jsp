@@ -115,6 +115,7 @@
 <div class="container">
     <%  Integer picture_id = Integer.parseInt(request.getParameter("picture"));
         String url = Picture.getPictureInfo(picture_id).getPicture_url().toString();
+        Picture.addCommentToPicture(picture_id);
 
 
     %>
@@ -176,7 +177,7 @@
 
      <% if (session.getAttribute("user_name") != null){%>
         <!------------------- COMMENTARY FORM --------------------------->
-        <form style="width: 50%; margin: auto; margin-top: 5px;">
+        <form style="width: 50%; margin: auto; margin-top: 5px;" action="add_comment" method="POST">
             <div class="form-group">
                 <label for="comment">Your Comment</label>
                 <textarea name="comment" class="form-control" rows="3"></textarea>
@@ -184,65 +185,70 @@
             <button type="submit" class="btn btn-default">Send</button>
         </form>
         <!------------------- COMMENTARY FORM END --------------------------->
+    <%}%>
+    <% if(Picture.getPictureInfo(picture_id).getComments().size()>0){%>
+        <!------------------- COMMENTS AREA ------------------------------>
+    <div class="container" style="width: 75%; margin-top: 25px;">
+    <div class="row">
+        <div class="panel panel-default widget">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-comment" style="margin-left: 10px;"></span>
+                <h3 class="panel-title" style="float: left;">
+                    Recent Comments</h3>
+                <span class="label label-info" style="margin-left: 10px;">
+                   <%=Picture.getPictureInfo(picture_id).getComments().size()%> </span>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
 
-        <%--<!------------------- COMMENTS AREA ------------------------------>--%>
-    <%--<div class="container" style="width: 75%; margin-top: 25px;">--%>
-    <%--<div class="row">--%>
-        <%--<div class="panel panel-default widget">--%>
-            <%--<div class="panel-heading">--%>
-                <%--<span class="glyphicon glyphicon-comment" style="margin-left: 10px;"></span>--%>
-                <%--<h3 class="panel-title" style="float: left;">--%>
-                    <%--Recent Comments</h3>--%>
-                <%--<span class="label label-info" style="margin-left: 10px;">--%>
-                   <%--<%=Picture.getPictureInfo(picture_id).getComments().size()%> </span>--%>
-            <%--</div>--%>
-            <%--<div class="panel-body">--%>
-                <%--<ul class="list-group">--%>
+                    <!----------------------------- TESTOVIY KOMMENTARIY ----------------------------->
+                    <%
 
-                    <%--<%if(Picture.getPictureInfo(picture_id).getComments().size() > 0){%>--%>
-                    <%--<!----------------------------- TESTOVIY KOMMENTARIY ----------------------------->--%>
+                        for(int i=0;i<Picture.getPictureInfo(picture_id).getComments().size();i++)
+                        { %>
 
-                    <%--<li class="list-group-item">--%>
-                        <%--<div class="row">--%>
+                        <li class="list-group-item">
+                        <div class="row">
 
-                            <%--<div class="col-xs-10 col-md-11">--%>
-                                <%--<div>--%>
-                                    <%--<div class="mic-info">--%>
-                                        <%--By: <a href="#">Bhaumik Patel</a> on 11 Nov 2013--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="comment-text">--%>
-                                    <%--Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh--%>
-                                    <%--euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim--%>
-                                <%--</div>--%>
-                                <%--<div class="action">--%>
-                                    <%--<button type="button" class="btn btn-primary btn-xs" title="Edit">--%>
-                                        <%--<span class="glyphicon glyphicon-pencil"></span>--%>
-                                    <%--</button>--%>
-                                    <%--<button type="button" class="btn btn-success btn-xs" title="Approved">--%>
-                                        <%--<span class="glyphicon glyphicon-ok"></span>--%>
-                                    <%--</button>--%>
-                                    <%--<button type="button" class="btn btn-danger btn-xs" title="Delete">--%>
-                                        <%--<span class="glyphicon glyphicon-trash"></span>--%>
-                                    <%--</button>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</li>--%>
+                            <div class="col-xs-10 col-md-11">
+                                <div>
+                                    <div class="mic-info">
+                                        By: <a href="#"><%out.println(User.getUserInfo(Picture.getPictureInfo(picture_id).getComments().get(i).getId_user()).getUser_name());%></a> on <% out.println(Picture.getPictureInfo(picture_id).getComments().get(i).getAdd_date().toString());%>
+                                    </div>
+                                </div>
+                                <div class="comment-text">
+                                    <% out.println(Picture.getPictureInfo(picture_id).getComments().get(i).getComment()); %>
+                                </div>
+                                <div class="action">
+                                    <button type="button" class="btn btn-primary btn-xs" title="Edit">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-xs" title="Approved">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Delete">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <%
+                        }
+                    %>
+                    <!---------------------------------------------------------->
+                    </ul>
+                     <a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>
+                    </div>
 
 
-                    <%--<!---------------------------------------------------------->--%>
-                    <%--</ul>--%>
-                     <%--<a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>--%>
-                    <%--</div>--%>
 
-                    <%--<%}%>--%>
+        </div>
+    </div>
+</div>
 
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
-
-        <%--<!------------------- COMMENTS AREA END------------------------------>--%>
+        <!------------------- COMMENTS AREA END------------------------------>
 
 
 

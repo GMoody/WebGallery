@@ -101,5 +101,11 @@ public class Connections {
         return !st.next();
     }
 
+    public static ResultSet GetPictureComments(int picture_id) throws SQLException, ClassNotFoundException{
+
+        String query="SELECT * FROM webgallery.t_comment as C WHERE C.id_picture = '"+picture_id+"' ORDER BY 4 ASC";
+        return queryExecuter(query);
+    }
+
 
 }
