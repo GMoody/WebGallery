@@ -1,4 +1,8 @@
-
+<%@ page import="main.Picture" %>
+<%@ page import="main.User" %>
+<%@ page import="com.sun.corba.se.impl.interceptors.PICurrent" %>
+<%@ page import="main.Picture_Statistics" %>
+<%@ page import="main.Category" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +31,8 @@
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
+
+        <div class="container">
 
         <!-- Mobile display menu-->
         <div class="navbar-header">
@@ -108,18 +113,140 @@
 
 <!-- Page Content -->
 <div class="container">
+    <%  Integer picture_id = Integer.parseInt(request.getParameter("picture"));
+        String url = Picture.getPictureInfo(picture_id).getPicture_url().toString();
+
+
+    %>
 
     <!-- Page Heading -->
-    <div class="row">
+    <!--<div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Tool menu
-                <small>Secondary Text</small>
+            <h1 class="page-header">
+                <small></small>
             </h1>
         </div>
-    </div>
+    </div>-->
     <!-- /.row -->
 
 
+    <div class="container">
+        <div class="row">
+            <p style="margin-left: -28px; text-align: center;"> <b><i class="glyphicon glyphicon-th-list"> </i> Category:</b> <a href='#' target="_blank"> <%=Category.getCategoryInfo(Picture.getPictureInfo(picture_id).getId_category()).getCategory().toString()%> </a> <%out.println(" | ");%> <b><i class="glyphicon glyphicon-eye-open"> </i> Best viewed in a</b> <a href=<%=url%> target="_blank">full screen</a>
+                <div class="row">
+                    <div class="span8">
+                        <div class="row">
+                            <div style="width:50%; margin:auto;" class="span2">
+                                <a href="#" class="thumbnail">
+                                    <img src=<%=url%> alt="">
+                                </a>
+                            </div>
+                             </div>
+                        </div>
+
+    <div style="margin-left:-5px; text-align:center;" class="row">
+        <div class="span6">
+            <p>
+
+                <b>Description:</b> <%
+                try {
+                    if (Picture.getPictureInfo(picture_id).getDescription().toString() != null | Picture.getPictureInfo(picture_id).getDescription().toString().isEmpty()) {
+                        out.println(Picture.getPictureInfo(picture_id).getDescription().toString());
+                    }
+
+                }catch (Exception e){ out.println("No description was not provided"); }
+                %>
+            </p>
+        </div>
+        <div class="span8">
+            <p></p>
+            <p>
+                <i class="glyphicon glyphicon-user"></i> by <a href="#"><%=User.getUserInfo(Picture.getPictureInfo(picture_id).getUpl_user_id()).getUser_name().toString() %></a>
+                | <i class="glyphicon glyphicon-calendar"></i> <%=Picture.getPictureInfo(picture_id).getUpl_date().toString()%>
+                | <i class="glyphicon glyphicon-comment"></i> <a href="#"><%=Picture.getPictureInfo(picture_id).getComments().size()%> Comments</a>
+                | <i class="glyphicon glyphicon-thumbs-up"></i> <a href="#"><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_voted()%> Likes</a>
+                | <i class="glyphicon glyphicon-download-alt"></i> <a href="#"><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_downloads()%> Downloads</a>
+                | <i class="glyphicon glyphicon-star"></i> <a href="#"><%=Picture_Statistics.getPicture_statistics(picture_id).getPicture_rating()%> Rating</a>
+                <!--| <i class="icon-tags"></i> Tags : <a href="#"><span class="label label-info">Nature,Tiger,Snow</span></a>-->
+            </p>
+        </div>
+    </div>
+
+</div>
+
+     <% if (session.getAttribute("user_name") != null){%>
+        <!------------------- COMMENTARY FORM --------------------------->
+        <form style="width: 50%; margin: auto; margin-top: 5px;">
+            <div class="form-group">
+                <label for="comment">Your Comment</label>
+                <textarea name="comment" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Send</button>
+        </form>
+        <!------------------- COMMENTARY FORM END --------------------------->
+
+        <%--<!------------------- COMMENTS AREA ------------------------------>--%>
+    <%--<div class="container" style="width: 75%; margin-top: 25px;">--%>
+    <%--<div class="row">--%>
+        <%--<div class="panel panel-default widget">--%>
+            <%--<div class="panel-heading">--%>
+                <%--<span class="glyphicon glyphicon-comment" style="margin-left: 10px;"></span>--%>
+                <%--<h3 class="panel-title" style="float: left;">--%>
+                    <%--Recent Comments</h3>--%>
+                <%--<span class="label label-info" style="margin-left: 10px;">--%>
+                   <%--<%=Picture.getPictureInfo(picture_id).getComments().size()%> </span>--%>
+            <%--</div>--%>
+            <%--<div class="panel-body">--%>
+                <%--<ul class="list-group">--%>
+
+                    <%--<%if(Picture.getPictureInfo(picture_id).getComments().size() > 0){%>--%>
+                    <%--<!----------------------------- TESTOVIY KOMMENTARIY ----------------------------->--%>
+
+                    <%--<li class="list-group-item">--%>
+                        <%--<div class="row">--%>
+
+                            <%--<div class="col-xs-10 col-md-11">--%>
+                                <%--<div>--%>
+                                    <%--<div class="mic-info">--%>
+                                        <%--By: <a href="#">Bhaumik Patel</a> on 11 Nov 2013--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="comment-text">--%>
+                                    <%--Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh--%>
+                                    <%--euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim--%>
+                                <%--</div>--%>
+                                <%--<div class="action">--%>
+                                    <%--<button type="button" class="btn btn-primary btn-xs" title="Edit">--%>
+                                        <%--<span class="glyphicon glyphicon-pencil"></span>--%>
+                                    <%--</button>--%>
+                                    <%--<button type="button" class="btn btn-success btn-xs" title="Approved">--%>
+                                        <%--<span class="glyphicon glyphicon-ok"></span>--%>
+                                    <%--</button>--%>
+                                    <%--<button type="button" class="btn btn-danger btn-xs" title="Delete">--%>
+                                        <%--<span class="glyphicon glyphicon-trash"></span>--%>
+                                    <%--</button>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</li>--%>
+
+
+                    <%--<!---------------------------------------------------------->--%>
+                    <%--</ul>--%>
+                     <%--<a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>--%>
+                    <%--</div>--%>
+
+                    <%--<%}%>--%>
+
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
+        <%--<!------------------- COMMENTS AREA END------------------------------>--%>
+
+
+
+<%}%>
 
     <hr>
 
