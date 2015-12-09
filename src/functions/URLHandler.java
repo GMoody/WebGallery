@@ -6,11 +6,13 @@ public class URLHandler {
         if(!url.contains("index"))
             return url = url + "index.jsp?page=1&sort=" + sort + "_desc";
         else{
-            if(url.contains("asc")){
-                return url = url.replace(url.substring(url.indexOf("&"), url.length()), "") + "&sort=" + sort + "_desc";
-            }else if(url.contains("desc"))
-                return url; // Bug here
-            else return url = url + "&sort=" + sort + "_desc";
+            if(url.contains("&")) {
+                url = url.replace(url.substring(url.indexOf("&"), url.length()), "") + "&sort=" + sort + "_desc";
+                return url;
+            }else{
+                url = url + "&sort=" + sort + "_desc";
+                return url;
+            }
         }
     }
 
@@ -18,11 +20,13 @@ public class URLHandler {
         if(!url.contains("index"))
             return url = url + "index.jsp?page=1&sort=" + sort + "_asc";
         else{
-            if(url.contains("desc")){
-                return url = url.replace(url.substring(url.indexOf("&"), url.length()), "") + "&sort=" + sort + "_asc";
-            }else if(url.contains("asc"))
-                return url; // Bug here
-            else return url = url + "&sort=" + sort + "_asc";
+            if(url.contains("&")) {
+                url = url.replace(url.substring(url.indexOf("&"), url.length()), "") + "&sort=" + sort + "_asc";
+                return url;
+            }else{
+                url = url + "&sort=" + sort + "_asc";
+                return url;
+            }
         }
     }
 
