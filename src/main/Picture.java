@@ -94,7 +94,6 @@ public class Picture implements Comparable<Picture>{
     }
 
     public List<Comment> getComments() {
-
         return comments;
     }
 
@@ -113,6 +112,7 @@ public class Picture implements Comparable<Picture>{
     }
 
 
+    //region Picture Sorting
     public static List<Picture> sortASC(int sort){
         switch (sort){
             case 0: // Date sorting
@@ -145,6 +145,7 @@ public class Picture implements Comparable<Picture>{
         }
         return temp;
     }
+    //endregion Picture Sorting
 
     @Override
     public int compareTo(Picture o) {

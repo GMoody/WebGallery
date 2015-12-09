@@ -97,6 +97,7 @@ public class Picture_Statistics implements Comparable<Picture_Statistics>{
         return null;
     }
 
+    //region Sorting
     public static List<Picture_Statistics> sortDownloadsASC(){
         List<Picture_Statistics> temp = picture_statistics;
         Collections.sort(temp);
@@ -108,6 +109,7 @@ public class Picture_Statistics implements Comparable<Picture_Statistics>{
         Collections.sort(temp, Picture_Statistics.RatingComparator);
         return temp;
     }
+    //endregion Sorting
 
     @Override
     public int compareTo(Picture_Statistics o) {

@@ -1,6 +1,5 @@
 <%@ page import="main.Picture" %>
 <%@ page import="java.util.List" %>
-<%@ page import="functions.MainHandler" %>
 <%@ page import="main.Picture_Statistics" %>
 <%@ page import="functions.URLHandler" %>
 
@@ -119,58 +118,39 @@
             <div class="well well-sm">
                 <div class="btn-group">
                     <%
-                        List<Picture> pictures = null;
+                        // Получаем необходимый лист с картинками, в зависимости от сортировки.
+                        request.getRequestDispatcher("/functions/make_list.jsp").include(request, response);
+                        List<Picture> pictures = (List<Picture>) request.getAttribute("list");
                         String url;
-                        if(request.getQueryString() == null)
-                         url = request.getRequestURL().toString();
-                        else url = request.getRequestURL().toString() + "?" + request.getQueryString();
 
-                        if(request.getParameter("sort") != null){
-
-                            if(request.getParameter("sort").equals("date_asc"))
-                                pictures = Picture.sortASC(0);
-
-                            if(request.getParameter("sort").equals("date_desc"))
-                                pictures = Picture.sortDESC(0);
-
-                            if(request.getParameter("sort").equals("downloads_asc"))
-                                pictures = Picture.sortASC(1);
-
-                            if(request.getParameter("sort").equals("downloads_desc"))
-                                pictures = Picture.sortDESC(1);
-
-                            if(request.getParameter("sort").equals("rating_asc"))
-                                pictures = Picture.sortASC(2);
-
-                            if(request.getParameter("sort").equals("rating_desc"))
-                                pictures = Picture.sortDESC(2);
-
-                        }else {
-                            pictures = MainHandler.getMainPictures();
-                        }
+                        // Необходимая обработка URL
+                        if(request.getRequestURL().toString().contains("index.jsp"))
+                            if(request.getQueryString() != null) url = request.getRequestURL().toString() + "?" + request.getQueryString();
+                            else url = request.getRequestURL().toString() + "?page=1";
+                        else url = request.getRequestURL() + "index.jsp?";
 
                     %>
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Date <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<%=URLHandler.makeASC(url, "date")%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
-                            <li><a href="<%=URLHandler.makeDESC(url, "date")%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                            <li><a href="<%=URLHandler.makeURL(url, "date", true)%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="<%=URLHandler.makeURL(url, "date", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Downloads <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<%=URLHandler.makeASC(url, "downloads")%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
-                            <li><a href="<%=URLHandler.makeDESC(url, "downloads")%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                            <li><a href="<%=URLHandler.makeURL(url, "downloads", true)%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="<%=URLHandler.makeURL(url, "downloads", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Rating <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<%=URLHandler.makeASC(url, "rating")%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
-                            <li><a href="<%=URLHandler.makeDESC(url, "rating")%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                            <li><a href="<%=URLHandler.makeURL(url, "rating", true)%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                            <li><a href="<%=URLHandler.makeURL(url, "rating", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
 
@@ -180,7 +160,6 @@
         </div>
     </div>
     <!-- /.row -->
-
 
     <!-- Pictures -->
     <div class="row"><%
@@ -215,7 +194,7 @@
     </div>
     <!-- Pictures -->
 
-    <!-- Pagination -->
+    <!-- Pagination Row -->
     <div class="row text-center">
         <div class="col-lg-12">
             <ul class="pagination">
@@ -233,7 +212,7 @@
                                 %><li class="active"><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }
                             else{
-                            %><li><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
+                                %><li><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }
                         }
 
@@ -246,7 +225,7 @@
                             if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
                                 %><li class="active"><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }else{
-                            %><li><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
+                                %><li><a href="<%=URLHandler.makePage(url,w)%>"><%=w%></a></li><%
                             }
                         }
 
@@ -259,9 +238,7 @@
             </ul>
         </div>
     </div>
-    <!-- /.row -->
-
-
+    <!-- Pagination Row END -->
 
     <hr>
 
