@@ -1,8 +1,8 @@
 <%@ page import="main.Picture" %>
 <%@ page import="main.User" %>
-<%@ page import="com.sun.corba.se.impl.interceptors.PICurrent" %>
 <%@ page import="main.Picture_Statistics" %>
 <%@ page import="main.Category" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,6 +22,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Title -->
     <title>Web Gallery - Picture info</title>
 
@@ -120,70 +121,69 @@
 
     %>
 
-    <!-- Page Heading -->
-    <!--<div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">
-                <small></small>
-            </h1>
+    <!-- Picture + Tools + Info -->
+    <div class="row">
+
+        <!-- Picture toolmenu -->
+        <div class="toolmenu" style="text-align: center;">
+            <!-- Picture options -->
+            <b><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Category: </b>
+            <%=Category.getCategoryInfo(Picture.getPictureInfo(picture_id).getId_category()).getCategory()%> |
+
+            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            <b><a href="<%=Picture.getPictureInfo(picture_id).getPicture_url()%>" target="_blank">Full screen</a></b>
+            <%out.println(" | ");%>
+
+            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+            <b><a href="<%=Picture.getPictureInfo(picture_id).getPicture_url()%>" download="" target="_blank">Download</a></b>
+            <!-- Picture options END -->
+
+            <!-- Picture -->
+            <div class="picture_url" style="width:50%; margin:auto; margin-top: 5px;">
+                <a class="thumbnail"><img src="<%=Picture.getPictureInfo(picture_id).getPicture_url()%>" alt=""></a>
+            </div>
+            <!-- Picture END -->
         </div>
-    </div>-->
-    <!-- /.row -->
+        <!-- Picture toolmenu END -->
 
-
-    <div class="container">
-        <div class="row">
-            <p style="margin-left: -28px; text-align: center;"> <b><i class="glyphicon glyphicon-th-list"> </i> Category:</b> <a href='#' target="_blank"> <%=Category.getCategoryInfo(Picture.getPictureInfo(picture_id).getId_category()).getCategory().toString()%> </a> <%out.println(" | ");%> <b><i class="glyphicon glyphicon-eye-open"> </i> Best viewed in a</b> <a href=<%=url%> target="_blank">full screen</a>
-                <div class="row">
-                    <div class="span8">
-                        <div class="row">
-                            <div style="width:50%; margin:auto;" class="span2">
-                                <a href="#" class="thumbnail">
-                                    <img src=<%=url%> alt="">
-                                </a>
-                            </div>
-                             </div>
-                        </div>
-
-    <div style="margin-left:-5px; text-align:center;" class="row">
-        <div class="span6">
-            <p>
-
-                <b>Description:</b> <%
+        <!-- Picture description -->
+        <div class="picture_description" style="margin-left:-5px; text-align:center;">
+            <b>Description:</b>
+            <%
                 try {
-                    if (Picture.getPictureInfo(picture_id).getDescription().toString() != null | Picture.getPictureInfo(picture_id).getDescription().toString().isEmpty()) {
-                        out.println(Picture.getPictureInfo(picture_id).getDescription().toString());
-                    }
+                    if (Picture.getPictureInfo(picture_id).getDescription() != null | Picture.getPictureInfo(picture_id).getDescription().isEmpty())
+                        out.println(Picture.getPictureInfo(picture_id).getDescription());
+                }catch (Exception e){ out.println("No description was provided"); }
+            %>
+        </div>
+        <!-- Picture description END -->
 
-                }catch (Exception e){ out.println("No description was not provided"); }
-                %>
-            </p>
+        <!-- Picture info -->
+        <div class="picture_info" style="margin-left:-5px; margin-top:10px; text-align:center;">
+            <i class="glyphicon glyphicon-user"></i> by <a href="#"><%=User.getUserInfo(Picture.getPictureInfo(picture_id).getUpl_user_id()).getUser_name() %></a>
+            | <i class="glyphicon glyphicon-calendar"></i> <%=Picture.getPictureInfo(picture_id).getUpl_date().toString()%>
+            | <i class="glyphicon glyphicon-comment"></i> <b><%=Picture.getPictureInfo(picture_id).getComments().size()%></b> Comments <!-- Make well with comments -->
+            | <i class="glyphicon glyphicon-thumbs-up"></i> <b><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_voted()%></b> Likes <!-- Only shows amount of likes, but not LIKE-button -->
+            | <i class="glyphicon glyphicon-download-alt"></i> <b><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_downloads()%></b> Downloads
+            | <i class="glyphicon glyphicon-star"></i> <b><%=Picture_Statistics.getPicture_statistics(picture_id).getPicture_rating()%></b> Rating
         </div>
-        <div class="span8">
-            <p></p>
-            <p>
-                <i class="glyphicon glyphicon-user"></i> by <a href="#"><%=User.getUserInfo(Picture.getPictureInfo(picture_id).getUpl_user_id()).getUser_name().toString() %></a>
-                | <i class="glyphicon glyphicon-calendar"></i> <%=Picture.getPictureInfo(picture_id).getUpl_date().toString()%>
-                | <i class="glyphicon glyphicon-comment"></i> <a href="#"><%=Picture.getPictureInfo(picture_id).getComments().size()%> Comments</a>
-                | <i class="glyphicon glyphicon-thumbs-up"></i> <a href="#"><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_voted()%> Likes</a>
-                | <i class="glyphicon glyphicon-download-alt"></i> <a href="#"><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_downloads()%> Downloads</a>
-                | <i class="glyphicon glyphicon-star"></i> <a href="#"><%=Picture_Statistics.getPicture_statistics(picture_id).getPicture_rating()%> Rating</a>
-                <!--| <i class="icon-tags"></i> Tags : <a href="#"><span class="label label-info">Nature,Tiger,Snow</span></a>-->
-            </p>
-        </div>
+        <!-- Picture info END -->
+
     </div>
+    <!-- Picture + Tools + Info END -->
 
-</div>
-
+    <!-- Comment form -->
+    <div class="comment" style="margin-top: 20px;">
      <% if (session.getAttribute("user_name") != null){%>
-        <!------------------- COMMENTARY FORM --------------------------->
-        <form style="width: 50%; margin: auto; margin-top: 5px;" action="add_comment" method="POST">
+        <form style="width: 50%; margin: 5px auto auto;">
             <div class="form-group">
                 <label for="comment">Your Comment</label>
-                <textarea name="comment" class="form-control" rows="3"></textarea>
+                <textarea id="comment" name="comment" class="form-control" rows="3"></textarea>
             </div>
             <button type="submit" class="btn btn-default">Send</button>
         </form>
+    </div>
+    <!-- Comment form END -->
         <!------------------- COMMENTARY FORM END --------------------------->
     <%}%>
     <% if(Picture.getPictureInfo(picture_id).getComments().size()>0){%>
@@ -242,7 +242,12 @@
                      <a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>
                     </div>
 
+                    <%--<!---------------------------------------------------------->--%>
+                    <%--</ul>--%>
+                     <%--<a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>--%>
+                    <%--</div>--%>
 
+                    <%--<%}%>--%>
 
         </div>
     </div>
