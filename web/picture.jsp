@@ -172,7 +172,7 @@
 
     <!-- Comment form -->
     <div class="comment" style="margin-top: 20px;">
-        <%try{%>
+
      <% if (session.getAttribute("user_name") != null){%>
         <form style="width: 50%; margin: 5px auto auto;" action="functions/add_comment.jsp" method="post">
             <div class="form-group">
@@ -187,7 +187,8 @@
     <!-- Comment form END -->
         <!------------------- COMMENTARY FORM END --------------------------->
     <%}%>
-    <% if(Picture.getPictureInfo(picture_id).getComments().size()>0){%>
+    <% try{
+        if(Picture.getPictureInfo(picture_id).getComments().size()>0){%>
         <!------------------- COMMENTS AREA ------------------------------>
     <div class="container" style="width: 75%; margin-top: 25px;">
     <div class="row">
@@ -262,9 +263,7 @@
 
 
 
-<%}
-}catch (Exception e){e.printStackTrace();}%>
-
+<%}}catch (Exception e){e.printStackTrace();}%>
 
     <hr>
 
