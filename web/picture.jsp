@@ -172,6 +172,7 @@
 
     <!-- Comment form -->
     <div class="comment" style="margin-top: 20px;">
+        <%try{%>
      <% if (session.getAttribute("user_name") != null){%>
         <form style="width: 50%; margin: 5px auto auto;" action="functions/add_comment.jsp" method="post">
             <div class="form-group">
@@ -261,7 +262,9 @@
 
 
 
-<%}%>
+<%}
+}catch (Exception e){e.printStackTrace();}%>
+
 
     <hr>
 
