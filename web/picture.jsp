@@ -186,7 +186,7 @@
     </div>
     <!-- Comment form END -->
         <!------------------- COMMENTARY FORM END --------------------------->
-    <%}%>
+
     <% try{
         if(Picture.getPictureInfo(picture_id).getComments().size()>0){%>
         <!------------------- COMMENTS AREA ------------------------------>
@@ -264,6 +264,7 @@
 
 
 <%}}catch (Exception e){e.printStackTrace();}%>
+    <%}%>
 
     <hr>
 
