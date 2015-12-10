@@ -25,10 +25,10 @@
 
 
 
-    if(add==true){
+    if(add==true){//возращает на страницу назад и обновляет её.
         // Если коммент успешно добавлен вернём назад и обновим страницу чтобы все видеть!
         %><script>   alert("Thank you for comment!");
-                    window.location = document.referrer; </script> //возращает на страницу назад и обновляет её.
+                    window.location = document.referrer; </script>
         <%
 
     }else{
