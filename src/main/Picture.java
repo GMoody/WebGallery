@@ -181,6 +181,35 @@ public class Picture implements Comparable<Picture>{
 
     }
 
+    public static boolean sendComment(int id_user, int id_picture, String commentary) throws SQLException, ClassNotFoundException
+    {
+        boolean sended = false;
+        try {
+            sended = Connections.AddComment(id_user, id_picture, commentary);
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e){ e.printStackTrace();}
+
+        return sended;
+    }
+
+    public static boolean DeleteComment (int id_comment) throws SQLException, ClassNotFoundException
+    {
+        boolean deleted = false;
+        try{
+            deleted = Connections.DeleteComment(id_comment);
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e){ e.printStackTrace();}
+
+        return deleted;
+
+    }
+
 
     //endregion
 }

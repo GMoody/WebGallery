@@ -107,5 +107,15 @@ public class Connections {
         return queryExecuter(query);
     }
 
+    public static boolean AddComment(int id_user, int id_picture, String comment) throws SQLException, ClassNotFoundException{
+        String query="INSERT INTO webgallery.t_comment (id_picture,id_user,add_date,comment) VALUES ('"+id_picture+"','"+id_user+"',CURRENT_DATE,'"+comment+"');";
+        return queryUpdater(query);
+    }
+
+    public  static  boolean DeleteComment(int id_comment) throws  SQLException, ClassNotFoundException{
+        String query="DELETE FROM webgallery.t_comment WHERE id_comment ='"+id_comment+"'";
+        return queryUpdater(query);
+    }
+
 
 }

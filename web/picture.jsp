@@ -7,7 +7,6 @@
 <html lang="en">
 
 <head>
-
     <!-- Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -118,7 +117,6 @@
         String url = Picture.getPictureInfo(picture_id).getPicture_url().toString();
         Picture.addCommentToPicture(picture_id);
 
-
     %>
 
     <!-- Picture + Tools + Info -->
@@ -175,12 +173,14 @@
     <!-- Comment form -->
     <div class="comment" style="margin-top: 20px;">
      <% if (session.getAttribute("user_name") != null){%>
-        <form style="width: 50%; margin: 5px auto auto;">
+        <form style="width: 50%; margin: 5px auto auto;" action="functions/add_comment.jsp" method="post">
             <div class="form-group">
                 <label for="comment">Your Comment</label>
                 <textarea id="comment" name="comment" class="form-control" rows="3"></textarea>
+                <input type="hidden" name="picture_id" value="<%=picture_id%>">
+                <input type="hidden" name="commentator" value="<%=User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user()%>">
             </div>
-            <button type="submit" class="btn btn-default">Send</button>
+            <input type="submit" value="Send" class="btn btn-success btn-sm">
         </form>
     </div>
     <!-- Comment form END -->
@@ -220,15 +220,17 @@
                                     <% out.println(Picture.getPictureInfo(picture_id).getComments().get(i).getComment()); %>
                                 </div>
                                 <div class="action">
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-success btn-xs" title="Approved">
-                                        <span class="glyphicon glyphicon-ok"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-xs" title="Delete">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
+                                    <% if(User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_user() == Picture.getPictureInfo(picture_id).getComments().get(i).getId_user() | User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_position() == 2){%>
+
+                                        <form action="functions/delete_comment.jsp" method="post">
+                                            <input type="hidden" name="c_picture_id" value="<%=picture_id%>">
+                                            <input type="hidden" name="delete_id" value="<%=Picture.getPictureInfo(picture_id).getComments().get(i).getId_comment() %>">
+                                           <input type="submit" class="btn btn-danger btn-xs" value="Delete">
+
+
+                                        </form>
+
+                                    <%}%>
                                 </div>
                             </div>
                         </div>
@@ -237,6 +239,8 @@
                     <%
                         }
                     %>
+
+
                     <!---------------------------------------------------------->
                     </ul>
                      <a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>
