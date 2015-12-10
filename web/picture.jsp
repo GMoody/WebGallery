@@ -184,6 +184,7 @@
             <input type="submit" value="Send" class="btn btn-success btn-sm">
         </form>
     </div>
+    <%}%>
     <!-- Comment form END -->
         <!------------------- COMMENTARY FORM END --------------------------->
 
@@ -222,7 +223,8 @@
                                     <% out.println(Picture.getPictureInfo(picture_id).getComments().get(i).getComment()); %>
                                 </div>
                                 <div class="action">
-                                    <% if(User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_user() == Picture.getPictureInfo(picture_id).getComments().get(i).getId_user() | User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_position() == 2){%>
+                                    <% try{if(session.getAttribute("user_name") != null){
+                                        if(User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_user() == Picture.getPictureInfo(picture_id).getComments().get(i).getId_user() || User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_position() == 2){%>
 
                                         <form action="functions/delete_comment.jsp" method="post">
                                             <input type="hidden" name="c_picture_id" value="<%=picture_id%>">
@@ -232,7 +234,7 @@
 
                                         </form>
 
-                                    <%}%>
+                                    <%}}}catch (Exception e){}%>
                                 </div>
                             </div>
                         </div>
@@ -264,7 +266,7 @@
 
 
 <%}}catch (Exception e){e.printStackTrace();}%>
-    <%}%>
+
 
     <hr>
 
