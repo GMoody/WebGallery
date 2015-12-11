@@ -42,12 +42,13 @@
             </button>
             <!-- Options button END-->
 
-            <a class="navbar-brand" href="gallery.jsp">Gallery</a>
+            <a class="navbar-brand" href="index.jsp">Web Gallery</a>
         </div>
         <!-- Mobile display menu END-->
 
         <!-- Navbar + login modal -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
             <!-- Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="index.jsp">Main</a></li>
@@ -57,14 +58,34 @@
             <!-- Navbar END -->
 
             <!-- Profile -->
-            <ul class="nav navbar-right top-nav">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- NOT Logged-in -->
+                <% if (session.getAttribute("user_name") == null) {%>
+                    <li><a href="register.jsp"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li class="dropdown disp_none"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login<b class="caret"></b></a>
+                        <!-- Dropdown menu -->
+                        <ul class="dropdown-menu" style="height: 180px; width: 300px">
+                            <div class="loginmodal-container">
+                                <form method="post" action="functions/login.jsp" name="login_form">
+                                    <input type="text" name="user_email" placeholder="Email">
+                                    <input type="password" name="pwd" placeholder="Password">
+                                    <input type="submit" name="log_in_btn" class="login loginmodal-submit" value="Log in">
+                                </form>
+                            </div>
+                        </ul>
+                        <!-- Dropdown menu END -->
+                    </li>
+
+                <!-- NOT Logged-in end-->
+                <%}else{%>
 
                 <!-- Logged-in -->
-                <li class="dropdown">
+                <li class="dropdown disp_none">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <% if(Integer.valueOf(session.getAttribute("position").toString())  == 2){ %>
+                        <li><a href="gallery.jsp"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                        <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
                             <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
                         <li class="divider"></li>
@@ -72,6 +93,7 @@
                     </ul>
                 </li>
                 <!-- Logged-in end-->
+                <%}%>
             </ul>
             <!-- Profile end-->
 
@@ -88,18 +110,45 @@
 <!-- Page Content -->
 <div class="container">
 
-    <!-- Page Heading -->
-    <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
-        <%--&lt;%&ndash;<div class="col-lg-12">&ndash;%&gt;--%>
-            <%--&lt;%&ndash;<h1 class="page-header">Account details&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<small></small>&ndash;%&gt;--%>
-            <%--&lt;%&ndash;</h1>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--<!-- /.row -->--%>
+    <%
+        String user_name;
+        boolean logged_in = false, display_flag = true, same_user = false;
+
+        if(session.getAttribute("user_name") != null)
+            logged_in = true;
+
+        if(request.getAttribute("user") != null){
+            user_name = User.getUserInfo(Integer.parseInt(request.getAttribute("user").toString())).getUser_name();
+
+            if(logged_in){
+                if(user_name.equals(session.getAttribute("user_name").toString()))
+                 same_user = true;
+            }
+        }else if(logged_in){
+
+        }else{
+            display_flag = false;
+        }
+
+    %>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#gallery">Gallery</a></li>
+        <li><a data-toggle="tab" href="#upload">Picture upload</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="gallery" class="tab-pane fade in active">
+            <h3><%=session.getAttribute("user_name")%> gallery</h3>
+            <p>Pictures</p>
+        </div>
+        <div id="upload" class="tab-pane fade">
+            <h3>Pictures upload</h3>
+            <p>Upload by single picture with description and category dropdown</p>
+        </div>
+    </div>
 
 
-    <br>
+
 
 
 
