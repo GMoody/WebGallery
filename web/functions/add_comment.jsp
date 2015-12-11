@@ -16,25 +16,28 @@
         id_picture = Integer.parseInt(request.getParameter("picture_id"));
         String comment = request.getParameter("comment");
         // Чтобы избежать ошибки в БД, проверим не пустой ли коммент, если пустой, вернём назад.
-        if(comment == null | comment.isEmpty()){ %><script> alert("Your comment is empty! Try again!");  </script><%}
-
+        if(comment == null | comment.isEmpty()){ %><script> alert("Your comment is empty! Try again!"); window.location = document.referrer; </script><%}
+        else{
         // Добавим коммент в БД и в Лист с помощью метода
         add = Picture.sendComment(id_user,id_picture,comment);
+
+            if(add==true){//возращает на страницу назад и обновляет её.
+                    // Если коммент успешно добавлен вернём назад и обновим страницу чтобы все видеть!
+            %><script>   alert("Thank you for comment!");
+            window.location = document.referrer; </script>
+            <%
+
+            }else{
+                // Если коммент не добавлен, выведем месседж об ошибке!
+            %><script>   alert("Error, comment was not added, contact site administration!"); window.location = document.referrer;  </script><%
+                        }
+        }
 
     } catch (Exception e){e.printStackTrace();}
 
 
 
-    if(add==true){//возращает на страницу назад и обновляет её.
-        // Если коммент успешно добавлен вернём назад и обновим страницу чтобы все видеть!
-        %><script>   alert("Thank you for comment!");
-                    window.location = document.referrer; </script>
-        <%
 
-    }else{
-        // Если коммент не добавлен, выведем месседж об ошибке!
-        %><script>   alert("Error, comment was not added, contact site administration!"); window.location = document.referrer;  </script><%
-    }
 
 
 
