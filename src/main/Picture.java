@@ -141,6 +141,49 @@ public class Picture implements Comparable<Picture>{
         }
         return temp;
     }
+
+    public static List<Picture> sortGalleryASC(int sort, String user_name){
+        List<Picture> temp = null;
+        List<Picture> user_pictures = new ArrayList<>();
+        int user_id = User.getUserInfoByUserName(user_name).getId_user();
+
+        switch (sort){
+            case 0: // Date sorting
+                temp = sortASC(0);
+                break;
+            case 1: // Downloads sorting
+                temp = sortASC(1);
+                break;
+            case 2: // Rating sorting
+                temp = sortASC(2);
+                break;
+        }
+
+        for (Picture picture : temp)
+            if(picture.getUpl_user_id() == user_id)
+                user_pictures.add(picture);
+
+        return user_pictures;
+    }
+
+    public static List<Picture> sortGalleryDESC(int sort, String user_name){
+        List<Picture> temp = null;
+        switch (sort){
+            case 0: // Date sorting
+                temp = sortGalleryASC(0, user_name);
+                Collections.reverse(temp);
+                break;
+            case 1: // Downloads sorting
+                temp = sortGalleryASC(1, user_name);
+                Collections.reverse(temp);
+                break;
+            case 2: // Rating sorting
+                temp = sortGalleryASC(2, user_name);
+                Collections.reverse(temp);
+                break;
+        }
+        return temp;
+    }
     //endregion Picture Sorting
 
     @Override

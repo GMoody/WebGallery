@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="main.User" %>
+<%@ page import="functions.URLHandler" %>
+<%@ page import="main.Picture" %>
+<%@ page import="main.Picture_Statistics" %>
+<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -105,47 +108,163 @@
 <!-- Navigation END-->
 
 
-
-
 <!-- Page Content -->
 <div class="container">
 
     <%
-        String user_name;
-        boolean logged_in = false, display_flag = true, same_user = false;
+        boolean same_user = false;
+        String user_name = request.getParameter("user");
 
         if(session.getAttribute("user_name") != null)
-            logged_in = true;
-
-        if(request.getAttribute("user") != null){
-            user_name = User.getUserInfo(Integer.parseInt(request.getAttribute("user").toString())).getUser_name();
-
-            if(logged_in){
-                if(user_name.equals(session.getAttribute("user_name").toString()))
-                 same_user = true;
-            }
-        }else if(logged_in){
-
-        }else{
-            display_flag = false;
-        }
-
+            if (user_name.equals(session.getAttribute("user_name").toString()))
+                same_user = true;
     %>
+    <!-- Navigation tabs -->
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#gallery">Gallery</a></li>
-        <li><a data-toggle="tab" href="#upload">Picture upload</a></li>
+        <li class="active"><a data-toggle="tab" href="#gallery"><b><%=user_name%></b> gallery</a></li>
+        <% if(same_user){%>
+            <li><a data-toggle="tab" href="#upload">Picture upload</a></li>
+        <%}%>
     </ul>
+    <!-- Navigation tabs END -->
 
+    <!-- Navigation tabs content -->
     <div class="tab-content">
+
+        <!-- User gallery -->
         <div id="gallery" class="tab-pane fade in active">
-            <h3><%=session.getAttribute("user_name")%> gallery</h3>
-            <p>Pictures</p>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well well-sm">
+                        <div class="btn-group">
+                            <%
+                                // Получаем необходимый лист с картинками, в зависимости от сортировки.
+                                request.getRequestDispatcher("/functions/make_gallery_list.jsp").include(request, response);
+                                List<Picture> pictures = (List<Picture>) request.getAttribute("list");
+                                String url = request.getRequestURL().toString() + "?" + request.getQueryString();
+
+                            %>
+
+                            <!-- Date sorting -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Date <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="<%=URLHandler.makeURL(url, "date", true)%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                                    <li><a href="<%=URLHandler.makeURL(url, "date", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                                </ul>
+                            </div>
+                            <!-- Date sorting END -->
+
+                            <!-- Downloads sorting -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Downloads <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="<%=URLHandler.makeURL(url, "downloads", true)%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                                    <li><a href="<%=URLHandler.makeURL(url, "downloads", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                                </ul>
+                            </div>
+                            <!-- Downloads sorting END -->
+
+                            <!-- Rating sorting -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Rating <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="<%=URLHandler.makeURL(url, "rating", true)%>"><span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ascending</a></li>
+                                    <li><a href="<%=URLHandler.makeURL(url, "rating", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
+                                </ul>
+                            </div>
+                            <!-- Rating sorting END -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pictures -->
+            <div class="row"><%
+
+                int i = 0, y = 12, current_page = 1; // Переменные для работы с выводом картинок.
+
+                if(request.getParameter("page") != null){
+                    current_page = Integer.parseInt(request.getParameter("page")); // Страница на которой находимся.
+                    int full_pages = pictures.size() / 12;                         // Число страниц, которые заполняются полностью по 12 картинок.
+
+                    if(current_page > full_pages){ // Если мы находимся на страничке, которая заполняется не полностью, не 12 картинками.
+                        i = pictures.size() - (current_page * full_pages);
+                        y = i + (current_page * full_pages);
+                    }else{
+                        y = y * current_page;
+                        i = y-12;
+                    }
+                }
+
+                if (pictures.size() != 0){
+                    for (int z = i; z < y; z++){ %>
+                    <div class="col-md-3 portfolio-item">
+                        <a href="picture.jsp?picture=<%=pictures.get(z).getId_picture()%>"><img class="img-responsive" src="<%=pictures.get(z).getPicture_url()%>" alt="<%=pictures.get(z).getDescription() %>"></a>
+                        <div class="toolbox well">
+                            <p><span class="glyphicon glyphicon-download-alt"></span> <%=Picture_Statistics.getPicture_statistics(pictures.get(z).getId_picture()).getTotal_downloads()%></p>
+                            <p><span class="glyphicon glyphicon-time"></span> <%=pictures.get(z).getUpl_date()%></p>
+                            <p><span class="glyphicon glyphicon-star"></span> <%=Picture_Statistics.getPicture_statistics(pictures.get(z).getId_picture()).getPicture_rating()%></p>
+                        </div>
+                    </div>
+                <%}}%>
+            </div>
+            <!-- Pictures -->
+
+            <!-- Pagination Row -->
+            <div class="row text-center">
+                <div class="col-lg-12">
+                    <ul class="pagination"><%
+                        // Стрелочка влево выводится всегда, кроме как на 1-ой странице.
+                        if(current_page!=1){
+                            %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page-1)%>">&laquo;</a></li><%
+                        }
+
+                        // Имеем ли все страницы полностью заполненные по 12 картинок
+                        if(pictures.size() % 12 != 0){
+                            for (int w = 1; w < (pictures.size() / 12) + 2; w++){
+                                if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
+                                    %><li class="active"><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                }else{
+                                    %><li><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                }
+                            }
+
+                            if((pictures.size()/12) + 1 > current_page){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
+                                %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page+1)%>">&raquo;</a></li><%
+                            }
+
+                        }else{ // Имеем все страницы по 12 картинок!
+                            for (int w = 1; w < (pictures.size() / 12) + 1; w++){
+                                if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
+                                    %><li class="active"><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                }else{
+                                    %><li><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                }
+                            }
+
+                            if(current_page!= pictures.size() / 12){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
+                            %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page+1)%>">&raquo;</a></li><%
+                            }
+                        }%>
+                    </ul>
+                </div>
+            </div>
+            <!-- Pagination Row END -->
         </div>
+        <!-- User gallery END -->
+
+        <!-- Picture upload -->
         <div id="upload" class="tab-pane fade">
             <h3>Pictures upload</h3>
             <p>Upload by single picture with description and category dropdown</p>
         </div>
+        <!-- Picture upload END -->
+
     </div>
+    <!-- Navigation tabs content END -->
 
 
 

@@ -72,7 +72,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                            <li><a href="gallery.jsp"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                            <li><a href="gallery.jsp?user=<%=session.getAttribute("user_name")%>"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                             <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
                                 <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                             <%}%>
@@ -128,8 +128,9 @@
                             if(request.getQueryString() != null) url = request.getRequestURL().toString() + "?" + request.getQueryString();
                             else url = request.getRequestURL().toString() + "?page=1";
                         else url = request.getRequestURL() + "index.jsp?";
-
                     %>
+
+                    <!-- Date sorting -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Date <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
@@ -137,7 +138,9 @@
                             <li><a href="<%=URLHandler.makeURL(url, "date", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
+                    <!-- Date sorting END -->
 
+                    <!-- Downloads sorting -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Downloads <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
@@ -145,7 +148,9 @@
                             <li><a href="<%=URLHandler.makeURL(url, "downloads", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
+                    <!-- Downloads sorting END -->
 
+                    <!-- Rating sorting -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Rating <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
@@ -153,6 +158,7 @@
                             <li><a href="<%=URLHandler.makeURL(url, "rating", false)%>"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Descending</a></li>
                         </ul>
                     </div>
+                    <!-- Rating sorting END -->
 
                 </div>
             </div>
