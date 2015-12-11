@@ -146,6 +146,7 @@
 
         <!-- Picture description -->
         <div class="picture_description" style="margin-left:-5px; text-align:center;">
+
             <b>Description:</b>
             <%
                 try {
@@ -155,6 +156,34 @@
             %>
         </div>
         <!-- Picture description END -->
+
+        <!-- Like button-->
+        <%if (session.getAttribute("user_name") != null){
+            if(Picture.allowUserLike(User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user(),picture_id)==false){
+        %>
+        <form style="width: 60px; margin: 5px auto auto;" action="functions/like_unlike.jsp" method="post">
+            <div class="form-group">
+                <input type="hidden" name="action" value="like">
+                <input type="hidden" name="like_picture_id" value="<%=picture_id%>">
+                <input type="hidden" name="like_commentator" value="<%=User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user()%>">
+            </div>
+            <input type="submit" value="Like" class="btn btn-info btn-sm">
+        </form>
+        <%
+                }else{
+                    %>
+                             <form style="width: 60px; margin: 5px auto auto;" action="functions/like_unlike.jsp" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" name="action" value="dislike">
+                                    <input type="hidden" name="unlike_picture_id" value="<%=picture_id%>">
+                                    <input type="hidden" name="unlike_commentator" value="<%=User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user()%>">
+                                </div>
+                                <input type="submit" value="Unlike" class="btn btn-warning btn-sm">
+                            </form>
+                    <%
+                }
+            }%>
+        <!-- Like button end-->
 
         <!-- Picture info -->
         <div class="picture_info" style="margin-left:-5px; margin-top:10px; text-align:center;">
@@ -250,12 +279,6 @@
                      <a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>
                     </div>
 
-                    <%--<!---------------------------------------------------------->--%>
-                    <%--</ul>--%>
-                     <%--<a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>--%>
-                    <%--</div>--%>
-
-                    <%--<%}%>--%>
 
         </div>
     </div>

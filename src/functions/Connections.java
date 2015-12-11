@@ -117,5 +117,23 @@ public class Connections {
         return queryUpdater(query);
     }
 
+    public static boolean addLike (int user_id, int picture_id) throws SQLException, ClassNotFoundException{
+        String query = "INSERT INTO webgallery.t_Like (id_user,id_picture) VALUES ('"+user_id+"', '"+picture_id+"');";
+       return  queryUpdater(query);
+    }
+
+    public static boolean checkLike (int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
+        String query = "SELECT * FROM webgallery.t_Like WHERE id_user = '"+user_id+"' AND id_picture = '"+picture_id+"'";
+        ResultSet st = queryExecuter(query);
+        if(st.next()){return true;}else{return false;}
+    }
+
+    public static boolean deleteLike(int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
+        String query = "DELETE FROM webgallery.t_Like WHERE id_user = '"+user_id+"' and id_picture = '"+picture_id+"'";
+        return  queryUpdater(query);
+    }
+
+
+
 
 }

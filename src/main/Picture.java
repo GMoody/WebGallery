@@ -210,6 +210,50 @@ public class Picture implements Comparable<Picture>{
 
     }
 
+    public static boolean likePicture (int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
+        boolean is_liked=false; // добавлен ли новый лайк, в БД, если false то ошибка в БД!
+        try{
+            is_liked = Connections.addLike(user_id,picture_id);
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e){ e.printStackTrace();}
+
+        return is_liked;
+    }
+
+    public static boolean allowUserLike (int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
+        boolean has_liked_before = false; // провери не лайкнул ли пользователь картинку до этого
+        try
+        {
+            has_liked_before = Connections.checkLike(user_id, picture_id); // проверим, если вернет ТРУ то лайк уже есть, если фалсе то можно добавлять новый лайк
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e){ e.printStackTrace();}
+
+        return has_liked_before;
+
+    }
+
+    public static boolean unlikePicture(int user_id, int picture_id) throws  SQLException, ClassNotFoundException {
+        boolean is_unliked = false;
+        try{
+            is_unliked = Connections.deleteLike(user_id,picture_id);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e){ e.printStackTrace();}
+
+        return  is_unliked;
+    }
+
 
     //endregion
 }
