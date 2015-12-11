@@ -133,6 +133,16 @@ public class Connections {
         return  queryUpdater(query);
     }
 
+    public static boolean addLikeToTotalVoted(int picture_id) throws  SQLException, ClassNotFoundException{
+        String query ="UPDATE webgallery.t_picture_statistics SET total_voted = total_voted + 1 WHERE id_picture = '"+picture_id+"'";
+        return queryUpdater(query);
+    }
+
+    public static  boolean deleteLikeFromTotalVoted(int picture_id) throws SQLException, ClassNotFoundException{
+        String query ="UPDATE webgallery.t_picture_statistics SET total_voted = total_voted - 1 WHERE id_picture = '"+picture_id+"'";
+        return queryUpdater(query);
+    }
+
 
 
 

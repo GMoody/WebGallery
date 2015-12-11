@@ -212,6 +212,7 @@ public class Picture implements Comparable<Picture>{
 
     public static boolean likePicture (int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
         boolean is_liked=false; // добавлен ли новый лайк, в БД, если false то ошибка в БД!
+        boolean is_liked_total_voted = false;
         try{
             is_liked = Connections.addLike(user_id,picture_id);
 
@@ -220,6 +221,22 @@ public class Picture implements Comparable<Picture>{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e){ e.printStackTrace();}
+
+        if(is_liked){   // Если лайкнул успешно, кидаем запрос в БД на добавление +1 к тотал вотед и добавляем в листе картне сами.
+            try{
+                is_liked_total_voted = Connections.addLikeToTotalVoted(picture_id);
+
+                if(is_liked_total_voted){
+                    int newvoted = Picture_Statistics.getPicture_statistics(picture_id).getTotal_voted()+1;
+                    Picture_Statistics.getPicture_statistics(picture_id).setTotal_voted(newvoted);
+                }
+            }catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e){ e.printStackTrace();}
+
+        }
 
         return is_liked;
     }
@@ -241,7 +258,7 @@ public class Picture implements Comparable<Picture>{
     }
 
     public static boolean unlikePicture(int user_id, int picture_id) throws  SQLException, ClassNotFoundException {
-        boolean is_unliked = false;
+        boolean is_unliked = false; boolean unlike_total_voted =false;
         try{
             is_unliked = Connections.deleteLike(user_id,picture_id);
         }
@@ -251,8 +268,26 @@ public class Picture implements Comparable<Picture>{
             e.printStackTrace();
         } catch (Exception e){ e.printStackTrace();}
 
+        if(is_unliked){  //Если анлайкнули успешно, пошлем запрос в базу на инзменение тотал вотед -1 и уберем - 1 сами из данных.
+            try{
+                unlike_total_voted = Connections.deleteLikeFromTotalVoted(picture_id);
+                if(unlike_total_voted){
+                    int newvoted = Picture_Statistics.getPicture_statistics(picture_id).getTotal_voted()-1;
+                    Picture_Statistics.getPicture_statistics(picture_id).setTotal_voted(newvoted);
+                }
+            }catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e){ e.printStackTrace();}
+
+
+        }
+
         return  is_unliked;
     }
+
+
 
 
     //endregion
