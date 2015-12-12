@@ -101,5 +101,27 @@ public class Connections {
         return !st.next();
     }
 
+    public static ResultSet addPicture(int id_category, int upl_user_id, String description, String picture_url) throws SQLException, ClassNotFoundException {
+        String query = "INSERT INTO webgallery.t_picture (id_category, upl_user_id, upl_date, description, picture_url) VALUES (" + id_category + ", " + upl_user_id + ", current_date, '" + description + "', '" + picture_url + "');";
+        if(queryUpdater(query)){
+            return getPictureInfo(picture_url);
+        }else return null;
+    }
+
+    public static ResultSet getPictureInfo(String picture_url) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM webgallery.t_picture WHERE picture_url ='" + picture_url + "'";
+        return queryExecuter(query);
+    }
+
+    public static boolean addPictureStatistics(int id_picture) throws SQLException, ClassNotFoundException {
+        String query = "INSERT INTO webgallery.t_picture_statistics (id_picture, total_voted, total_downloads, picture_rating) VALUES (" + id_picture + ", 0, 0, 0);";
+        return queryUpdater(query);
+    }
+
+    public static ResultSet getPictureStatistics(int id_picture) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM webgallery.t_picture_statistics WHERE id_picture=" + id_picture;
+        return queryExecuter(query);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="functions.URLHandler" %>
+<%@ page import="main.Category" %>
 <%@ page import="main.Picture" %>
 <%@ page import="main.Picture_Statistics" %>
 <%@ page import="java.util.List" %>
@@ -87,7 +88,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <li><a href="gallery.jsp"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                        <li><a href="gallery.jsp?user=<%=session.getAttribute("user_name")%>"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                         <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
                             <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
@@ -258,8 +259,69 @@
 
         <!-- Picture upload -->
         <div id="upload" class="tab-pane fade">
-            <h3>Pictures upload</h3>
-            <p>Upload by single picture with description and category dropdown</p>
+
+                <h3>Picture upload</h3>
+                <div class="well well">
+                    <form class="form-horizontal zero-top" action='functions/upload_picture.jsp' enctype="multipart/form-data" role="form" method="post" name="picture_form" autocomplete="off">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="category">Category:</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" id="category" name="category">
+                                    <%
+                                        List<Category> categories = Category.sortCategories();
+                                        for (Category category : categories)
+                                            if (category.getCategory().equals("Other"))
+                                                out.println("<option value='"+category.getCategory()+"' selected>" + category.getCategory() + "</option>");
+                                            else
+                                                out.println("<option value='"+category.getCategory()+"'>" + category.getCategory() + "</option>");
+                                    %>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Description:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="description"
+                                       title="Description should be from 5 to 150 characters"
+                                       placeholder="Picture description (not necessarily)">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Picture:</label>
+                            <div class="col-sm-4">
+                                <span class="btn btn-default btn-file btn-block">Browse
+                                    <input type="file"
+                                       name="picture"
+                                       id="picture"
+                                       accept="image/jpeg,image/png"
+                                       title="You may upload only picture with size < 10mb."
+                                       required>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-3" style="margin-left: 420px;">
+                                <button type="submit" class="btn btn-success btn-block" name="upload_btn" id="upload_btn">Upload</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <script>
+                        // Скрипт проверяет размер загружаемой аватарки.
+                        $('#upload_btn').click( function(e) {
+                            var fsize = $('#picture')[0].files[0].size;
+                            if(fsize>10485760){
+                                alert("Picture size is more than 10 mb!");
+                                e.preventDefault(); // Предотвращает отправление формы, если размер картинки больше 10мб
+                            }
+                        });
+                    </script>
+                </div>
+
         </div>
         <!-- Picture upload END -->
 

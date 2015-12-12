@@ -2,7 +2,6 @@ package functions;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -102,7 +101,6 @@ public class FTPHandler {
         }
         return true;
     }
-
 
     public static boolean removeFile(File file, boolean folder){
         FTPClient ftp = ftpConnect();
