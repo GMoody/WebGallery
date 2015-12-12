@@ -247,5 +247,27 @@ public class User {
         return false;
     }
 
+    public static boolean deleteUserByAdmin(int user_id) throws SQLException, ClassNotFoundException{
+        boolean deleted=false;
+        try{
+            deleted = Connections.deleteUser(user_id);  //удалим юзера из БД
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        if(deleted){ ///Удалим юзера так же из листа юзеров
+            for (int i=0;i<User.users.size();i++){
+                if(User.users.get(i).getId_user() == user_id){
+                    User.users.remove(i);
+                }
+            }
+        }
+
+        return deleted;
+    }
+
+
+
     //endregion
 }

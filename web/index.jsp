@@ -52,14 +52,16 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <!-- Navbar -->
             <ul class="nav navbar-nav">
-                <% if (session.getAttribute("user_name") == null){%>
+                <%
+                    try{
+                    if (session.getAttribute("user_name") == null){%>
                     <li><a href="register.jsp">Registration</a></li>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Contact</a></li>
                 <% }else{ %>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Contact</a></li>
-                <% } %>
+                <% } }catch (Exception e){e.printStackTrace();}%>
             </ul>
             <!-- Navbar END -->
 
@@ -68,13 +70,14 @@
 
                 <!-- Logged-in -->
                 <li class="dropdown disp_none">
-                    <% if (session.getAttribute("user_name") != null) {%>
+                    <% try{
+                        if (session.getAttribute("user_name") != null) {%>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
                             <li><a href="gallery.jsp"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                             <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
-                                <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                                <li><a href="admin_panel.jsp"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                             <%}%>
                             <li class="divider"></li>
                             <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
@@ -96,7 +99,7 @@
                         </div>
                     </ul>
                 </li>
-                <% }%>
+                <% } }catch (Exception e){e.printStackTrace();}%>
                 <!-- NOT Logged-in end-->
 
             </ul>
@@ -118,6 +121,7 @@
             <div class="well well-sm">
                 <div class="btn-group">
                     <%
+
                         // Получаем необходимый лист с картинками, в зависимости от сортировки.
                         request.getRequestDispatcher("/functions/make_list.jsp").include(request, response);
                         List<Picture> pictures = (List<Picture>) request.getAttribute("list");

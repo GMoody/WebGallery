@@ -287,7 +287,40 @@ public class Picture implements Comparable<Picture>{
         return  is_unliked;
     }
 
+    public static void deleteUserPictureFromList(int user_id)throws ClassNotFoundException{
+        for (int i=0;i<Picture.pictures.size();i++){
+            if(Picture.pictures.get(i).getUpl_user_id() == user_id){Picture.pictures.remove(i);}
+        }
+    }
 
+    public static boolean checkPictureWasDeletedFromDB_If_Success_Delete_It_From_List(int id_picture) throws SQLException, ClassNotFoundException{
+
+        ResultSet st = null;
+        try{
+
+            boolean del_likes = Connections.deleteLikesFromPictureByID(id_picture);
+            boolean del_comments = Connections.deleteCommentsFromPictureByID(id_picture);
+            boolean del_pic_stat = Connections.deletePictureStatisticsByID(id_picture);
+            boolean del_pic = Connections.deletePictureByID(id_picture);
+
+            // проверка, после всех удалений, осталось ли что-то в БД связанное с этой картинкой.
+            st = Connections.checkIfPictureWasDeletedCorrectly(id_picture); // запрос даст резалт сет, в котором если будет пусто, то все в порядке!!!
+        }
+        catch (Exception e){e.printStackTrace();}
+
+        if(st.next()){  // Если в резалт сете есть хоть одна строка, то что-то осталось и какое из удалений либо не выполнилось либо не удалило ничего
+            return false;
+        }
+        else{ //Если там пусто, значит удалено всё верно! можно удалять картинку из листа!!!
+
+            for (int i=0;i<Picture.pictures.size();i++)
+            {if (Picture.pictures.get(i).getId_picture() == id_picture){Picture.pictures.remove(i);}
+            }
+            return true;
+        }
+
+
+    }
 
 
     //endregion
