@@ -1,9 +1,12 @@
+<%@ page import="main.Picture" %>
+<%@ page import="main.User" %>
+<%@ page import="main.Picture_Statistics" %>
+<%@ page import="main.Category" %>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <!-- Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +21,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Title -->
     <title>Web Gallery - Picture info</title>
 
@@ -27,7 +31,8 @@
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
+
+        <div class="container">
 
         <!-- Mobile display menu-->
         <div class="navbar-header">
@@ -108,17 +113,182 @@
 
 <!-- Page Content -->
 <div class="container">
+    <%  Integer picture_id = Integer.parseInt(request.getParameter("picture"));
+        String url = Picture.getPictureInfo(picture_id).getPicture_url().toString();
+        Picture.addCommentToPicture(picture_id);
 
-    <!-- Page Heading -->
+    %>
+
+    <!-- Picture + Tools + Info -->
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Tool menu
-                <small>Secondary Text</small>
-            </h1>
+
+        <!-- Picture toolmenu -->
+        <div class="toolmenu" style="text-align: center;">
+            <!-- Picture options -->
+            <b><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Category: </b>
+            <%=Category.getCategoryInfo(Picture.getPictureInfo(picture_id).getId_category()).getCategory()%> |
+
+            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            <b><a href="<%=Picture.getPictureInfo(picture_id).getPicture_url()%>" target="_blank">Full screen</a></b>
+            <%out.println(" | ");%>
+
+            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+            <b><a href="<%=Picture.getPictureInfo(picture_id).getPicture_url()%>" download="" target="_blank">Download</a></b>
+            <!-- Picture options END -->
+
+            <!-- Picture -->
+            <div class="picture_url" style="width:50%; margin:auto; margin-top: 5px;">
+                <a class="thumbnail"><img src="<%=Picture.getPictureInfo(picture_id).getPicture_url()%>" alt=""></a>
+            </div>
+            <!-- Picture END -->
+        </div>
+        <!-- Picture toolmenu END -->
+
+        <!-- Picture description -->
+        <div class="picture_description" style="margin-left:-5px; text-align:center;">
+
+            <b>Description:</b>
+            <%
+                try {
+                    if (Picture.getPictureInfo(picture_id).getDescription() != null | Picture.getPictureInfo(picture_id).getDescription().isEmpty())
+                        out.println(Picture.getPictureInfo(picture_id).getDescription());
+                }catch (Exception e){ out.println("No description was provided"); }
+            %>
+        </div>
+        <!-- Picture description END -->
+
+        <!-- Like button-->
+        <%if (session.getAttribute("user_name") != null){
+            if(Picture.allowUserLike(User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user(),picture_id)==false){
+        %>
+        <form style="width: 60px; margin: 5px auto auto;" action="functions/like_unlike.jsp" method="post">
+            <div class="form-group">
+                <input type="hidden" name="action" value="like">
+                <input type="hidden" name="like_picture_id" value="<%=picture_id%>">
+                <input type="hidden" name="like_commentator" value="<%=User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user()%>">
+            </div>
+            <input type="submit" value="Like" class="btn btn-info btn-sm">
+        </form>
+        <%
+                }else{
+                    %>
+                             <form style="width: 60px; margin: 5px auto auto;" action="functions/like_unlike.jsp" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" name="action" value="dislike">
+                                    <input type="hidden" name="unlike_picture_id" value="<%=picture_id%>">
+                                    <input type="hidden" name="unlike_commentator" value="<%=User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user()%>">
+                                </div>
+                                <input type="submit" value="Unlike" class="btn btn-warning btn-sm">
+                            </form>
+                    <%
+                }
+            }%>
+        <!-- Like button end-->
+
+        <!-- Picture info -->
+        <div class="picture_info" style="margin-left:-5px; margin-top:10px; text-align:center;">
+            <i class="glyphicon glyphicon-user"></i> by <a href="#"><%=User.getUserInfo(Picture.getPictureInfo(picture_id).getUpl_user_id()).getUser_name() %></a>
+            | <i class="glyphicon glyphicon-calendar"></i> <%=Picture.getPictureInfo(picture_id).getUpl_date().toString()%>
+            | <i class="glyphicon glyphicon-comment"></i> <b><%=Picture.getPictureInfo(picture_id).getComments().size()%></b> Comments <!-- Make well with comments -->
+            | <i class="glyphicon glyphicon-thumbs-up"></i> <b><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_voted()%></b> Likes <!-- Only shows amount of likes, but not LIKE-button -->
+            | <i class="glyphicon glyphicon-download-alt"></i> <b><%=Picture_Statistics.getPicture_statistics(picture_id).getTotal_downloads()%></b> Downloads
+            | <i class="glyphicon glyphicon-star"></i> <b><%=Picture_Statistics.getPicture_statistics(picture_id).getPicture_rating()%></b> Rating
+        </div>
+        <!-- Picture info END -->
+
+    </div>
+    <!-- Picture + Tools + Info END -->
+
+    <!-- Comment form -->
+    <div class="comment" style="margin-top: 20px;">
+
+     <% if (session.getAttribute("user_name") != null){%>
+        <form style="width: 50%; margin: 5px auto auto;" action="functions/add_comment.jsp" method="post">
+            <div class="form-group">
+                <label for="comment">Your Comment</label>
+                <textarea id="comment" name="comment" class="form-control" rows="3"></textarea>
+                <input type="hidden" name="picture_id" value="<%=picture_id%>">
+                <input type="hidden" name="commentator" value="<%=User.getUserInfoByUserName((String)session.getAttribute("user_name")).getId_user()%>">
+            </div>
+            <input type="submit" value="Send" class="btn btn-success btn-sm">
+        </form>
+    </div>
+    <%}%>
+    <!-- Comment form END -->
+        <!------------------- COMMENTARY FORM END --------------------------->
+
+    <% try{
+        if(Picture.getPictureInfo(picture_id).getComments().size()>0){%>
+        <!------------------- COMMENTS AREA ------------------------------>
+    <div class="container" style="width: 75%; margin-top: 25px;">
+    <div class="row">
+        <div class="panel panel-default widget">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-comment" style="margin-left: 10px;"></span>
+                <h3 class="panel-title" style="float: left;">
+                    Recent Comments</h3>
+                <span class="label label-info" style="margin-left: 10px;">
+                   <%=Picture.getPictureInfo(picture_id).getComments().size()%> </span>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+
+                    <!----------------------------- TESTOVIY KOMMENTARIY ----------------------------->
+                    <%
+
+                        for(int i=0;i<Picture.getPictureInfo(picture_id).getComments().size();i++)
+                        { %>
+
+                        <li class="list-group-item">
+                        <div class="row">
+
+                            <div class="col-xs-10 col-md-11">
+                                <div>
+                                    <div class="mic-info">
+                                        By: <a href="#"><%out.println(User.getUserInfo(Picture.getPictureInfo(picture_id).getComments().get(i).getId_user()).getUser_name());%></a> on <% out.println(Picture.getPictureInfo(picture_id).getComments().get(i).getAdd_date().toString());%>
+                                    </div>
+                                </div>
+                                <div class="comment-text">
+                                    <% out.println(Picture.getPictureInfo(picture_id).getComments().get(i).getComment()); %>
+                                </div>
+                                <div class="action">
+                                    <% try{if(session.getAttribute("user_name") != null){
+                                        if(User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_user() == Picture.getPictureInfo(picture_id).getComments().get(i).getId_user() || User.getUserInfoByUserName((String) session.getAttribute("user_name")).getId_position() == 2){%>
+
+                                        <form action="functions/delete_comment.jsp" method="post">
+                                            <input type="hidden" name="c_picture_id" value="<%=picture_id%>">
+                                            <input type="hidden" name="delete_id" value="<%=Picture.getPictureInfo(picture_id).getComments().get(i).getId_comment() %>">
+                                           <input type="submit" class="btn btn-danger btn-xs" value="Delete">
+
+
+                                        </form>
+
+                                    <%}}}catch (Exception e){}%>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <%
+                        }
+                    %>
+
+
+                    <!---------------------------------------------------------->
+                    </ul>
+                     <a href="#" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>
+                    </div>
+
+
         </div>
     </div>
-    <!-- /.row -->
+</div>
 
+        <!------------------- COMMENTS AREA END------------------------------>
+
+
+
+<%}}catch (Exception e){e.printStackTrace();}%>
 
 
     <hr>

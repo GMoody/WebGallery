@@ -123,5 +123,49 @@ public class Connections {
         return queryExecuter(query);
     }
 
+    public static ResultSet GetPictureComments(int picture_id) throws SQLException, ClassNotFoundException{
+
+        String query="SELECT * FROM webgallery.t_comment as C WHERE C.id_picture = '"+picture_id+"' ORDER BY 4 ASC";
+        return queryExecuter(query);
+    }
+
+    public static boolean AddComment(int id_user, int id_picture, String comment) throws SQLException, ClassNotFoundException{
+        String query="INSERT INTO webgallery.t_comment (id_picture,id_user,add_date,comment) VALUES ('"+id_picture+"','"+id_user+"',CURRENT_DATE,'"+comment+"');";
+        return queryUpdater(query);
+    }
+
+    public  static  boolean DeleteComment(int id_comment) throws  SQLException, ClassNotFoundException{
+        String query="DELETE FROM webgallery.t_comment WHERE id_comment ='"+id_comment+"'";
+        return queryUpdater(query);
+    }
+
+    public static boolean addLike (int user_id, int picture_id) throws SQLException, ClassNotFoundException{
+        String query = "INSERT INTO webgallery.t_Like (id_user,id_picture) VALUES ('"+user_id+"', '"+picture_id+"');";
+       return  queryUpdater(query);
+    }
+
+    public static boolean checkLike (int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
+        String query = "SELECT * FROM webgallery.t_Like WHERE id_user = '"+user_id+"' AND id_picture = '"+picture_id+"'";
+        ResultSet st = queryExecuter(query);
+        if(st.next()){return true;}else{return false;}
+    }
+
+    public static boolean deleteLike(int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
+        String query = "DELETE FROM webgallery.t_Like WHERE id_user = '"+user_id+"' and id_picture = '"+picture_id+"'";
+        return  queryUpdater(query);
+    }
+
+    public static boolean addLikeToTotalVoted(int picture_id) throws  SQLException, ClassNotFoundException{
+        String query ="UPDATE webgallery.t_picture_statistics SET total_voted = total_voted + 1 WHERE id_picture = '"+picture_id+"'";
+        return queryUpdater(query);
+    }
+
+    public static  boolean deleteLikeFromTotalVoted(int picture_id) throws SQLException, ClassNotFoundException{
+        String query ="UPDATE webgallery.t_picture_statistics SET total_voted = total_voted - 1 WHERE id_picture = '"+picture_id+"'";
+        return queryUpdater(query);
+    }
+
+
+
 
 }
