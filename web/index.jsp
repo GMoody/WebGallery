@@ -19,9 +19,8 @@
     <link rel="stylesheet" href="css/webgallery.css"/>
 
     <!-- JS -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
     <!-- Title -->
     <title>Web Gallery</title>
