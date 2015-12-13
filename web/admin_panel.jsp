@@ -106,7 +106,7 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary"  style="border-color: #080808; margin-left: -235px; width: 180%; ">
                 <div class="panel-heading" style="background-color: #323232; border-color: #080808">
-                    <h3 class="panel-title">Panel title</h3>
+                    <h3 class="panel-title">Administrator menu</h3>
                     <span class="pull-right">
                         <!-- Tabs -->
                         <ul class="nav panel-tabs">
@@ -121,7 +121,11 @@
                     <div class="tab-content">
 
                         <div class="tab-pane active" id="tab1">
-                            <h5 style="margin-left: 17px;"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span> &nbsp; <b>Total users: <%out.println(User.users.size());%></b></h5>
+                            <h5 style="margin-left: 17px;"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span> &nbsp; <b>Total users: <%
+                                int users=0;
+                                for (int i=0;i<User.users.size();i++){if(User.users.get(i).getId_position() == 1){users++;}}
+                                out.println(users);
+                            %></b></h5>
                             <div class="container" style="margin-top: -15px;">
                                 <div class="row col-md-6 col-md-offset-2 custyle">
                                     <table class="table table-striped custab" style="width: 915px; margin-left: -205px;">
@@ -202,9 +206,7 @@
                                                     <input type="hidden" name="delete_pic_id" value="<%=Picture.pictures.get(i).getId_picture()%>">
                                                     <input type="submit" class="btn btn-danger btn-xs" value="Delete">
                                                 </form>
-                                                <form action="" method="post" style="float:right; margin-right: 10px; margin-leftt: 10px;">
-                                                    <input type="submit" class='btn btn-info btn-xs' value="Edit">
-                                                </form>
+
                                             </td>
                                         </tr>
                                         <%}%>
