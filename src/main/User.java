@@ -4,6 +4,7 @@ import functions.Checker;
 import functions.Connections;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -265,6 +266,39 @@ public class User {
         }
 
         return deleted;
+    }
+
+    public static boolean checkUserWasDeletedFromDB_If_Success_Delete_It_From_List(int id_user) throws SQLException, ClassNotFoundException{
+        ResultSet st = null;
+
+        try{
+            boolean delete_likes = Connections.deleteAllUserLikes(id_user);
+            boolean delete_comments = Connections.deleteAllUserComments(id_user);
+            boolean delete_alien_likes = Connections.deleteAllAlienLikesFromUserPictures(id_user); // непроверяем, просто стираем всё чужие лайки
+            boolean delete_alien_comments = Connections.deleteAllAlienCommentsFromUserPictures(id_user); // непроверяем в резалт сете, просто стираем все чужие комменты
+            boolean delete_user_stats = Connections.deleteAllUserStatistics(id_user);
+            boolean delete_pic_stats = Connections.deleteAllUserPictureStatistics(id_user);
+            boolean delete_pics = Connections.deleteAllUserPictures(id_user);
+
+            //удаляем юзера из базы базы данных а потом из листа сразу!
+            boolean delete_user_by_admin = delete_user_by_admin = User.deleteUserByAdmin(id_user);
+
+            st = Connections.checkIfUserWasDeletedCorrectly(id_user);
+
+        }catch (Exception e){e.printStackTrace();}
+
+        if(st.next()){  // Если в резалт сете есть хоть одна строка, то что-то осталось и какое из удалений либо не выполнилось либо не удалило ничего
+            return false;
+        }
+        else{ ////Если там пусто, значит удалено всё верно! удалим все пикчи юзера из листа на сайте
+
+            Picture.deleteUserPictureFromList(id_user); // циклом пройдем по всем картинкам, удалим все картинки этого пользователя из листа,
+            // что на главной странице не было ошибок
+            return true;
+        }
+
+
+
     }
 
 

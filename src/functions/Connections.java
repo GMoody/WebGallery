@@ -149,110 +149,146 @@ public class Connections {
         return queryUpdater(query);
     }
 
+
+
+
+
     public static boolean deleteAllUserComments(int user_id) throws SQLException, ClassNotFoundException{
-        String query1="SELECT * FROM webgallery.t_comment where id_user = '"+user_id+"'";
+//        String query1="SELECT * FROM webgallery.t_comment where id_user = '"+user_id+"'";
+//        String query2="DELETE FROM webgallery.t_comment where id_user = '"+user_id+"'";
+//        int deleted=0; int deleted_alien_comments = 0;
+//
+//        String query_3="DELETE FROM webgallery.t_comment where t_comment.id_picture in ( SELECT id_picture FROM webgallery.t_picture where t_picture.upl_user_id = '"+user_id+"' )";
+//
+//        Connection conn = new Connections().getConnection();
+//        Statement st = conn.createStatement();
+//        Statement st2 = conn.createStatement();
+//
+//        ResultSet rs = st.executeQuery(query1);
+//        deleted_alien_comments = st2.executeUpdate(query_3); // В любом случае удаляем все ЧУЖИЕ комменты с картинок этого пользователя!!! Проверят ненадо т.к. если 0 значит их просто НЕТ
+//
+//        if(rs.next()){ // Есть комменты удаляем
+//            deleted = st.executeUpdate(query2); conn.close();
+//            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
+//        }else{ conn.close();// Нет комментов, удалять ненадо
+//                return true;
+//        }
         String query2="DELETE FROM webgallery.t_comment where id_user = '"+user_id+"'";
-        int deleted=0; int deleted_alien_comments = 0;
-
-        String query_3="DELETE FROM webgallery.t_comment where t_comment.id_picture in ( SELECT id_picture FROM webgallery.t_picture where t_picture.upl_user_id = '"+user_id+"' )";
-
-        Connection conn = new Connections().getConnection();
-        Statement st = conn.createStatement();
-        Statement st2 = conn.createStatement();
-
-        ResultSet rs = st.executeQuery(query1);
-        deleted_alien_comments = st2.executeUpdate(query_3); // В любом случае удаляем все ЧУЖИЕ комменты с картинок этого пользователя!!! Проверят ненадо т.к. если 0 значит их просто НЕТ
-
-        if(rs.next()){ // Есть комменты удаляем
-            deleted = st.executeUpdate(query2); conn.close();
-            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
-        }else{ conn.close();// Нет комментов, удалять ненадо
-                return true;
-        }
+        return  queryUpdater(query2);
 
     }
 
+    public static boolean deleteAllAlienCommentsFromUserPictures(int user_id) throws SQLException, ClassNotFoundException{
+        String query_3="DELETE FROM webgallery.t_comment where t_comment.id_picture in ( SELECT id_picture FROM webgallery.t_picture where t_picture.upl_user_id = '"+user_id+"' )";
+        return queryUpdater(query_3);
+    }
+
+    public static boolean deleteAllAlienLikesFromUserPictures(int user_id) throws SQLException,ClassNotFoundException{
+        String query3="DELETE FROM webgallery.t_Like where t_Like.id_picture in ( SELECT id_picture FROM webgallery.t_picture where t_picture.upl_user_id = '"+user_id+"' )";
+        return queryUpdater(query3);
+    }
+
     public static boolean deleteAllUserLikes(int user_id) throws SQLException, ClassNotFoundException{
-        String query3="DELETE FROM webgallery.t_Like where t_Like.id_picture in ( SELECT id_picture FROM webgallery.t_picture\n where t_picture.upl_user_id = '"+user_id+"' )";
-        int delete_alien_likes = 0;
+//        String query3="DELETE FROM webgallery.t_Like where t_Like.id_picture in ( SELECT id_picture FROM webgallery.t_picture\n where t_picture.upl_user_id = '"+user_id+"' )";
+//        int delete_alien_likes = 0;
+//
+//        String query1="SELECT * FROM webgallery.t_Like where id_user = '"+user_id+"'";
+//        String query2="DELETE FROM webgallery.t_Like where id_user ='"+user_id+"'";
+//        int deleted=0;
+//
+//        Connection conn = new Connections().getConnection();
+//
+//        Statement st = conn.createStatement();
+//        Statement st2 = conn.createStatement();
+//
+//        ResultSet rs = st.executeQuery(query1);
+//        delete_alien_likes=st2.executeUpdate(query3);
+//
+//        if(rs.next()){ // Есть комменты удаляем
+//            deleted = st.executeUpdate(query2); conn.close();
+//            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
+//        }else{ conn.close();// Нет комментов, удалять ненадо
+//            return true;
+//        }
 
-        String query1="SELECT * FROM webgallery.t_Like where id_user = '"+user_id+"'";
         String query2="DELETE FROM webgallery.t_Like where id_user ='"+user_id+"'";
-        int deleted=0;
-
-        Connection conn = new Connections().getConnection();
-
-        Statement st = conn.createStatement();
-        Statement st2 = conn.createStatement();
-
-        ResultSet rs = st.executeQuery(query1);
-        delete_alien_likes=st2.executeUpdate(query3);
-
-        if(rs.next()){ // Есть комменты удаляем
-            deleted = st.executeUpdate(query2); conn.close();
-            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
-        }else{ conn.close();// Нет комментов, удалять ненадо
-            return true;
-        }
+        return queryUpdater(query2);
 
     }
 
     public static boolean deleteAllUserStatistics(int user_id) throws SQLException, ClassNotFoundException{
-        String query1="SELECT * FROM webgallery.t_user_statistics where id_user = '"+user_id+"'";
+//        String query1="SELECT * FROM webgallery.t_user_statistics where id_user = '"+user_id+"'";
+//        String query2="DELETE FROM webgallery.t_user_statistics where id_user ='"+user_id+"'";
+//        int deleted=0;
+//
+//        Connection conn = new Connections().getConnection();
+//        Statement st = conn.createStatement();
+//
+//        ResultSet rs = st.executeQuery(query1);
+//
+//        if(rs.next()){ // Есть комменты удаляем
+//            deleted = st.executeUpdate(query2); conn.close();
+//            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
+//        }else{ conn.close();// Нет комментов, удалять ненадо
+//            return true;
+//        }
+
         String query2="DELETE FROM webgallery.t_user_statistics where id_user ='"+user_id+"'";
-        int deleted=0;
-
-        Connection conn = new Connections().getConnection();
-        Statement st = conn.createStatement();
-
-        ResultSet rs = st.executeQuery(query1);
-
-        if(rs.next()){ // Есть комменты удаляем
-            deleted = st.executeUpdate(query2); conn.close();
-            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
-        }else{ conn.close();// Нет комментов, удалять ненадо
-            return true;
-        }
+        return queryUpdater(query2);
 
     }
 
     public static boolean deleteAllUserPictureStatistics(int user_id) throws SQLException, ClassNotFoundException{
-        String query1="SELECT * FROM webgallery.t_picture_statistics as PS JOIN webgallery.t_picture AS P ON P.id_picture = PS.id_picture where P.upl_user_id = '"+user_id+"'";
+//        String query1="SELECT * FROM webgallery.t_picture_statistics as PS JOIN webgallery.t_picture AS P ON P.id_picture = PS.id_picture where P.upl_user_id = '"+user_id+"'";
+//        String query2="DELETE FROM webgallery.t_picture_statistics WHERE id_picture in ( SELECT t_picture_statistics.id_picture FROM webgallery.t_picture_statistics JOIN webgallery.t_picture ON t_picture_statistics.id_picture = t_picture.id_picture where upl_user_id = '"+user_id+"')";
+//        int deleted=0;
+//
+//        Connection conn = new Connections().getConnection();
+//        Statement st = conn.createStatement();
+//
+//        ResultSet rs = st.executeQuery(query1);
+//
+//        if(rs.next()){ // Есть комменты удаляем
+//            deleted = st.executeUpdate(query2); conn.close();
+//            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
+//        }else{ conn.close();// Нет комментов, удалять ненадо
+//            return true;
+//        }
+
         String query2="DELETE FROM webgallery.t_picture_statistics WHERE id_picture in ( SELECT t_picture_statistics.id_picture FROM webgallery.t_picture_statistics JOIN webgallery.t_picture ON t_picture_statistics.id_picture = t_picture.id_picture where upl_user_id = '"+user_id+"')";
-        int deleted=0;
-
-        Connection conn = new Connections().getConnection();
-        Statement st = conn.createStatement();
-
-        ResultSet rs = st.executeQuery(query1);
-
-        if(rs.next()){ // Есть комменты удаляем
-            deleted = st.executeUpdate(query2); conn.close();
-            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
-        }else{ conn.close();// Нет комментов, удалять ненадо
-            return true;
-        }
-
+        return queryUpdater(query2);
     }
 
     public static boolean deleteAllUserPictures(int user_id) throws SQLException, ClassNotFoundException{
-        String query1="SELECT * FROM webgallery.t_picture where upl_user_id = '"+user_id+"'";
+//        String query1="SELECT * FROM webgallery.t_picture where upl_user_id = '"+user_id+"'";
+//        String query2="DELETE FROM webgallery.t_picture where upl_user_id = '"+user_id+"'";
+//
+//        int deleted=0;
+//
+//        Connection conn = new Connections().getConnection();
+//        Statement st = conn.createStatement();
+//
+//        ResultSet rs = st.executeQuery(query1);
+//
+//        if(rs.next()){ // Есть комменты удаляем
+//            deleted = st.executeUpdate(query2); conn.close();
+//            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
+//        }else{ conn.close();// Нет комментов, удалять ненадо
+//            return true;
+//        }
+
         String query2="DELETE FROM webgallery.t_picture where upl_user_id = '"+user_id+"'";
-
-        int deleted=0;
-
-        Connection conn = new Connections().getConnection();
-        Statement st = conn.createStatement();
-
-        ResultSet rs = st.executeQuery(query1);
-
-        if(rs.next()){ // Есть комменты удаляем
-            deleted = st.executeUpdate(query2); conn.close();
-            if(deleted!=0){ return true;}else{return false;} // Тру если удален, не тру если не удалено
-        }else{ conn.close();// Нет комментов, удалять ненадо
-            return true;
-        }
+        return queryUpdater(query2);
     }
+
+    public static ResultSet checkIfUserWasDeletedCorrectly(int id_user) throws SQLException, ClassNotFoundException{
+        String query="SELECT * FROM webgallery.t_user as U LEFT join webgallery.t_picture as P ON U.id_user = P.upl_user_id LEFT join webgallery.t_comment as C ON U.id_user = C.id_user LEFT join webgallery.t_like as L ON U.id_user = L.id_user LEFT join webgallery.t_user_statistics as US ON U.id_user = US.id_user where U.id_user = '"+id_user+"'";
+        return queryExecuter(query);
+    }
+
+
+
+
 
     public static boolean deleteCommentsFromPictureByID (int picture_id) throws SQLException, ClassNotFoundException{
         String query="DELETE FROM webgallery.t_like as L where L.id_picture = '"+picture_id+"'";
