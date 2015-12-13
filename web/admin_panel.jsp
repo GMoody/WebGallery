@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: r3dz
-  Date: 12.12.2015
-  Time: 18:12
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="main.*" %>
@@ -23,13 +16,12 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/webgallery.css"/>
 
-
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Title -->
-    <title>Web Gallery - Profile info</title>
+    <title>Web Gallery - Admin panel</title>
 
 </head>
 
@@ -50,7 +42,7 @@
             </button>
             <!-- Options button END-->
 
-            <a class="navbar-brand" href="profile.jsp">Profile</a>
+            <a class="navbar-brand" href="admin_panel.jsp">Admin panel</a>
         </div>
         <!-- Mobile display menu END-->
 
@@ -59,35 +51,25 @@
             <!-- Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="index.jsp">Main</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.jsp">About</a></li>
             </ul>
             <!-- Navbar END -->
 
             <!-- Profile -->
             <ul class="nav navbar-right top-nav">
-
                 <!-- Logged-in -->
-                <li class="dropdown disp_none">
-                    <% try{
-                        if (session.getAttribute("user_name") != null & Integer.parseInt(session.getAttribute("position").toString()) == 2) {%>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%=session.getAttribute("user_name")%><b class="caret"></b></a>
+                    <!-- Dropdown menu -->
                     <ul class="dropdown-menu">
                         <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <li><a href="gallery.jsp"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                        <li><a href="admin_panel.jsp"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                        <li><a href="gallery.jsp?user=<%=session.getAttribute("user_name")%>"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                         <li class="divider"></li>
                         <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
                     </ul>
+                    <!-- Dropdown menu END -->
                 </li>
                 <!-- Logged-in end-->
-
-                <!-- NOT Logged-in -->
-                <% } else { session.invalidate(); %>
-                <script> document.location.href="index.jsp"; alert("Only administration could access this page!"); </script>
-                <% } }catch (Exception e){e.printStackTrace();}%>
-                <!-- NOT Logged-in end-->
-
             </ul>
             <!-- Profile end-->
 
@@ -163,12 +145,9 @@
                                             </td>
                                         </tr>
                                         <%}}%>
-
-
                                     </table>
                                 </div>
                             </div>
-
 
                             <!-- EditModal -->
                             <div id="edit_modal" class="modal fade" role="dialog">
@@ -217,17 +196,6 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="control-label col-sm-4">Old password:</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="password" class="form-control" name="pass0"
-                                                               title="Password should contains from 6 to 20 symbols"
-                                                               pattern=".{6,20}"
-                                                               placeholder="Enter to make changes"
-                                                               required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
                                                     <label class="control-label col-sm-4">New password:</label>
                                                     <div class="col-sm-6">
                                                         <input type="password" class="form-control" name="pass1"
@@ -270,7 +238,6 @@
                                                 </div>
                                             </form>
 
-
                                             <script>
                                                 // Скрипт проверяет размер загружаемой аватарки.
                                                 $('#edit_btn').click( function(e) {
@@ -301,17 +268,10 @@
                                     $(e.currentTarget).find('input[name="lname"]').val(user_lname);
                                     $(e.currentTarget).find('input[name="email"]').val(user_email);
                                     $(e.currentTarget).find('input[name="user_login"]').val(user_login); // hidden!!!
-
                                 });
                             </script>
 
-
-
                         </div>
-
-
-
-
 
                         <div class="tab-pane" id="tab2">
                             <h5 style="margin-left: 17px;"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span><b> Total pictures:  <%out.println(Picture.pictures.size());%>   </b>   &nbsp;|&nbsp;    <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> <b>Total categories: <%out.println(Category.categories.size());%> </b></h5>
@@ -331,10 +291,7 @@
                                         </tr>
                                         </thead>
                                         <%
-
                                             for (int i=0;i< Picture.pictures.size();i++){
-
-
                                         %>
                                         <tr>
                                             <td><%=i+1%></td>
@@ -357,15 +314,12 @@
                                             </td>
                                         </tr>
                                         <%}%>
-
-
                                     </table>
                                 </div>
                             </div>
                         </div>
 
                         <div class="tab-pane" id="tab3">
-
                             <h5 style="margin-left: 17px;"><b>Know your colleagues!&nbsp;&nbsp;</b><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>  </h5>
                             <div class="container" style="margin-top: -15px;">
                                 <div class="row col-md-6 col-md-offset-2 custyle">
@@ -378,7 +332,6 @@
                                             <th>Fristname</th>
                                             <th>Lastname</th>
                                             <th>E-mail address</th>
-
                                         </tr>
                                         </thead>
                                         <%
@@ -395,8 +348,6 @@
                                             <td><%=User.users.get(i).getEmail().toString()%></td>
                                         </tr>
                                         <%}}%>
-
-
                                     </table>
                                 </div>
                             </div>
@@ -407,6 +358,19 @@
             </div>
         </div>
     </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p align="center">Copyright &copy; Web Gallery 2015</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+    <!-- Footer END-->
 </div>
 
 <!---- Page content end ----->

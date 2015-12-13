@@ -84,9 +84,8 @@
                         <!-- Dropdown menu -->
                         <ul class="dropdown-menu">
                             <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                            <li><a href="gallery.jsp?user=<%=session.getAttribute("user_name")%>"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                             <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
-                                <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                                <li><a href="admin_panel.jsp"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                             <%}%>
                             <li class="divider"></li>
                             <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>

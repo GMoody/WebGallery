@@ -15,7 +15,6 @@
             List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request); // Всю форму с данными в лист
             String login= session.getAttribute("user_name").toString(), pass1="", pass2="", fname="", lname="", email="", pwd_old="", is_admin = "", edit_user_login = "";
 
-
             File temp = null;
             boolean flag = false; // Переменная для проверки, необходимо ли залить аву или нет
 
@@ -47,21 +46,18 @@
                     if (item.getFieldName().equals("pass0"))
                         pwd_old = item.getString();
 
-                    if(item.getFieldName().equals("is_admin")){
+                    if(item.getFieldName().equals("is_admin"))
                         if(is_admin != null){is_admin = item.getString();}
 
-                    }
-
-                    if(item.getFieldName().equals("user_login")){
+                    if(item.getFieldName().equals("user_login"))
                         if(edit_user_login != null){edit_user_login = item.getString();}
 
-                    }
                 }
             }
 
-            if(is_admin != null && edit_user_login != null){login = edit_user_login;}
+            if(!is_admin.isEmpty() && !edit_user_login.isEmpty()){login = edit_user_login;}
 
-            if (BCrypt.checkpw(pwd_old, User.getUserInfoByUserName(login).getPassword())) { // Проверяем на совпадение старый пароль
+            if (BCrypt.checkpw(pwd_old, User.getUserInfoByUserName(login).getPassword()) || !is_admin.isEmpty()) { // Проверяем на совпадение старый пароль
 
                 if(flag){ // Если была загружена ава, тогда отсылаем на ftp и обновляем данные у user-а
                     %><script>alert("Uploading avatar, please wait!");</script><%
@@ -78,9 +74,14 @@
                     if(Checker.checkString(pass2) & pass1.equals(pass2)){ // Совпадают ли новые пароли
                         try{
                             if(User.changeUserData(login, BCrypt.hashpw(pass1, BCrypt.gensalt()), fname, lname, email)){
-                                %><script>alert("User data successfully changed, now log in again!");</script><%
-                                %><script> window.location = document.referrer;</script><%
-                                session.invalidate();
+                                    if(!is_admin.isEmpty()){
+                                        %><script>alert("User data successfully changed!");</script><%
+                                        %><script> window.location = document.referrer;</script><%
+                                    }else{
+                                        %><script>alert("User data successfully changed, now log in again!");</script><%
+                                        %><script> window.location = "../index.jsp";</script><%
+                                        session.invalidate();
+                                    }
                             }else{
                                 %><script>alert("Such email is already taken!");</script><%
                                 %><script> window.location = document.referrer;</script><%
