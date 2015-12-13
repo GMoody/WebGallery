@@ -120,7 +120,9 @@
                 <div class="panel-body">
                     <div class="tab-content">
 
+
                         <div class="tab-pane active" id="tab1">
+
                             <h5 style="margin-left: 17px;"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span> &nbsp; <b>Total users: <%
                                 int users=0;
                                 for (int i=0;i<User.users.size();i++){if(User.users.get(i).getId_position() == 1){users++;}}
@@ -154,9 +156,9 @@
                                                     <input type="hidden" name="delete_user_id" value="<%=User.users.get(i).getId_user()%>">
                                                     <input type="submit" class="btn btn-danger btn-xs" value="Delete">
                                                 </form>
-                                                <form action="" method="post" style="float:right; margin-right: 10px; margin-leftt: 10px;">
-                                                    <input type="submit" class='btn btn-info btn-xs' value="Edit">
-                                                </form>
+
+                                                <a href='#edit_modal'  class='btn btn-primary btn-xs' data-toggle='modal' data-user_fname='<%=User.users.get(i).getFirst_name().toString()%>' data-user_lname='<%=User.users.get(i).getLast_name().toString()%>' data-user_email='<%=User.users.get(i).getEmail().toString()%>' >Edit profile</a>
+
                                             </td>
                                         </tr>
                                         <%}}%>
@@ -165,7 +167,146 @@
                                     </table>
                                 </div>
                             </div>
+
+
+                            <!-- EditModal -->
+                            <div id="edit_modal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header" align="center">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Personal information</h4>
+                                        </div>
+
+                                        <div class="modal-body">
+                                             <form class="form-horizontal zero-top" action='need_new_profile_change_jsp' enctype="multipart/form-data" role="form" method="post" name="edit_form" autocomplete="off">
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">First name:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="user_fname"
+                                                               title="Fristname should contain from 3 to 50 characters"
+                                                               pattern="[A-Za-z]{3,50}"
+                                                               required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Last name:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="user_lname"
+                                                               title="Lastname should contain from 3 to 50 characters"
+                                                               pattern="[A-Za-z]{3,50}"
+
+                                                               required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Email:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="email" class="form-control" name="user_email"
+                                                               title="Email must be in the following order: characters@characters.domain"
+                                                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+
+                                                               required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Old password:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="password" class="form-control" name="pass0"
+                                                               title="Password should contains from 6 to 20 symbols"
+                                                               pattern=".{6,20}"
+                                                               placeholder="Enter to make changes"
+                                                               required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">New password:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="password" class="form-control" name="pass1"
+                                                               title="Password should contains from 6 to 20 symbols"
+                                                               pattern=".{6,20}"
+                                                               placeholder="Enter, if you need to change it">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Confirm password:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="password" class="form-control" name="pass2"
+                                                               title="Password should contains from 6 to 20 symbols"
+                                                               pattern=".{6,20}"
+                                                               placeholder="Confirm your new password">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Avatar:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="file" class="form-control"
+                                                               name="avatar"
+                                                               id="avatar"
+                                                               accept="image/jpeg,image/png"
+                                                               title="You may upload only picture with size < 10mb.">
+                                                    </div>
+                                                </div>
+
+                                                <hr style="border-color: black;">
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-5">
+                                                        <button type="submit" class="btn btn-success" name="edit_btn" id="edit_btn">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+
+                                            <script>
+                                                // Скрипт проверяет размер загружаемой аватарки.
+                                                $('#edit_btn').click( function(e) {
+                                                    var fsize = $('#avatar')[0].files[0].size;
+                                                    if(fsize>10485760){
+                                                        alert("Avatar size is more than 10 mb!");
+                                                        e.preventDefault(); // Предотвращает отправление формы, если размер аватарки больше 10мб
+                                                    }
+                                                });
+                                            </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- EditModal END -->
+
+                            <script>
+                                // The script inserts the data into a modal window
+                                $('#edit_modal').on('show.bs.modal', function (e) {
+                                    alert('i am here22222!!!');
+                                    var user_fname = $(e.relatedTarget).data('user_fname');
+                                    var user_lname = $(e.relatedTarget).data('user_lname');
+                                    var user_email = $(e.relatedTarget).data('user_email');
+                                    $(e.currentTarget).find('input[name="user_fname"]').val(user_fname);
+                                    $(e.currentTarget).find('input[name="user_lname"]').val(user_lname);
+                                    $(e.currentTarget).find('input[name="user_email"]').val(user_email);
+
+                                });
+                            </script>
+
+
+
                         </div>
+
+
+
+
+
                         <div class="tab-pane" id="tab2">
                             <h5 style="margin-left: 17px;"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span><b> Total pictures:  <%out.println(Picture.pictures.size());%>   </b>   &nbsp;|&nbsp;    <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> <b>Total categories: <%out.println(Category.categories.size());%> </b></h5>
                             <div class="container" style=" margin-top: -15px;">
