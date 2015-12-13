@@ -3,8 +3,6 @@ package main;
 import functions.Checker;
 import functions.Connections;
 import org.mindrot.jbcrypt.BCrypt;
-
-import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -205,7 +203,7 @@ public class User {
         try {
             getUserInfo(id_user).pictures.add(picture);
             return true;
-        } catch (NullPointerException e) {
+        }catch (NullPointerException e) {
             e.printStackTrace();
             return false;
         }
@@ -228,11 +226,10 @@ public class User {
     public void checkInUserPictures(int id_user, Picture picture){
         // Метод проверяет наличие картинки у пользователя, иначе добавляет ему в его лист с картинками.
         try {
-            for (Picture x : getUserInfo(id_user).pictures){
+            for (Picture x : getUserInfo(id_user).pictures)
                 if(x.getId_picture() != picture.getId_picture())
                     addPictureToUser(id_user, picture);
-            }
-        } catch (NullPointerException e) {
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
     }
@@ -244,8 +241,8 @@ public class User {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public static boolean deleteUserByAdmin(int user_id) throws SQLException, ClassNotFoundException{

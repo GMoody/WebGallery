@@ -20,6 +20,7 @@ public class Initializer {
         return instance;
     }
 
+    //region Methods
     private void addAllCategories() {
         try {
             ResultSet rs = Connections.getCategories();
@@ -28,9 +29,7 @@ public class Initializer {
                 Category category = new Category(rs.getInt(1), rs.getString(2));
             }
             rs.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     private void addAllPositions() {
@@ -41,9 +40,7 @@ public class Initializer {
                 Position position = new Position(rs.getInt(1), rs.getString(2));
             }
             rs.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     private void addAllUsers() {
@@ -55,9 +52,7 @@ public class Initializer {
                 System.out.print(user);
             }
             rs.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     private void addAllUserStatistics() {
@@ -68,9 +63,7 @@ public class Initializer {
                 User_Statistics temp = new User_Statistics(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4));
             }
             rs.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     private void addAllPictureStatistics() {
@@ -78,11 +71,10 @@ public class Initializer {
             ResultSet rs = Connections.getPicturesStatistics();
 
             while (rs.next()) {
-                Picture_Statistics temp = new Picture_Statistics(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4),rs.getDouble(5));
+                Picture_Statistics temp = new Picture_Statistics(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), Math.round(rs.getDouble(5) * 100.0) / 100.0);
             }
             rs.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }catch (Exception e){e.printStackTrace();}
     }
+    //endregion
 }

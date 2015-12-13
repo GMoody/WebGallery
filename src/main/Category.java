@@ -2,9 +2,10 @@ package main;
 
 import functions.Checker;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Category {
+public class Category implements Comparable<Category>{
 
     private int id_category;
     private String category;
@@ -56,6 +57,24 @@ public class Category {
             if (category.id_category == id_category)
                 return category;
         return null;
+    }
+
+    public static Category getCategoryInfo(String category) {
+        for (Category Category : categories)
+            if (Category.getCategory().equals(category))
+                return Category;
+        return null;
+    }
+
+    public static List<Category> sortCategories(){
+        List<Category> temp = getCategories();
+        Collections.sort(temp);
+        return temp;
+    }
+
+    @Override
+    public int compareTo(Category o) {
+        return getCategory().compareTo(o.getCategory());
     }
 
     //endregion

@@ -8,15 +8,12 @@
     String lname = request.getParameter("lastname");
     String pass1 = request.getParameter("password");
     String pass2 = request.getParameter("password_confirm");
-    int reg;
 
-    if(pass1.equals(pass2)){
-
+    if(pass1.equals(pass2))
         try {
-            reg = User.addUser(login,fname,lname,email,pass1);
+            int reg = User.addUser(login,fname,lname,email,pass1);
 
-            switch (reg)
-            {
+            switch (reg){
                 case 0:
                     %><script>alert("Database error, contact administration!");</script><%
                 break;
@@ -25,6 +22,7 @@
                     %><script>alert("Registration successful!");</script><%
                         session.setAttribute("user_name",login);
                         session.setAttribute("position", 1);
+                        session.setAttribute("email", email);
                 break;
 
                 case 2:
@@ -44,9 +42,8 @@
         } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
-    }
-    else
-    {
+
+    else{
         %><script>alert("Incorrect password, please try again!");
                   window.location = window.location.href;</script><%
     }
