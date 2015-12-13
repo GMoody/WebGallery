@@ -116,6 +116,10 @@
 
         <!-- Picture toolmenu -->
         <div class="toolmenu" style="text-align: center;">
+
+            <a href="javascript:history.back()"><b><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</b></a>
+            <%out.println(" | ");%>
+
             <!-- Picture options -->
             <b><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Category: </b>
             <%=Category.getCategoryInfo(Picture.getPictureInfo(picture_id).getId_category()).getCategory()%> |
