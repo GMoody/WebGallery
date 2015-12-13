@@ -281,7 +281,7 @@ public class User {
             boolean delete_pics = Connections.deleteAllUserPictures(id_user);
 
             //удаляем юзера из базы базы данных а потом из листа сразу!
-            boolean delete_user_by_admin = delete_user_by_admin = User.deleteUserByAdmin(id_user);
+            boolean delete_user_by_admin = User.deleteUserByAdmin(id_user);
 
             st = Connections.checkIfUserWasDeletedCorrectly(id_user);
 

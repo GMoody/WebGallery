@@ -13,7 +13,9 @@
     if(ServletFileUpload.isMultipartContent(request)){ // Получаем ли форму со смешанными данными
         try {
             List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request); // Всю форму с данными в лист
-            String login= session.getAttribute("user_name").toString(), pass1="", pass2="", fname="", lname="", email="", pwd_old="";
+            String login= session.getAttribute("user_name").toString(), pass1="", pass2="", fname="", lname="", email="", pwd_old="", is_admin = "", edit_user_login = "";
+
+
             File temp = null;
             boolean flag = false; // Переменная для проверки, необходимо ли залить аву или нет
 
@@ -44,8 +46,20 @@
 
                     if (item.getFieldName().equals("pass0"))
                         pwd_old = item.getString();
+
+                    if(item.getFieldName().equals("is_admin")){
+                        if(is_admin != null){is_admin = item.getString();}
+
+                    }
+
+                    if(item.getFieldName().equals("user_login")){
+                        if(edit_user_login != null){edit_user_login = item.getString();}
+
+                    }
                 }
             }
+
+            if(is_admin != null && edit_user_login != null){login = edit_user_login;}
 
             if (BCrypt.checkpw(pwd_old, User.getUserInfoByUserName(login).getPassword())) { // Проверяем на совпадение старый пароль
 
@@ -56,7 +70,7 @@
                         User.updateUserAvatar(login, path);
                     }else{
                         %><script>alert("Failed uploading avatar :(");</script><%
-                        %><script>window.location = "../profile.jsp";</script><%
+                        %><script> window.location = document.referrer;</script><%
                     }
                 }
 
@@ -65,46 +79,46 @@
                         try{
                             if(User.changeUserData(login, BCrypt.hashpw(pass1, BCrypt.gensalt()), fname, lname, email)){
                                 %><script>alert("User data successfully changed, now log in again!");</script><%
-                                %><script>window.location = "../index.jsp";</script><%
+                                %><script> window.location = document.referrer;</script><%
                                 session.invalidate();
                             }else{
                                 %><script>alert("Such email is already taken!");</script><%
-                                %><script>window.location = "../profile.jsp";</script><%
+                                %><script> window.location = document.referrer;</script><%
                             }
                         }catch (Exception e){
                             %><script>alert("Error in changing user data, contact system administrator!1");</script><%
-                            %><script>window.location = "../profile.jsp";</script><%
+                            %><script> window.location = document.referrer;</script><%
                         }
                     }else {
                         %><script>alert("New passwords don't match!");</script><%
-                        %><script>window.location = "../profile.jsp";</script><%
+                        %><script> window.location = document.referrer;</script><%
                     }
                 }
                 else{ // Если менять пароль необходимости нет
                     try{
                         if(User.changeUserData(login, User.getUserInfoByUserName(login).getPassword(), fname, lname, email)){
                             %><script>alert("User data successfully changed!");</script><%
-                            %><script>window.location = "../profile.jsp";</script><%
+                            %><script> window.location = document.referrer;</script><%
                         }else{
                             %><script>alert("Such email is already taken!");</script><%
-                            %><script>window.location = "../profile.jsp";</script><%
+                            %><script> window.location = document.referrer;</script><%
                         }
                     }catch (Exception e){
                         %><script>alert("Error in changing user data, contact system administrator!2");</script><%
-                        %><script>window.location = "../profile.jsp";</script><%
+                        %><script> window.location = document.referrer;</script><%
                     }
                 }
             }else{
                 %><script>alert("Old password doesn't match!");</script><%
-                %><script>window.location = "../profile.jsp";</script><%
+                %><script> window.location = document.referrer;</script><%
             }
         }catch (Exception ex) {
             %><script>alert("Error in changing user data, contact system administrator!3");</script><%
-            %><script>window.location = "../profile.jsp";</script><%
+            %><script> window.location = document.referrer;</script><%
         }
     }else{
         %><script>alert("Error in changing user data, contact system administrator!4");</script><%
-        %><script>window.location = "../profile.jsp";</script><%
+        %><script> window.location = document.referrer;</script><%
     }
 
 %>

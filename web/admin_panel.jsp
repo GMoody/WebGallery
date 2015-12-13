@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ page import="main.*" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,9 +25,9 @@
 
 
     <!-- JS -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
     <!-- Title -->
     <title>Web Gallery - Profile info</title>
 
@@ -157,7 +158,7 @@
                                                     <input type="submit" class="btn btn-danger btn-xs" value="Delete">
                                                 </form>
 
-                                                <a href='#edit_modal'  class='btn btn-primary btn-xs' data-toggle='modal' data-user_fname='<%=User.users.get(i).getFirst_name().toString()%>' data-user_lname='<%=User.users.get(i).getLast_name().toString()%>' data-user_email='<%=User.users.get(i).getEmail().toString()%>' >Edit profile</a>
+                                                <a href='#edit_modal'  class='btn btn-primary btn-xs' data-toggle='modal' data-user_fname='<%=User.users.get(i).getFirst_name().toString()%>' data-user_lname='<%=User.users.get(i).getLast_name().toString()%>' data-user_email='<%=User.users.get(i).getEmail().toString()%>' data-user_login='<%=User.users.get(i).getUser_name().toString()%>' >Edit profile</a>
 
                                             </td>
                                         </tr>
@@ -181,12 +182,12 @@
                                         </div>
 
                                         <div class="modal-body">
-                                             <form class="form-horizontal zero-top" action='need_new_profile_change_jsp' enctype="multipart/form-data" role="form" method="post" name="edit_form" autocomplete="off">
+                                             <form class="form-horizontal zero-top" action='functions/edit_user_data.jsp' enctype="multipart/form-data" role="form" method="post" name="edit_form" autocomplete="off">
 
                                                 <div class="form-group">
                                                     <label class="control-label col-sm-4">First name:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="user_fname"
+                                                        <input type="text" class="form-control" name="fname"
                                                                title="Fristname should contain from 3 to 50 characters"
                                                                pattern="[A-Za-z]{3,50}"
                                                                required>
@@ -196,7 +197,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-sm-4">Last name:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" name="user_lname"
+                                                        <input type="text" class="form-control" name="lname"
                                                                title="Lastname should contain from 3 to 50 characters"
                                                                pattern="[A-Za-z]{3,50}"
 
@@ -207,7 +208,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-sm-4">Email:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="email" class="form-control" name="user_email"
+                                                        <input type="email" class="form-control" name="email"
                                                                title="Email must be in the following order: characters@characters.domain"
                                                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
 
@@ -257,10 +258,14 @@
                                                     </div>
                                                 </div>
 
+                                                 <input type="hidden" name="user_login" value="">
+                                                 <input type="hidden" name="is_admin" value="true">
+
                                                 <hr style="border-color: black;">
                                                 <div class="form-group">
                                                     <div class="col-sm-offset-5">
-                                                        <button type="submit" class="btn btn-success" name="edit_btn" id="edit_btn">Save</button>
+                                                        <%--<button type="submit" class="btn btn-success" name="edit_btn" id="edit_btn">Save</button>--%>
+                                                        <input type="submit" class="btn btn-success" name="edit_btn" id="edit_btn" value="Save">
                                                     </div>
                                                 </div>
                                             </form>
@@ -288,13 +293,14 @@
                             <script>
                                 // The script inserts the data into a modal window
                                 $('#edit_modal').on('show.bs.modal', function (e) {
-                                    alert('i am here22222!!!');
                                     var user_fname = $(e.relatedTarget).data('user_fname');
                                     var user_lname = $(e.relatedTarget).data('user_lname');
                                     var user_email = $(e.relatedTarget).data('user_email');
-                                    $(e.currentTarget).find('input[name="user_fname"]').val(user_fname);
-                                    $(e.currentTarget).find('input[name="user_lname"]').val(user_lname);
-                                    $(e.currentTarget).find('input[name="user_email"]').val(user_email);
+                                    var user_login = $(e.relatedTarget).data('user_login');
+                                    $(e.currentTarget).find('input[name="fname"]').val(user_fname);
+                                    $(e.currentTarget).find('input[name="lname"]').val(user_lname);
+                                    $(e.currentTarget).find('input[name="email"]').val(user_email);
+                                    $(e.currentTarget).find('input[name="user_login"]').val(user_login); // hidden!!!
 
                                 });
                             </script>
