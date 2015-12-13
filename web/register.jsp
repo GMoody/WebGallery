@@ -17,6 +17,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Title -->
     <title>Web Gallery - Registration</title>
 
@@ -39,7 +40,7 @@
             </button>
             <!-- Options button END-->
 
-            <a class="navbar-brand" href="register.jsp">Registration</a>
+            <a class="navbar-brand">Registration</a>
         </div>
         <!-- Mobile display menu END-->
 
@@ -48,8 +49,7 @@
             <!-- Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="index.jsp">Main</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.jsp">About</a></li>
             </ul>
             <!-- Navbar END -->
 
@@ -57,8 +57,10 @@
             <ul class="nav navbar-right top-nav">
 
                 <!-- NOT Logged-in -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Log in<b class="caret"></b></a>
+                <% if (session.getAttribute("user_name") == null) {%>
+                <li><a href="register.jsp"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li class="dropdown disp_none"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login<b class="caret"></b></a>
+                    <!-- Dropdown menu -->
                     <ul class="dropdown-menu" style="height: 180px; width: 300px">
                         <div class="loginmodal-container">
                             <form method="post" action="functions/login.jsp" name="login_form">
@@ -68,18 +70,18 @@
                             </form>
                         </div>
                     </ul>
+                    <!-- Dropdown menu END -->
                 </li>
+                <!-- NOT Logged-in end-->
+                <%}%>
             </ul>
             <!-- Profile end-->
-
         </div>
         <!-- Navbar + login modal END-->
     </div>
     <!-- /.container -->
 </nav>
 <!-- Navigation END-->
-
-
 
 <!-- Page Content -->
 <div class="container">
@@ -181,7 +183,6 @@
         }
     %>
     <!-- Registration function call END-->
-
 
     <hr>
 

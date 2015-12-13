@@ -1,6 +1,7 @@
 <%@ page import="functions.MainHandler" %>
 <%@ page import="main.Picture" %>
 <%@ page import="java.util.List" %>
+
 <%
 
     List<Picture> pictures = null;

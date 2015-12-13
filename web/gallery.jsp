@@ -9,7 +9,6 @@
 <html lang="en">
 
 <head>
-
     <!-- Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,6 +23,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Title -->
     <title>Web Gallery - Gallery</title>
 
@@ -46,18 +46,16 @@
             </button>
             <!-- Options button END-->
 
-            <a class="navbar-brand" href="index.jsp">Web Gallery</a>
+            <a class="navbar-brand">Gallery</a>
         </div>
         <!-- Mobile display menu END-->
 
         <!-- Navbar + login modal -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
             <!-- Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="index.jsp">Main</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.jsp">About</a></li>
             </ul>
             <!-- Navbar END -->
 
@@ -79,28 +77,27 @@
                         </ul>
                         <!-- Dropdown menu END -->
                     </li>
-
                 <!-- NOT Logged-in end-->
                 <%}else{%>
-
-                <!-- Logged-in -->
-                <li class="dropdown disp_none">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-                        <li><a href="gallery.jsp?user=<%=session.getAttribute("user_name")%>"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                        <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
-                            <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
-                        <%}%>
-                        <li class="divider"></li>
-                        <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
-                    </ul>
-                </li>
-                <!-- Logged-in end-->
+                    <!-- Logged-in -->
+                    <li class="dropdown disp_none">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%=session.getAttribute("user_name")%><b class="caret"></b></a>
+                        <!-- Dropdown menu -->
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
+                            <li><a href="gallery.jsp?user=<%=session.getAttribute("user_name")%>"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                            <%if(Integer.parseInt(session.getAttribute("position").toString()) == 2){ %>
+                                <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
+                            <%}%>
+                            <li class="divider"></li>
+                            <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
+                        </ul>
+                        <!-- Dropdown menu END -->
+                    </li>
+                    <!-- Logged-in end-->
                 <%}%>
             </ul>
             <!-- Profile end-->
-
         </div>
         <!-- Navbar + login modal END-->
     </div>
@@ -119,12 +116,20 @@
         if(session.getAttribute("user_name") != null)
             if (user_name.equals(session.getAttribute("user_name").toString()))
                 same_user = true;
+
+        // Получаем необходимый лист с картинками, в зависимости от сортировки.
+        request.getRequestDispatcher("/functions/make_gallery_list.jsp").include(request, response);
+        List<Picture> pictures = (List<Picture>) request.getAttribute("list");
+        String url = request.getRequestURL().toString() + "?" + request.getQueryString();
     %>
     <!-- Navigation tabs -->
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#gallery"><b><%=user_name%></b> gallery</a></li>
-        <% if(same_user){%>
-            <li><a data-toggle="tab" href="#upload">Picture upload</a></li>
+        <% if (pictures.size() != 0){%>
+            <li class="active"><a data-toggle="tab" href="#gallery"><b><%=user_name%></b> gallery</a></li>
+        <%  if(same_user){ %>
+                <li><a data-toggle="tab" href="#upload">Picture upload</a></li>
+        <%}}else{%>
+            <li class="active"><a data-toggle="tab" href="#upload">Picture upload</a></li>
         <%}%>
     </ul>
     <!-- Navigation tabs END -->
@@ -133,20 +138,14 @@
     <div class="tab-content">
 
         <!-- User gallery -->
+        <% if(pictures.size() > 0){%>
         <div id="gallery" class="tab-pane fade in active">
-
+        <%}else{%>
+        <div id="gallery" class="tab-pane fade in"> <%}%>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="well well-sm">
                         <div class="btn-group">
-                            <%
-                                // Получаем необходимый лист с картинками, в зависимости от сортировки.
-                                request.getRequestDispatcher("/functions/make_gallery_list.jsp").include(request, response);
-                                List<Picture> pictures = (List<Picture>) request.getAttribute("list");
-                                String url = request.getRequestURL().toString() + "?" + request.getQueryString();
-
-                            %>
-
                             <!-- Date sorting -->
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Date <span class="caret"></span></button>
@@ -184,7 +183,6 @@
 
             <!-- Pictures -->
             <div class="row"><%
-
                 int i = 0, y = 12, current_page = 1; // Переменные для работы с выводом картинок.
 
                 if(request.getParameter("page") != null){
@@ -200,8 +198,12 @@
                     }
                 }
 
-                if (pictures.size() != 0){
-                    for (int z = i; z < y; z++){ %>
+                if(pictures.size() < 12){
+                    i = 0;
+                    y = pictures.size();
+                }
+
+                for (int z = i; z < y; z++){ %>
                     <div class="col-md-3 portfolio-item">
                         <a href="picture.jsp?picture=<%=pictures.get(z).getId_picture()%>"><img class="img-responsive" src="<%=pictures.get(z).getPicture_url()%>" alt="<%=pictures.get(z).getDescription() %>"></a>
                         <div class="toolbox well">
@@ -210,7 +212,7 @@
                             <p><span class="glyphicon glyphicon-star"></span> <%=Picture_Statistics.getPicture_statistics(pictures.get(z).getId_picture()).getPicture_rating()%></p>
                         </div>
                     </div>
-                <%}}%>
+                <%}%>
             </div>
             <!-- Pictures -->
 
@@ -219,37 +221,37 @@
                 <div class="col-lg-12">
                     <ul class="pagination"><%
                         // Стрелочка влево выводится всегда, кроме как на 1-ой странице.
-                        if(current_page!=1){
-                            %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page-1)%>">&laquo;</a></li><%
-                        }
-
-                        // Имеем ли все страницы полностью заполненные по 12 картинок
-                        if(pictures.size() % 12 != 0){
-                            for (int w = 1; w < (pictures.size() / 12) + 2; w++){
-                                if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
-                                    %><li class="active"><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
-                                }else{
-                                    %><li><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
-                                }
+                            if(current_page!=1){
+                                %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page-1)%>">&laquo;</a></li><%
                             }
 
-                            if((pictures.size()/12) + 1 > current_page){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
+                            // Имеем ли все страницы полностью заполненные по 12 картинок
+                            if(pictures.size() % 12 != 0){
+                                for (int w = 1; w < (pictures.size() / 12) + 2; w++){
+                                    if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
+                                        %><li class="active"><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                    }else{
+                                        %><li><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                    }
+                                }
+
+                                if((pictures.size()/12) + 1 > current_page){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
+                                    %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page+1)%>">&raquo;</a></li><%
+                                }
+
+                            }else{ // Имеем все страницы по 12 картинок!
+                                for (int w = 1; w < (pictures.size() / 12) + 1; w++){
+                                    if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
+                                        %><li class="active"><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                    }else{
+                                        %><li><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
+                                    }
+                                }
+
+                                if(current_page!= pictures.size() / 12){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
                                 %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page+1)%>">&raquo;</a></li><%
-                            }
-
-                        }else{ // Имеем все страницы по 12 картинок!
-                            for (int w = 1; w < (pictures.size() / 12) + 1; w++){
-                                if(w==current_page){ // Выделяет цифру странички, если ты на ней находишься.
-                                    %><li class="active"><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
-                                }else{
-                                    %><li><a href="<%=URLHandler.makeGalleryPage(url,w)%>"><%=w%></a></li><%
                                 }
-                            }
-
-                            if(current_page!= pictures.size() / 12){ // Стрелочка вправо выводится всегда, кроме как на последней странице.
-                            %><li><a href="<%=URLHandler.makeGalleryPage(url,current_page+1)%>">&raquo;</a></li><%
-                            }
-                        }%>
+                            }%>
                     </ul>
                 </div>
             </div>
@@ -258,12 +260,15 @@
         <!-- User gallery END -->
 
         <!-- Picture upload -->
-        <div id="upload" class="tab-pane fade">
+        <% if(pictures.size() > 0){%>
+        <div id="upload" class="tab-pane fade in">
+        <%}else{%>
+        <div id="upload" class="tab-pane fade in active"> <%}%>
 
                 <h3>Picture upload</h3>
                 <div class="well well">
                     <form class="form-horizontal zero-top" action='functions/upload_picture.jsp' enctype="multipart/form-data" role="form" method="post" name="picture_form" autocomplete="off">
-
+                        <!-- Category select -->
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="category">Category:</label>
                             <div class="col-sm-4">
@@ -279,7 +284,9 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- Category select END -->
 
+                        <!-- Description -->
                         <div class="form-group">
                             <label class="control-label col-sm-4">Description:</label>
                             <div class="col-sm-4">
@@ -288,7 +295,9 @@
                                        placeholder="Picture description (not necessarily)">
                             </div>
                         </div>
+                        <!-- Description END -->
 
+                        <!-- Picture -->
                         <div class="form-group">
                             <label class="control-label col-sm-4">Picture:</label>
                             <div class="col-sm-4">
@@ -302,6 +311,7 @@
                                 </span>
                             </div>
                         </div>
+                        <!-- Picture END -->
 
                         <div class="form-group">
                             <div class="col-sm-3" style="margin-left: 420px;">
@@ -321,17 +331,11 @@
                         });
                     </script>
                 </div>
-
         </div>
         <!-- Picture upload END -->
 
     </div>
     <!-- Navigation tabs content END -->
-
-
-
-
-
 
     <hr>
 

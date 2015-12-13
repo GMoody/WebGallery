@@ -124,7 +124,6 @@ public class Connections {
     }
 
     public static ResultSet GetPictureComments(int picture_id) throws SQLException, ClassNotFoundException{
-
         String query="SELECT * FROM webgallery.t_comment as C WHERE C.id_picture = '"+picture_id+"' ORDER BY 4 ASC";
         return queryExecuter(query);
     }
@@ -147,7 +146,7 @@ public class Connections {
     public static boolean checkLike (int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
         String query = "SELECT * FROM webgallery.t_Like WHERE id_user = '"+user_id+"' AND id_picture = '"+picture_id+"'";
         ResultSet st = queryExecuter(query);
-        if(st.next()){return true;}else{return false;}
+        return st.next();
     }
 
     public static boolean deleteLike(int user_id, int picture_id) throws  SQLException, ClassNotFoundException{
@@ -164,8 +163,4 @@ public class Connections {
         String query ="UPDATE webgallery.t_picture_statistics SET total_voted = total_voted - 1 WHERE id_picture = '"+picture_id+"'";
         return queryUpdater(query);
     }
-
-
-
-
 }

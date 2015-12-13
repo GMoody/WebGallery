@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class FTPHandler {
-    // Тут надо перелопатить много!
+
     public static FTPClient ftpConnect() {
         try {
             FTPClient ftp = new FTPClient();
@@ -18,9 +18,9 @@ public class FTPHandler {
             ftp.setSoTimeout(10000);
             ftp.enterLocalPassiveMode();
 
-            if (ftp.login("g.tureev@gmail.com", "4a4612db")){
+            if (ftp.login("g.tureev@gmail.com", "4a4612db"))
                 return ftp;
-            }
+
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
@@ -34,29 +34,27 @@ public class FTPHandler {
 
         if (ftp != null) {
 
-            try {
-
-                if(folder){ // folder avatars
+            try{
+                if(folder) // folder avatars
                     ftp.changeWorkingDirectory("/public_http/avatars/");
-                }else{ //folder pictures
+                else //folder pictures
                     ftp.changeWorkingDirectory("/public_http/pictures/");
-                }
 
                 fis = new FileInputStream(file);
                 ftp.storeFile(file.getName(), fis);
                 return true;
 
-            } catch (IOException e) {
+            }catch (IOException e){
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
                 return false;
-            } finally {
+            }finally{
                 if (fis != null)
-                    try {
+                    try{
                         fis.close();
                         ftp.logout();
                         ftp.disconnect();
-                    } catch (IOException e) {
+                    }catch (IOException e){
                         e.printStackTrace();
                     }
             }
@@ -64,63 +62,22 @@ public class FTPHandler {
         return false;
     }
 
-    public static boolean checkFile(File file, boolean folder){
-        FTPClient ftp = ftpConnect();
-        InputStream fis = null;
-
-        if (ftp != null) {
-
-            try {
-
-                String filepath;
-
-                if(folder){ // folder avatars
-                    filepath = "/public_http/avatars/" + file.getName();
-                }else{ //folder pictures
-                    filepath = "/public_http/pictures/" + file.getName();
-                }
-
-                fis = ftp.retrieveFileStream(filepath);
-                int returnCode = ftp.getReplyCode();
-                return !(fis == null || returnCode == 550);
-
-            } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
-                e.printStackTrace();
-                return false;
-            } finally {
-                if (fis != null)
-                    try {
-                        fis.close();
-                        ftp.logout();
-                        ftp.disconnect();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-            }
-        }
-        return true;
-    }
-
     public static boolean removeFile(File file, boolean folder){
         FTPClient ftp = ftpConnect();
 
-        if (ftp != null) {
-
-            try {
+        if (ftp != null)
+            try{
                 String filepath;
 
-                if(folder){ // folder avatars
+                if(folder) // folder avatars
                     filepath = "/public_http/avatars/" + file.getName();
-                }else{ //folder pictures
+                else //folder pictures
                     filepath = "/public_http/pictures/" + file.getName();
-                }
 
                 return ftp.deleteFile(filepath);
-
-            } catch (IOException e) {
+            }catch (IOException e){
                 e.printStackTrace();
-            } finally {
+            }finally{
                 try {
                     ftp.logout();
                     ftp.disconnect();
@@ -128,7 +85,6 @@ public class FTPHandler {
                     e.printStackTrace();
                 }
             }
-        }
         return true;
     }
 

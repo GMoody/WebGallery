@@ -4,7 +4,6 @@ import main.Category;
 import main.Picture;
 import main.Picture_Statistics;
 import main.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,7 +22,6 @@ public class MainHandler {
                         Picture temp = new Picture(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getDate(4), rs.getString(5), rs.getString(6));
                         User.addPictureToUser(rs.getInt(3), temp);
                     }
-                    // Необходима ещё куча методов, которые обрабатывают также пользовательскую информацию и статистику
                 }
                 rs.close();
                 return Picture.pictures;
@@ -52,7 +50,7 @@ public class MainHandler {
                         ResultSet statistics = Connections.getPictureStatistics(rs.getInt(1));
 
                         if(statistics.next()){
-                            Picture_Statistics ps = new Picture_Statistics(statistics.getInt(1), statistics.getInt(2), statistics.getInt(3), statistics.getInt(4), statistics.getInt(5));
+                            Picture_Statistics ps = new Picture_Statistics(statistics.getInt(1), statistics.getInt(2), statistics.getInt(3), statistics.getInt(4), Math.round(statistics.getDouble(5) * 100.0) / 100.0);
                             Picture_Statistics.getPicture_statistics();
                             statistics.close();
                         }

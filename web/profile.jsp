@@ -20,6 +20,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Title -->
     <title>Web Gallery - Profile info</title>
 
@@ -42,7 +43,7 @@
             </button>
             <!-- Options button END-->
 
-            <a class="navbar-brand" href="profile.jsp">Profile</a>
+            <a class="navbar-brand">Profile</a>
         </div>
         <!-- Mobile display menu END-->
 
@@ -51,30 +52,29 @@
             <!-- Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="index.jsp">Main</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.jsp">About</a></li>
             </ul>
             <!-- Navbar END -->
 
             <!-- Profile -->
             <ul class="nav navbar-right top-nav">
-
                 <!-- Logged-in -->
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= session.getAttribute("user_name")%><b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%=session.getAttribute("user_name")%><b class="caret"></b></a>
+                    <!-- Dropdown menu -->
                     <ul class="dropdown-menu">
-                        <li><a href="gallery.jsp"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                        <li><a href="gallery.jsp?user=<%=session.getAttribute("user_name")%>"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
                         <% if(Integer.valueOf(session.getAttribute("position").toString())  == 2){ %>
                             <li><a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Admin panel</a></li>
                         <%}%>
                         <li class="divider"></li>
                         <li><a href="functions/logout.jsp" name="logout_btn"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Log Out</a></li>
                     </ul>
+                    <!-- Dropdown menu END -->
                 </li>
                 <!-- Logged-in end-->
             </ul>
             <!-- Profile end-->
-
         </div>
         <!-- Navbar + login modal END-->
     </div>
@@ -82,30 +82,13 @@
 </nav>
 <!-- Navigation END-->
 
-
-
-
 <!-- Page Content -->
 <div class="container">
-
-    <!-- Page Heading -->
-    <%--&lt;%&ndash;<div class="row">&ndash;%&gt;--%>
-        <%--&lt;%&ndash;<div class="col-lg-12">&ndash;%&gt;--%>
-            <%--&lt;%&ndash;<h1 class="page-header">Account details&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<small></small>&ndash;%&gt;--%>
-            <%--&lt;%&ndash;</h1>&ndash;%&gt;--%>
-        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-    <%--<!-- /.row -->--%>
-
-
-    <br>
-
     <div class="container-fluid well span6">
         <div class="row-fluid">
             <div class="span2" style="float:left;">
                 <img style="width:150px; height: 150px;" src="<%=User.getUserInfo(session.getAttribute("email").toString()).getAvatar()%>" class="img-thumbnail">
-                <h4 style="margin-left: 35px;"><%=session.getAttribute("user_name")%></h4> <%--Отступ работает у всех по-разному--%>
+                <h4 style="margin-left: 35px;"><%=session.getAttribute("user_name")%></h4>
             </div>
 
             <div class="span8" style="float:left; margin-left: 40px;">
@@ -134,7 +117,6 @@
 
                         <div class="modal-body">
                             <form class="form-horizontal zero-top" action='functions/edit_user_data.jsp' enctype="multipart/form-data" role="form" method="post" name="edit_form" autocomplete="off">
-
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">First name:</label>
                                     <div class="col-sm-6">
@@ -231,6 +213,7 @@
 
                         </div>
                     </div>
+                    <!-- Modal content END-->
 
                 </div>
             </div>
@@ -238,14 +221,13 @@
 
             <div class="span3" style="float:right; margin-right: -101px;margin-top: 45px;">
                 <td class="tg-baqh" colspan="2">
-                    <a href='gallery.jsp' class='btn btn-primary'>View gallery</a>
+                    <a href='gallery.jsp?user=<%=session.getAttribute("user_name")%>' class='btn btn-primary'>View gallery</a>
                 </td>
             </div>
             <!-- Buttons END-->
 
         </div>
     </div>
-
 
     <hr>
 
